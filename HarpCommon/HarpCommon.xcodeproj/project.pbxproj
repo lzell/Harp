@@ -9,21 +9,15 @@
 /* Begin PBXBuildFile section */
 		9AD637D11D1CB82900BBF330 /* HarpCommoniOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 9AD637D01D1CB82900BBF330 /* HarpCommoniOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9AD637DE1D1CB83B00BBF330 /* HarpCommonOSX.h in Headers */ = {isa = PBXBuildFile; fileRef = 9AD637DD1D1CB83B00BBF330 /* HarpCommonOSX.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		9AD637E91D1CB9B000BBF330 /* Foo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD637C71D1CB7E500BBF330 /* Foo.swift */; };
-		9AD637EA1D1CB9B100BBF330 /* Foo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD637C71D1CB7E500BBF330 /* Foo.swift */; };
-		9AD637EE1D1CBA2800BBF330 /* Bar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD637ED1D1CBA2800BBF330 /* Bar.swift */; };
-		9AD637EF1D1CBA2800BBF330 /* Bar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD637ED1D1CBA2800BBF330 /* Bar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		9AD637C71D1CB7E500BBF330 /* Foo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Foo.swift; sourceTree = "<group>"; };
 		9AD637CD1D1CB82900BBF330 /* HarpCommoniOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HarpCommoniOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AD637D01D1CB82900BBF330 /* HarpCommoniOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HarpCommoniOS.h; sourceTree = "<group>"; };
 		9AD637D21D1CB82900BBF330 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9AD637DB1D1CB83B00BBF330 /* HarpCommonOSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HarpCommonOSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AD637DD1D1CB83B00BBF330 /* HarpCommonOSX.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HarpCommonOSX.h; sourceTree = "<group>"; };
 		9AD637DF1D1CB83B00BBF330 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9AD637ED1D1CBA2800BBF330 /* Bar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,8 +41,6 @@
 		9AD637C01D1CB7DD00BBF330 = {
 			isa = PBXGroup;
 			children = (
-				9AD637ED1D1CBA2800BBF330 /* Bar.swift */,
-				9AD637C71D1CB7E500BBF330 /* Foo.swift */,
 				9AD637CF1D1CB82900BBF330 /* HarpCommoniOS */,
 				9AD637DC1D1CB83B00BBF330 /* HarpCommonOSX */,
 				9AD637CE1D1CB82900BBF330 /* Products */,
@@ -196,8 +188,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9AD637E91D1CB9B000BBF330 /* Foo.swift in Sources */,
-				9AD637EE1D1CBA2800BBF330 /* Bar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -205,8 +195,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9AD637EA1D1CB9B100BBF330 /* Foo.swift in Sources */,
-				9AD637EF1D1CBA2800BBF330 /* Bar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -467,6 +455,7 @@
 				9AD637D51D1CB82900BBF330 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9AD637E01D1CB83B00BBF330 /* Build configuration list for PBXNativeTarget "HarpCommonOSX" */ = {
 			isa = XCConfigurationList;
@@ -475,6 +464,7 @@
 				9AD637E21D1CB83B00BBF330 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
