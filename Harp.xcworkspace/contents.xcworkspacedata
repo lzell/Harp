@@ -2,9 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:HarpClient/HarpClient.xcodeproj">
+      location = "group:HarpCommon/HarpCommon.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:HarpApp/HarpApp.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:HarpClient/HarpClient.xcodeproj">
    </FileRef>
 </Workspace>

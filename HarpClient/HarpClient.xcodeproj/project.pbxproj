@@ -10,6 +10,7 @@
 		9AD637AC1D1CB46F00BBF330 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD637AB1D1CB46F00BBF330 /* AppDelegate.swift */; };
 		9AD637AE1D1CB46F00BBF330 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AD637AD1D1CB46F00BBF330 /* Assets.xcassets */; };
 		9AD637B11D1CB46F00BBF330 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AD637AF1D1CB46F00BBF330 /* MainMenu.xib */; };
+		9AD637E81D1CB99E00BBF330 /* HarpCommonOSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AD637E71D1CB99E00BBF330 /* HarpCommonOSX.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -18,6 +19,7 @@
 		9AD637AD1D1CB46F00BBF330 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9AD637B01D1CB46F00BBF330 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		9AD637B21D1CB46F00BBF330 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9AD637E71D1CB99E00BBF330 /* HarpCommonOSX.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HarpCommonOSX.framework; path = "../../../Library/Developer/Xcode/DerivedData/Harp-gfeeamgbpaspjfbuwcmlifbmwqzj/Build/Products/Debug/HarpCommonOSX.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -25,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9AD637E81D1CB99E00BBF330 /* HarpCommonOSX.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -34,6 +37,7 @@
 		9AD6379F1D1CB46F00BBF330 = {
 			isa = PBXGroup;
 			children = (
+				9AD637E71D1CB99E00BBF330 /* HarpCommonOSX.framework */,
 				9AD637AA1D1CB46F00BBF330 /* HarpClient */,
 				9AD637A91D1CB46F00BBF330 /* Products */,
 			);

@@ -12,6 +12,7 @@
 		9A826DFC1D1CB398007F2553 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A826DFA1D1CB398007F2553 /* Main.storyboard */; };
 		9A826DFE1D1CB398007F2553 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A826DFD1D1CB398007F2553 /* Assets.xcassets */; };
 		9A826E011D1CB398007F2553 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A826DFF1D1CB398007F2553 /* LaunchScreen.storyboard */; };
+		9AD637EC1D1CBA1A00BBF330 /* HarpCommoniOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AD637EB1D1CBA1A00BBF330 /* HarpCommoniOS.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		9A826DFD1D1CB398007F2553 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9A826E001D1CB398007F2553 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9A826E021D1CB398007F2553 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9AD637EB1D1CBA1A00BBF330 /* HarpCommoniOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HarpCommoniOS.framework; path = "../../../Library/Developer/Xcode/DerivedData/Harp-gfeeamgbpaspjfbuwcmlifbmwqzj/Build/Products/Debug-iphonesimulator/HarpCommoniOS.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +31,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9AD637EC1D1CBA1A00BBF330 /* HarpCommoniOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -38,6 +41,7 @@
 		9A826DEA1D1CB398007F2553 = {
 			isa = PBXGroup;
 			children = (
+				9AD637EB1D1CBA1A00BBF330 /* HarpCommoniOS.framework */,
 				9A826DF51D1CB398007F2553 /* HarpApp */,
 				9A826DF41D1CB398007F2553 /* Products */,
 			);
@@ -288,6 +292,7 @@
 				9A826E071D1CB398007F2553 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
