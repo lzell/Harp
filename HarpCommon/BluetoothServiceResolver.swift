@@ -6,7 +6,15 @@
 //  Copyright © 2016 Lou Zell. All rights reserved.
 //
 
-
+#if os(OSX)
+    import DNSSD_Map_OSX
+#elseif os(iOS)
+    #if (arch(i386) || arch(x86_64))
+        import DNSSD_Map_Sim
+    #else
+        import DNSSD_Map_iOS
+    #endif
+#endif
 //
 // Read: http://www.ietf.org/rfc/rfc6762.txt
 // https://developer.apple.com/library/ios/qa/qa1546/_index.html
