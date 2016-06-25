@@ -1,0 +1,37 @@
+//
+// Read: http://www.ietf.org/rfc/rfc6762.txt
+// https://developer.apple.com/library/ios/qa/qa1546/_index.html
+// https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/Streams/Articles/NetworkStreams.html
+// https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/Streams/Articles/ReadingInputStreams.html
+//
+// See this answer:
+// http://stackoverflow.com/questions/2605182/when-binding-a-client-tcp-socket-to-a-specific-local-port-with-winsock-so-reuse
+
+// Unsafe ptr ref:
+// http://stackoverflow.com/a/33310021/143447
+
+// This seems promising:
+// https://developer.apple.com/library/mac/documentation/Networking/Reference/DNSServiceDiscovery_CRef/index.html#//apple_ref/doc/uid/TP40002994-CHdnssdhFunctions-SW9
+
+// https://developer.apple.com/library/ios/documentation/Swift/Conceptual/BuildingCocoaApps/InteractingWithCAPIs.html#//apple_ref/doc/uid/TP40014216-CH8-XID_11
+
+// https://developer.apple.com/library/mac/documentation/Networking/Conceptual/dns_discovery_api/Articles/registering.html
+// Research this flag: kDNSServiceFlagsIncludeAWDL, it seems promising
+// https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/NetServices/Introduction.html#//apple_ref/doc/uid/TP40002445-SW1
+// https://developer.apple.com/library/mac/documentation/Networking/Conceptual/NSNetServiceProgGuide/Introduction.html#//apple_ref/doc/uid/TP40002736
+
+// Read this:
+// https://developer.apple.com/library/ios/documentation/NetworkingInternet/Conceptual/NetworkingTopics/Articles/UsingSocketsandSocketStreams.html#//apple_ref/doc/uid/CH73-SW9
+
+// Also see "Working with packet-based sockets"
+
+// One thing I think would be interesting here is to send the full view hierarchy across the wire and have it reconstructed
+// on the other side.  Could we attach target and actions to them?  How about autolayout visual format across the wire?
+// But how to do special handling of the dpad?
+
+// Instruct from afar what the layout and behavior should be?  One way to do it would be to send all touches on that view across the
+// wire and let the client figure out what it wants to do w/ them?  Definitely excessive?  Or have a couple types (inform all movements,
+// inform tap state only)
+//
+
+

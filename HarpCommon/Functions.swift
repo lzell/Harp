@@ -11,7 +11,7 @@
 import Foundation
 
 
-func printAddress(address: sockaddr_in6) {
+public func printAddress(address: sockaddr_in6) {
     var mutableAddress = address
     var ip = [CChar](count: Int(INET6_ADDRSTRLEN), repeatedValue: 0)
     inet_ntop(AF_INET6, &mutableAddress.sin6_addr, &ip, UInt32(ip.count))

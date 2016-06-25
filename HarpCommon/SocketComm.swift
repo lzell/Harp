@@ -10,12 +10,12 @@
 
 import Foundation
 
-class SocketComm {
+public class SocketComm {
 
     // How can I make sock a let and satisfy initialization requirements?
     var sock : CFSocket!
 
-    init(addr6: sockaddr_in6) {
+    public init(addr6: sockaddr_in6) {
         var mutableAddr6 = addr6
         var mutableSelf = self
         let ptr : UnsafePointer<sockaddr_in6> = withUnsafePointer(&mutableAddr6) { $0 }

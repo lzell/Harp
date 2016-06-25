@@ -1,11 +1,3 @@
-//
-//  BluetoothServiceResolver.swift
-//  OpenJoypadClient
-//
-//  Created by Lou Zell on 6/10/16.
-//  Copyright © 2016 Lou Zell. All rights reserved.
-//
-
 #if os(OSX)
     import DNSSD_Map_OSX
 #elseif os(iOS)
@@ -15,40 +7,6 @@
         import DNSSD_Map_iOS
     #endif
 #endif
-//
-// Read: http://www.ietf.org/rfc/rfc6762.txt
-// https://developer.apple.com/library/ios/qa/qa1546/_index.html
-// https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/Streams/Articles/NetworkStreams.html
-// https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/Streams/Articles/ReadingInputStreams.html
-//
-// See this answer:
-// http://stackoverflow.com/questions/2605182/when-binding-a-client-tcp-socket-to-a-specific-local-port-with-winsock-so-reuse
-
-// Unsafe ptr ref:
-// http://stackoverflow.com/a/33310021/143447
-
-// This seems promising:
-// https://developer.apple.com/library/mac/documentation/Networking/Reference/DNSServiceDiscovery_CRef/index.html#//apple_ref/doc/uid/TP40002994-CHdnssdhFunctions-SW9
-
-// https://developer.apple.com/library/ios/documentation/Swift/Conceptual/BuildingCocoaApps/InteractingWithCAPIs.html#//apple_ref/doc/uid/TP40014216-CH8-XID_11
-
-// https://developer.apple.com/library/mac/documentation/Networking/Conceptual/dns_discovery_api/Articles/registering.html
-// Research this flag: kDNSServiceFlagsIncludeAWDL, it seems promising
-// https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/NetServices/Introduction.html#//apple_ref/doc/uid/TP40002445-SW1
-// https://developer.apple.com/library/mac/documentation/Networking/Conceptual/NSNetServiceProgGuide/Introduction.html#//apple_ref/doc/uid/TP40002736
-
-// Read this:
-// https://developer.apple.com/library/ios/documentation/NetworkingInternet/Conceptual/NetworkingTopics/Articles/UsingSocketsandSocketStreams.html#//apple_ref/doc/uid/CH73-SW9
-// Also see "Working with packet-based sockets"
-
-// One thing I think would be interesting here is to send the full view hierarchy across the wire and have it reconstructed
-// on the other side.  Could we attach target and actions to them?  How about autolayout visual format across the wire?
-// But how to do special handling of the dpad?
-
-// Instruct from afar what the layout and behavior should be?  One way to do it would be to send all touches on that view across the
-// wire and let the client figure out what it wants to do w/ them?  Definitely excessive?  Or have a couple types (inform all movements,
-// inform tap state only)
-//
 
 
 // TODO: Supposed to release peer connection with:
@@ -68,29 +26,14 @@ private func printDebug(str: String) {
     }
 }
 
-struct BluetoothService {
-    let name : String
-    let addresses : [sockaddr_in6]
+
+public struct BluetoothServiceResult {
+    public let name : String
+    public let addresses : [sockaddr_in6]
 }
 
 
-class BluetoothServiceResolver {
-
-    private let browser : Browser
-    private var hostResolvers : [HostAndPortResolver]
-    private var addressResolvers : [IPV6Resolver]
-    private var consumer : ((BluetoothService) -> Void)?
-    private var running : Bool = false
-
-    init(format: String) {
-        // First phase:
-        browser = Browser(format: format)
-        hostResolvers = []
-        addressResolvers = []
-
-        // Second phase:
-        pluginBrowserHandling()
-    }
+public class BluetoothService {
 
     struct NetServiceIdentifier : CustomDebugStringConvertible {
         let name: String
@@ -98,98 +41,155 @@ class BluetoothServiceResolver {
         let domain: String
         var debugDescription : String {
             return "\n\tname: \(name)\n\tregType: \(regType)\n\tdomain: \(domain)"
-        } 
-    }
-
-    //
-    // MARK: - Public API
-    //
-
-    func start(consumer: (service: BluetoothService) -> Void) {
-        if !running {
-            running = true
-            self.consumer = consumer
-            browser.start()
         }
     }
 
-    func stop() {
-        if running {
-            running = false
-            consumer = nil
-            browser.stop()
-            hostResolvers.forEach { $0.stop() }
-            hostResolvers = []
-            addressResolvers.forEach { $0.stop() }
-            addressResolvers = []
-        }
-    }
+    public class Registration {
+        private let registrar : Registrar
+        private var running : Bool = false
 
-    //
-    // MARK: - Private
-    //
-    private func pluginBrowserHandling() {
-        browser.found = { [weak self] (serviceIdentifier) in
-
-            // Upon finding a service we immediately progress down the chain to resolving its
-            // host and port.  We assume that if the browser is running then the client is
-            // looking for more controllers to connect to.
-            self?.resolveHostAndPortOfService(serviceIdentifier)
+        public init(format: String) {
+            registrar = Registrar(format: format)
+            pluginRegistrationHandling()
         }
 
-        // Removed is unused.  We should not use this as a cue to use that the client is no longer
-        // interested in a connection.  They may have stopped dns registration once a connection to
-        // us was established.
-        browser.removed = { (_) in  }
-    }
-
-    // We only need the resolvers to live for the amount of time that it takes them to resolve.
-    // Set the resolved callback, and in the body remove the strong reference to hostAndPortResolver:
-    private func resolveHostAndPortOfService(serviceIdentifier: NetServiceIdentifier) {
-        let hostAndPortResolver = HostAndPortResolver(serviceIdentifier: serviceIdentifier)
-        hostAndPortResolver.resolved = { [weak self] (resolver: HostAndPortResolver, hosttarget: String, port: UInt16) in
-            if let safeSelf = self {
-                safeSelf.resolveAddress(hosttarget, port)
-                safeSelf.hostResolvers = safeSelf.hostResolvers.filter() { $0 !== resolver }
+        private func pluginRegistrationHandling() {
+            registrar.registered = { (service) in
+                print("HI HI HI HI")
+                print("Registered \(service.name)")
             }
         }
-        self.hostResolvers.append(hostAndPortResolver)
-        hostAndPortResolver.start()
+
+        public func start() {
+            if !running {
+                running = true
+                registrar.start()
+            }
+        }
+
+        public func stop() {
+            if running {
+                registrar.stop()
+            }
+        }
+
+        deinit {
+            if running {
+                registrar.stop()
+            }
+            print("Registration helper is going away")
+        }
     }
 
-    // The same logic that we used in the host and port resolvers applies here.  That is, only
-    // let address resolvers live for the amount of time it takes to get output from them.
-    //
-    // Note that when we get multiple addresses on the same resolve, they have different sin6_scope_ids.
-    // Maybe we can glean something interesting from this?
-    private func resolveAddress(hosttarget: String, _ port: UInt16) {
-        let addressResolver = IPV6Resolver(hosttarget: hosttarget, port: port)
-        var addressList = [sockaddr_in6]()
-        addressResolver.resolved = { [weak self] (ipv6Resolver: IPV6Resolver, address: sockaddr_in6, moreComing: Bool) in
-            if let safeSelf = self {
-                addressList.append(address)
-                if !moreComing {
-                    // If there's no more coming, we are ready to notify the consumer:
-                    safeSelf.consumer?(BluetoothService(name: "foo", addresses: [address]))
-                    safeSelf.addressResolvers = safeSelf.addressResolvers.filter() {$0 !== ipv6Resolver}
-                    addressList = []
+    public class Resolver {
+        private let browser : Browser
+        private var hostResolvers : [HostAndPortResolver]
+        private var addressResolvers : [IPV6Resolver]
+        private var consumer : ((BluetoothServiceResult) -> Void)?
+        private var running : Bool = false
+
+        public init(format: String) {
+            // First phase:
+            browser = Browser(format: format)
+            hostResolvers = []
+            addressResolvers = []
+
+            // Second phase:
+            pluginBrowserHandling()
+        }
+
+
+        //
+        // MARK: - Public API
+        //
+
+        public func start(consumer: (service: BluetoothServiceResult) -> Void) {
+            if !running {
+                running = true
+                self.consumer = consumer
+                browser.start()
+            }
+        }
+
+        public func stop() {
+            if running {
+                running = false
+                consumer = nil
+                browser.stop()
+                hostResolvers.forEach { $0.stop() }
+                hostResolvers = []
+                addressResolvers.forEach { $0.stop() }
+                addressResolvers = []
+            }
+        }
+
+        //
+        // MARK: - Private
+        //
+        private func pluginBrowserHandling() {
+            browser.found = { [weak self] (serviceIdentifier) in
+
+                // Upon finding a service we immediately progress down the chain to resolving its
+                // host and port.  We assume that if the browser is running then the client is
+                // looking for more controllers to connect to.
+                self?.resolveHostAndPortOfService(serviceIdentifier)
+            }
+
+            // Removed is unused.  We should not use this as a cue to use that the client is no longer
+            // interested in a connection.  They may have stopped dns registration once a connection to
+            // us was established.
+            browser.removed = { (_) in  }
+        }
+
+        // We only need the resolvers to live for the amount of time that it takes them to resolve.
+        // Set the resolved callback, and in the body remove the strong reference to hostAndPortResolver:
+        private func resolveHostAndPortOfService(serviceIdentifier: NetServiceIdentifier) {
+            let hostAndPortResolver = HostAndPortResolver(serviceIdentifier: serviceIdentifier)
+            hostAndPortResolver.resolved = { [weak self] (resolver: HostAndPortResolver, hosttarget: String, port: UInt16) in
+                if let safeSelf = self {
+                    safeSelf.resolveAddress(hosttarget, port)
+                    safeSelf.hostResolvers = safeSelf.hostResolvers.filter() { $0 !== resolver }
                 }
             }
+            self.hostResolvers.append(hostAndPortResolver)
+            hostAndPortResolver.start()
         }
-        self.addressResolvers.append(addressResolver)
-        addressResolver.start()
+
+        // The same logic that we used in the host and port resolvers applies here.  That is, only
+        // let address resolvers live for the amount of time it takes to get output from them.
+        //
+        // Note that when we get multiple addresses on the same resolve, they have different sin6_scope_ids.
+        // Maybe we can glean something interesting from this?
+        private func resolveAddress(hosttarget: String, _ port: UInt16) {
+            let addressResolver = IPV6Resolver(hosttarget: hosttarget, port: port)
+            var addressList = [sockaddr_in6]()
+            addressResolver.resolved = { [weak self] (ipv6Resolver: IPV6Resolver, address: sockaddr_in6, moreComing: Bool) in
+                if let safeSelf = self {
+                    addressList.append(address)
+                    if !moreComing {
+                        // If there's no more coming, we are ready to notify the consumer:
+                        safeSelf.consumer?(BluetoothServiceResult(name: "foo", addresses: [address]))
+                        safeSelf.addressResolvers = safeSelf.addressResolvers.filter() {$0 !== ipv6Resolver}
+                        addressList = []
+                    }
+                }
+            }
+            self.addressResolvers.append(addressResolver)
+            addressResolver.start()
+        }
+        
+        deinit {
+            if (running) {
+                stop()
+            }
+            print("\(self) is going away!")
+        }
     }
 
-    deinit {
-        if (running) {
-            stop()
-        }
-        print("\(self) is going away!")
-    }
 
 
     // MARK: - Nested Types
-    class Service {
+    public class Service {
         var ref : DNSServiceRef = nil
         let interfaceIndex : UInt32 = UInt32() &- 3 // Allow overflow; this is equivalent to kDNSServiceInterfaceIndexP2P
 
@@ -227,6 +227,67 @@ class BluetoothServiceResolver {
         func stop() {
             DNSServiceRefDeallocate(ref)
             ref = nil
+        }
+    }
+
+    class Registrar : Service {
+        let format : String
+        // Plug me in!
+        var registered : (serviceID: NetServiceIdentifier) -> Void
+        var sockAccept : SocketAccept!
+
+
+        init(format: String) {
+            self.format = format
+            registered = { (_) in assert(false) }
+            sockAccept = SocketAccept()
+        }
+
+
+        deinit {
+            print("Registrar is going away!")
+        }
+
+        // There has got to be a more concise way to do this...
+        private func registrarCallback() -> DNSServiceRegisterReply {
+            return { (sdRef, flags, errorCode, name, regType, domain, context) in
+                let registrar = fromContext(UnsafeMutablePointer<Registrar>(context))
+                registrar.handleRegisterResult(sdRef, flags, errorCode, name, regType, domain)
+            }
+        }
+
+        private func handleRegisterResult(sdRef: DNSServiceRef,
+                                        _ flags: DNSServiceFlags,
+                                        _ errorCode: DNSServiceErrorType,
+                                        _ name: UnsafePointer<CChar>,
+                                        _ regType: UnsafePointer<CChar>,
+                                        _ domain: UnsafePointer<CChar>) {
+
+            guard errorCode == 0 else {
+                fatalError("Registration error code: \(errorCode)")
+            }
+
+            let name = String.fromCString(name)!
+            let regType = String.fromCString(regType)!
+            let domain = String.fromCString(domain)!
+            registered(serviceID: NetServiceIdentifier(name: name, regType: regType, domain: domain))
+        }
+
+
+        override func dnsCall() -> DNSServiceErrorType {
+            return DNSServiceRegister(
+                &ref,
+                UInt32(kDNSServiceFlagsIncludeP2P),
+                interfaceIndex,
+                nil,
+                format,
+                "local",
+                nil,
+                sockAccept.port.bigEndian,
+                0,
+                nil,
+                registrarCallback(),
+                UnsafeMutablePointer(Unmanaged.passUnretained(self).toOpaque()))
         }
     }
 
