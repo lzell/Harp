@@ -48,8 +48,8 @@ public class BluetoothService {
         private let registrar : Registrar
         private var running : Bool = false
 
-        public init(format: String) {
-            registrar = Registrar(format: format)
+        public init(format: String, port: UInt16) {
+            registrar = Registrar(format: format, port: port)
             pluginRegistrationHandling()
         }
 
@@ -234,13 +234,13 @@ public class BluetoothService {
         let format : String
         // Plug me in!
         var registered : (serviceID: NetServiceIdentifier) -> Void
-        var sockAccept : SocketAccept!
+        let port : UInt16
 
 
-        init(format: String) {
+        init(format: String, port: UInt16) {
             self.format = format
+            self.port = port
             registered = { (_) in assert(false) }
-            sockAccept = SocketAccept()
         }
 
 
@@ -283,7 +283,7 @@ public class BluetoothService {
                 format,
                 "local",
                 nil,
-                sockAccept.port.bigEndian,
+                port.bigEndian,
                 0,
                 nil,
                 registrarCallback(),

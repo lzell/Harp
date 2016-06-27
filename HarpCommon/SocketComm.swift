@@ -10,6 +10,7 @@
 
 import Foundation
 
+// TODO: Reconcile this with SocketAccept
 public class SocketComm {
 
     // How can I make sock a let and satisfy initialization requirements?

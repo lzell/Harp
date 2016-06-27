@@ -19,11 +19,11 @@ public func printAddress(address: sockaddr_in6) {
 }
 
 
-func toContext(refType : AnyObject) -> UnsafeMutablePointer<Void> {
+public func toContext(refType : AnyObject) -> UnsafeMutablePointer<Void> {
     return UnsafeMutablePointer(Unmanaged.passUnretained(refType).toOpaque())
 }
 
-func fromContext<T:AnyObject>(context: UnsafeMutablePointer<T>) -> T {
+public func fromContext<T:AnyObject>(context: UnsafeMutablePointer<T>) -> T {
     let ptr = Unmanaged<T>.fromOpaque(COpaquePointer(context))
     let instance = ptr.takeUnretainedValue()
     return instance

@@ -17,12 +17,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBOutlet weak var window: NSWindow!
 
-    var bluetoothServiceResolver : BluetoothService__.Resolver!
+    var bluetoothServiceResolver : BluetoothService.Resolver!
 
     var socketComm : SocketComm!
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
-        bluetoothServiceResolver = BluetoothService__.Resolver(format: "_harp._tcp")
+        bluetoothServiceResolver = BluetoothService.Resolver(format: "_harp._tcp")
         bluetoothServiceResolver.start() {  (bluetoothService) in
             for sockAddr in bluetoothService.addresses {
                 printAddress(sockAddr)
