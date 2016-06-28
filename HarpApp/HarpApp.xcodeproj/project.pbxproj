@@ -12,6 +12,7 @@
 		9A826DFC1D1CB398007F2553 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A826DFA1D1CB398007F2553 /* Main.storyboard */; };
 		9A826DFE1D1CB398007F2553 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A826DFD1D1CB398007F2553 /* Assets.xcassets */; };
 		9A826E011D1CB398007F2553 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A826DFF1D1CB398007F2553 /* LaunchScreen.storyboard */; };
+		9A9E0B911D2318FA009A0538 /* Networker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E0B901D2318FA009A0538 /* Networker.swift */; };
 		9AD637EC1D1CBA1A00BBF330 /* HarpCommoniOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AD637EB1D1CBA1A00BBF330 /* HarpCommoniOS.framework */; };
 /* End PBXBuildFile section */
 
@@ -20,9 +21,10 @@
 		9A826DF61D1CB398007F2553 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9A826DF81D1CB398007F2553 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		9A826DFB1D1CB398007F2553 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		9A826DFD1D1CB398007F2553 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9A826DFD1D1CB398007F2553 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = HarpApp/Assets.xcassets; sourceTree = "<group>"; };
 		9A826E001D1CB398007F2553 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		9A826E021D1CB398007F2553 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9A826E021D1CB398007F2553 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = HarpApp/Info.plist; sourceTree = "<group>"; };
+		9A9E0B901D2318FA009A0538 /* Networker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Networker.swift; sourceTree = "<group>"; };
 		9AD637EB1D1CBA1A00BBF330 /* HarpCommoniOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HarpCommoniOS.framework; path = "../../../Library/Developer/Xcode/DerivedData/Harp-gfeeamgbpaspjfbuwcmlifbmwqzj/Build/Products/Debug-iphonesimulator/HarpCommoniOS.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -41,9 +43,10 @@
 		9A826DEA1D1CB398007F2553 = {
 			isa = PBXGroup;
 			children = (
-				9AD637EB1D1CBA1A00BBF330 /* HarpCommoniOS.framework */,
 				9A826DF51D1CB398007F2553 /* HarpApp */,
+				9AD637EB1D1CBA1A00BBF330 /* HarpCommoniOS.framework */,
 				9A826DF41D1CB398007F2553 /* Products */,
+				9A9E0B921D23197D009A0538 /* Supporting Files */,
 			);
 			sourceTree = "<group>";
 		};
@@ -59,13 +62,21 @@
 			isa = PBXGroup;
 			children = (
 				9A826DF61D1CB398007F2553 /* AppDelegate.swift */,
+				9A9E0B901D2318FA009A0538 /* Networker.swift */,
 				9A826DF81D1CB398007F2553 /* ViewController.swift */,
-				9A826DFA1D1CB398007F2553 /* Main.storyboard */,
-				9A826DFD1D1CB398007F2553 /* Assets.xcassets */,
-				9A826DFF1D1CB398007F2553 /* LaunchScreen.storyboard */,
-				9A826E021D1CB398007F2553 /* Info.plist */,
 			);
 			path = HarpApp;
+			sourceTree = "<group>";
+		};
+		9A9E0B921D23197D009A0538 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9A826DFD1D1CB398007F2553 /* Assets.xcassets */,
+				9A826E021D1CB398007F2553 /* Info.plist */,
+				9A826DFF1D1CB398007F2553 /* LaunchScreen.storyboard */,
+				9A826DFA1D1CB398007F2553 /* Main.storyboard */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -141,6 +152,7 @@
 			files = (
 				9A826DF91D1CB398007F2553 /* ViewController.swift in Sources */,
 				9A826DF71D1CB398007F2553 /* AppDelegate.swift in Sources */,
+				9A9E0B911D2318FA009A0538 /* Networker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,6 +165,7 @@
 				9A826DFB1D1CB398007F2553 /* Base */,
 			);
 			name = Main.storyboard;
+			path = HarpApp;
 			sourceTree = "<group>";
 		};
 		9A826DFF1D1CB398007F2553 /* LaunchScreen.storyboard */ = {
@@ -161,6 +174,7 @@
 				9A826E001D1CB398007F2553 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			path = HarpApp;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

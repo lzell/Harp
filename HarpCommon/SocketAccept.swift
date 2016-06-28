@@ -11,12 +11,9 @@ import Foundation
 
 
 
-//typedef void (*CFSocketCallBack)(CFSocketRef s, CFSocketCallBackType type, CFDataRef address, const void *data, void *info);
-///* If the callback wishes to keep hold of address or data after the point that it returns, then it must copy them. */
-//
+// If the callback wishes to keep hold of address or data after the point that it returns, then it must copy them.
 // For an accept callback, the data parameter is a pointer to a CFSocketNativeHandle.
-func socketCallback(sock: CFSocket!, type: CFSocketCallBackType, var address: CFData!, data: UnsafePointer<Void>, info: UnsafeMutablePointer<Void>) -> Void {
-
+private func socketCallback(sock: CFSocket!, type: CFSocketCallBackType, var address: CFData!, data: UnsafePointer<Void>, info: UnsafeMutablePointer<Void>) -> Void {
     assert(type == .AcceptCallBack, "Unexpected callback type")
     let sockObj = fromContext(UnsafeMutablePointer<SocketAccept>(info))
     assert(sockObj.underlying === sock, "Unexpected socket")
@@ -40,23 +37,17 @@ public class SocketAccept {
     }
 
 
-
-
+    // This is ugly
     public init() {
-        // let daOptions: CFSocketCallBackType = [.ReadCallBack, .AcceptCallBack, .DataCallBack, .ConnectCallBack, .WriteCallBack]
-        let daOptions: CFSocketCallBackType = [.AcceptCallBack]
-        print(daOptions.rawValue)
-
-//        var mutableSelf = self
-
+        let callbackType: CFSocketCallBackType = [.AcceptCallBack]
         var ctxt = CFSocketContext(version: 0, info: toContext(self), retain: nil, release: nil, copyDescription: nil)
-        underlying = CFSocketCreate(kCFAllocatorDefault, AF_INET6, SOCK_STREAM, IPPROTO_TCP, daOptions.rawValue, socketCallback, &ctxt)
+        underlying = CFSocketCreate(kCFAllocatorDefault, AF_INET6, SOCK_STREAM, IPPROTO_TCP, callbackType.rawValue, socketCallback, &ctxt)
 
         var zeroAddress = sockaddr_in6()
         zeroAddress.sin6_len = UInt8(sizeofValue(zeroAddress))
         zeroAddress.sin6_family = sa_family_t(AF_INET6)
         zeroAddress.sin6_port = UInt16(0).bigEndian
-        zeroAddress.sin6_addr = in6addr_any // INADDR_ANY
+        zeroAddress.sin6_addr = in6addr_any
 
         let thePointer = withUnsafeMutablePointer(&zeroAddress) {UnsafeMutablePointer<UInt8>($0)}
 

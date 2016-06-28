@@ -1,3 +1,21 @@
+// Usage
+// =====
+// Clients of BluetoothService.Registration and BluetoothService.Resolver are responsible for calling -stop.
+// I.e. there is no auto-stop functionality when a service registers or resolves.
+//
+//
+// Todo
+// ====
+// Supposed to release peer connection with:
+// let err = PeerConnectionRelease(0x0, self.name, self.regType, self.domain)
+// print("Release error: \(err)")
+//
+// Notes
+// =====
+// Do not mix CFSocket-related code in with this collection of classes.  These classes should be used in conjunction
+// with TCP and UDP Sockets found in HarpCommon.
+
+
 #if os(OSX)
     import DNSSD_Map_OSX
 #elseif os(iOS)
@@ -9,12 +27,6 @@
 #endif
 
 
-// TODO: Supposed to release peer connection with:
-// let err = PeerConnectionRelease(0x0, self.name, self.regType, self.domain)
-// print("Release error: \(err)")
-
-
-// Calling code is responsible for telling the browser to start and stop.
 
 import Foundation
 
