@@ -9,18 +9,16 @@
 /* Begin PBXBuildFile section */
 		9A404B861D1DD27D0006A3B3 /* BluetoothService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A404B831D1DD27D0006A3B3 /* BluetoothService.swift */; };
 		9A404B871D1DD27D0006A3B3 /* BluetoothService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A404B831D1DD27D0006A3B3 /* BluetoothService.swift */; };
-		9A404B881D1DD27D0006A3B3 /* SocketComm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A404B841D1DD27D0006A3B3 /* SocketComm.swift */; };
-		9A404B891D1DD27D0006A3B3 /* SocketComm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A404B841D1DD27D0006A3B3 /* SocketComm.swift */; };
 		9A404B8A1D1DD27D0006A3B3 /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A404B851D1DD27D0006A3B3 /* Functions.swift */; };
 		9A404B8B1D1DD27D0006A3B3 /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A404B851D1DD27D0006A3B3 /* Functions.swift */; };
 		9A9E0B941D231EA5009A0538 /* Socket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E0B931D231EA5009A0538 /* Socket.swift */; };
 		9AD637D11D1CB82900BBF330 /* HarpCommoniOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 9AD637D01D1CB82900BBF330 /* HarpCommoniOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9AD637DE1D1CB83B00BBF330 /* HarpCommonOSX.h in Headers */ = {isa = PBXBuildFile; fileRef = 9AD637DD1D1CB83B00BBF330 /* HarpCommonOSX.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9AE8261A1D3FBA2A001F53A8 /* Socket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E0B931D231EA5009A0538 /* Socket.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		9A404B831D1DD27D0006A3B3 /* BluetoothService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothService.swift; sourceTree = "<group>"; };
-		9A404B841D1DD27D0006A3B3 /* SocketComm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketComm.swift; sourceTree = "<group>"; };
 		9A404B851D1DD27D0006A3B3 /* Functions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		9A9E0B931D231EA5009A0538 /* Socket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Socket.swift; sourceTree = "<group>"; };
 		9AD637CD1D1CB82900BBF330 /* HarpCommoniOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HarpCommoniOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -55,7 +53,6 @@
 				9A9E0B931D231EA5009A0538 /* Socket.swift */,
 				9A404B831D1DD27D0006A3B3 /* BluetoothService.swift */,
 				9A404B851D1DD27D0006A3B3 /* Functions.swift */,
-				9A404B841D1DD27D0006A3B3 /* SocketComm.swift */,
 				9AD637CF1D1CB82900BBF330 /* HarpCommoniOS */,
 				9AD637DC1D1CB83B00BBF330 /* HarpCommonOSX */,
 				9AD637CE1D1CB82900BBF330 /* Products */,
@@ -203,7 +200,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9A404B881D1DD27D0006A3B3 /* SocketComm.swift in Sources */,
 				9A404B861D1DD27D0006A3B3 /* BluetoothService.swift in Sources */,
 				9A9E0B941D231EA5009A0538 /* Socket.swift in Sources */,
 				9A404B8A1D1DD27D0006A3B3 /* Functions.swift in Sources */,
@@ -214,9 +210,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9A404B891D1DD27D0006A3B3 /* SocketComm.swift in Sources */,
 				9A404B871D1DD27D0006A3B3 /* BluetoothService.swift in Sources */,
 				9A404B8B1D1DD27D0006A3B3 /* Functions.swift in Sources */,
+				9AE8261A1D3FBA2A001F53A8 /* Socket.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

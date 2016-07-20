@@ -1,3 +1,7 @@
+Known limitations
+=================
+Must start HarpApp before HarpClient, not sure why
+
 //
 // Read: http://www.ietf.org/rfc/rfc6762.txt
 // https://developer.apple.com/library/ios/qa/qa1546/_index.html
@@ -35,3 +39,15 @@
 //
 
 
+
+======
+Notes:
+Easiest to work w/ two Xcode windows open.  Although the target stays in sync,
+it is possible to switch the output of the consoles to different apps
+
+Go to View > Hide Toolbar to be able to shrink the two Xcode windows to only take up half the screen
+
+The trick to working on both apps: hide the toolbar with cmd+opt+t, make each window half screen, then switch the target with cmd+ctrl+[ and ]
+
+
+===

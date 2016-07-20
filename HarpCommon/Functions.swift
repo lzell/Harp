@@ -43,3 +43,6 @@ public func ptrCast<T>(voidPtr: UnsafeMutablePointer<Void>) -> UnsafeMutablePoin
     return UnsafeMutablePointer<T>(voidPtr)
 }
 
+public func stripWhitespace(str: String) -> String {
+    return String(str.characters.filter() {$0 != " "})
+}
