@@ -18,7 +18,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var window: NSWindow!
 
     var bluetoothServiceResolver : BluetoothService.Resolver!
-
     var socketComm : SocketComm!
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {

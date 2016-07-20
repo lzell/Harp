@@ -67,7 +67,6 @@ public class BluetoothService {
 
         private func pluginRegistrationHandling() {
             registrar.registered = { (service) in
-                print("HI HI HI HI")
                 print("Registered \(service.name)")
             }
         }

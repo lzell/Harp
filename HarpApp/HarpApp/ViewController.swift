@@ -11,10 +11,10 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    let networker = Networker(numConnections: 1)
+    let cxnManager = ConnectionManager(numConnections: 1)
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        networker.sync()
+        cxnManager.registerService()
     }
 }

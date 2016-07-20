@@ -20,6 +20,9 @@ public func printAddress(address: sockaddr_in6) {
 
 
 public func toContext(refType : AnyObject) -> UnsafeMutablePointer<Void> {
+    // Is it possible to use this instead:
+//    var secondRef = refType
+//    return ptrCast(&secondRef)
     return UnsafeMutablePointer(Unmanaged.passUnretained(refType).toOpaque())
 }
 
@@ -27,5 +30,16 @@ public func fromContext<T:AnyObject>(context: UnsafeMutablePointer<T>) -> T {
     let ptr = Unmanaged<T>.fromOpaque(COpaquePointer(context))
     let instance = ptr.takeUnretainedValue()
     return instance
+}
+
+// For reference types, these do not match:
+// unsafeAddressOf(f) and
+
+// This is safe to use w/ value types.  Here's what I don't understand: this ptrCast should 
+// in theory work with reference and value types, but it doesn't. With a reference type, I would
+// expect the returned pointer to be to the same memory address as Unmanaged.passUnretained(refType).toOpaque().
+// Why is this not true?
+public func ptrCast<T>(voidPtr: UnsafeMutablePointer<Void>) -> UnsafeMutablePointer<T> {
+    return UnsafeMutablePointer<T>(voidPtr)
 }
 
