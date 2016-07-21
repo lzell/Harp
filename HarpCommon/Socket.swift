@@ -24,7 +24,7 @@ private func createCFCommSocketConnectingToAddress(addr6: sockaddr_in6, info: Un
 }
 
 
-private func createCFDatagramSocket(info: UnsafeMutablePointer<Void>, callback: CFSocketCallBack) -> CFSocket {
+private func createCFDatagramReadSocket(info: UnsafeMutablePointer<Void>, callback: CFSocketCallBack) -> CFSocket {
     // Use kCFSocketReadCallBack here instead of Data if we determine that letting CFNetwork
     // chunk in the data in the background isn't responsive enough for our application
     let callbackOpts : CFSocketCallBackType = [.DataCallBack]
@@ -33,25 +33,36 @@ private func createCFDatagramSocket(info: UnsafeMutablePointer<Void>, callback: 
 
 }
 
+private func createCFDatagramWriteSocket(info: UnsafeMutablePointer<Void>) -> CFSocket {
+    let callbackOpts : CFSocketCallBackType = [.NoCallBack]
+    var sockCtxt = CFSocketContext(version: CFIndex(0), info: info, retain: nil, release: nil, copyDescription: nil)
+    return CFSocketCreate(kCFAllocatorDefault, AF_INET6, SOCK_DGRAM, IPPROTO_UDP, callbackOpts.rawValue, nil, &sockCtxt)
+
+}
+
+
 private func createCFAcceptSocket(info: UnsafeMutablePointer<Void>, callback: CFSocketCallBack) -> CFSocket {
     let callbackType: CFSocketCallBackType = [.AcceptCallBack]
     var sockCtxt = CFSocketContext(version: 0, info: info, retain: nil, release: nil, copyDescription: nil)
     return CFSocketCreate(kCFAllocatorDefault, AF_INET6, SOCK_STREAM, IPPROTO_TCP, callbackType.rawValue, callback, &sockCtxt)
 }
 
+// See the "Listening with
 private func bindCFSocketToAnyAddr(sock: CFSocket) -> UInt16 {
     var addr6Len = sizeof(sockaddr_in6)
     var anyAddress = sockaddr_in6()
     anyAddress.sin6_len = UInt8(addr6Len)
     anyAddress.sin6_family = sa_family_t(AF_INET6)
-    anyAddress.sin6_port = UInt16(0).bigEndian
+    anyAddress.sin6_port = CFSwapInt16HostToBig(UInt16(0))  // TODO: This swap is not necessary
     anyAddress.sin6_addr = in6addr_any
 
     let anyAddrPtr = withUnsafeMutablePointer(&anyAddress) {UnsafeMutablePointer<UInt8>($0)}
 
     let socketAddrData: CFDataRef = CFDataCreate(kCFAllocatorDefault, anyAddrPtr, addr6Len)
-    CFSocketSetAddress(sock, socketAddrData);
+    let err: CFSocketError = CFSocketSetAddress(sock, socketAddrData)
+    print("setting socket address err is: \(err.rawValue)")
 
+    // I don't think this is necessary at all, actually.  It's in the "Listening with POSIX Socket APIs" section
     // TODO: cleanme
     // sinPtr and anyAddrPtr aren't any different, I think.
     withUnsafeMutablePointer(&addr6Len) { (addr6LenPtr) in
@@ -60,8 +71,35 @@ private func bindCFSocketToAnyAddr(sock: CFSocket) -> UInt16 {
         }
     }
 
-    print("port number is: \(anyAddress.sin6_port.littleEndian)")
-    return anyAddress.sin6_port.littleEndian
+    print("port number is: \(CFSwapInt16BigToHost(anyAddress.sin6_port))")
+    return CFSwapInt16BigToHost(anyAddress.sin6_port)
+}
+
+// Note that binding a UDP socket using CFSocketSetAddress throws the "CFSocketSetAddress listen failure: 102"
+// error.  Binding using the native handle:
+private func bindCFUDPSocketToAnyAddr(sock: CFSocket) -> UInt16 {
+
+    let handle : CFSocketNativeHandle = CFSocketGetNative(sock)
+
+    var addr6Len = sizeof(sockaddr_in6)
+    var anyAddress = sockaddr_in6()     // memset required?
+    anyAddress.sin6_len = UInt8(addr6Len)
+    anyAddress.sin6_family = sa_family_t(AF_INET6)
+    anyAddress.sin6_port = CFSwapInt16HostToBig(UInt16(0))      // TODO: This swap is not necessary
+    anyAddress.sin6_addr = in6addr_any
+
+    let anyAddrPtr = withUnsafeMutablePointer(&anyAddress) {$0}
+
+    let err = bind(handle, UnsafePointer<sockaddr>(anyAddrPtr), UInt32(addr6Len))
+
+    withUnsafeMutablePointer(&addr6Len) { (addr6LenPtr) in
+        if getsockname(CFSocketGetNative(sock), UnsafeMutablePointer<sockaddr>(anyAddrPtr), UnsafeMutablePointer<socklen_t>(addr6LenPtr)) < 0 {
+            print("Socket error")
+        }
+    }
+
+    print("Err is \(err)")
+    return CFSwapInt16BigToHost(anyAddress.sin6_port)
 }
 
 
@@ -108,7 +146,7 @@ private func autoReadCallback(sock: CFSocket!, type: CFSocketCallBackType, addre
 }
 
 private func autoUDPReadCallback(sock: CFSocket!, type: CFSocketCallBackType, address: CFData!, data: UnsafePointer<Void>, info: UnsafeMutablePointer<Void>) -> Void {
-    assert(type == .DataCallBack, "Unexpected callback type")
+    assert(type == .ReadCallBack, "Unexpected callback type")
     let udpReadSocket = fromContext(UnsafeMutablePointer<UDPReadSocket>(info))
     assert(udpReadSocket.underlying === sock, "Unexpected CF socket")
     print("UDP socket did read")
@@ -148,8 +186,15 @@ public class CommSocket : HarpSocket {
         // Also see the String getBytes or getCString methods provided by Swift
         let sendData = CFDataCreateWithBytesNoCopy(nil, content, content.lengthOfBytesUsingEncoding(NSUTF8StringEncoding), kCFAllocatorNull)
 //        let sendData = CFDataCreate(nil, content, content.lengthOfBytesUsingEncoding(NSUTF8StringEncoding), nil)
-        let err = CFSocketSendData(underlying, nil, sendData, -1)
-        print("Socket send err is: \(err.rawValue)")
+        if CFSocketSendData(underlying, nil, sendData, -1) != .Success {
+            print("Socket send failed")
+        }
+    }
+
+    public func peerAddress() -> sockaddr_in6 {
+        let data = CFSocketCopyPeerAddress(underlying)
+        let ptr = UnsafeMutablePointer<sockaddr_in6>(CFDataGetBytePtr(data))
+        return ptr.memory
     }
 }
 
@@ -194,15 +239,35 @@ public class UDPReadSocket : HarpSocket {
 
     public override init() {
         super.init()
-        underlying = createCFDatagramSocket(toContext(self), callback: autoUDPReadCallback)
-        port = bindCFSocketToAnyAddr(underlying)
+        underlying = createCFDatagramReadSocket(toContext(self), callback: autoUDPReadCallback)
+        port = bindCFUDPSocketToAnyAddr(underlying)
         print("UDP port is: \(port)")
     }
 }
 
 
+public class UDPWriteSocket : HarpSocket {
+    public override init() {
+        super.init()
+        underlying = createCFDatagramWriteSocket(toContext(self))
+    }
+
+    public func sendTo(addr6: CFData) {
+        // C interop with swift strings!  Awesome!
+        // Also see the String getBytes or getCString methods provided by Swift
+        let sendData = CFDataCreateWithBytesNoCopy(nil, "foo", "foo".lengthOfBytesUsingEncoding(NSUTF8StringEncoding), kCFAllocatorNull)
+        //        let sendData = CFDataCreate(nil, content, content.lengthOfBytesUsingEncoding(NSUTF8StringEncoding), nil)
+        if CFSocketSendData(underlying, addr6, sendData, -1) != .Success {
+            print("UDP Socket send failed")
+        } else {
+            print("Sent something via UDP")
+        }
+    }
+}
+
+
 public class HarpSocket {
-    var underlying : CFSocket!
+    public var underlying : CFSocket!
     private var running : Bool = false
     private var runLoopSourceRef : CFRunLoopSourceRef!
 

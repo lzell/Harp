@@ -15,7 +15,7 @@ public func printAddress(address: sockaddr_in6) {
     var mutableAddress = address
     var ip = [CChar](count: Int(INET6_ADDRSTRLEN), repeatedValue: 0)
     inet_ntop(AF_INET6, &mutableAddress.sin6_addr, &ip, UInt32(ip.count))
-    print(String.fromCString(ip)! + " port \(mutableAddress.sin6_port.littleEndian)")
+    print(String.fromCString(ip)! + " port \(CFSwapInt16BigToHost(mutableAddress.sin6_port))")
 }
 
 

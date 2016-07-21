@@ -294,7 +294,7 @@ public class BluetoothService {
                 format,
                 "local",
                 nil,
-                port.bigEndian,
+                CFSwapInt16HostToBig(port),
                 0,
                 nil,
                 registrarCallback(),
@@ -401,7 +401,7 @@ public class BluetoothService {
             guard errorCode == 0 else {
                 fatalError("Resolver error code \(errorCode)")
             }
-            resolved(resolver: self, hosttarget: String.fromCString(hosttarget)!, port: port.littleEndian)
+            resolved(resolver: self, hosttarget: String.fromCString(hosttarget)!, port: CFSwapInt16BigToHost(port))
         }
     }
 
@@ -457,7 +457,7 @@ public class BluetoothService {
             var addrCpy = tmp
 
             // Set the port
-            addrCpy.sin6_port = self.port.bigEndian
+            addrCpy.sin6_port = CFSwapInt16HostToBig(self.port)
             resolved(ipv6Resolver: self, address: addrCpy, moreComing: moreComing)
         }
     }
