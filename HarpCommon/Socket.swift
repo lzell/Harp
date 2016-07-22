@@ -194,11 +194,52 @@ public class CommSocket : HarpSocket {
         }
     }
 
-    public func peerAddress() -> sockaddr_in6 {
-        let data = CFSocketCopyPeerAddress(underlying)
-        let ptr = UnsafeMutablePointer<sockaddr_in6>(CFDataGetBytePtr(data))
-        return ptr.memory
+}
+
+// For an accept callback, the data parameter is a pointer to a CFSocketNativeHandle.
+public func createBindedTCPListeningSocketWithAcceptCallback(context: UnsafeMutablePointer<Void>, callback: CFSocketCallBack) -> (CFSocket, UInt16) {
+
+    // Create socket:
+    let callbackType: CFSocketCallBackType = [.AcceptCallBack]
+    var sockCtxt = CFSocketContext(version: 0, info: context, retain: nil, release: nil, copyDescription: nil)
+    let sock = CFSocketCreate(kCFAllocatorDefault,
+                              AF_INET6,
+                              SOCK_STREAM,
+                              IPPROTO_TCP,
+                              callbackType.rawValue,
+                              callback,
+                              &sockCtxt)
+
+    // Give it an ipv6 address:
+    var addr6In = sockaddr_in6(sin6_len: UInt8(sizeof(sockaddr_in6)),
+                               sin6_family: sa_family_t(AF_INET6),
+                               sin6_port: CFSwapInt16HostToBig(0),
+                               sin6_flowinfo: 0,
+                               sin6_addr: in6addr_any,
+                               sin6_scope_id: 0)
+    let addr6InPtr : UnsafeMutablePointer<UInt8> = valuePtrCast(&addr6In)
+    let socketAddrData = CFDataCreateWithBytesNoCopy(kCFAllocatorDefault, addr6InPtr, sizeofValue(addr6In), kCFAllocatorNull)
+    if (CFSocketSetAddress(sock, socketAddrData) != .Success) {
+        assert(false, "Could not set socket address")
     }
+
+    // Find what port we're listening on.  See the "Listening with POSIX Socket APIs" section of "Network Programming Topics":
+    var addrOut = sockaddr_in6()
+    var lenOut : socklen_t = socklen_t(sizeof(sockaddr_in6))
+
+    // The address_len parameter should be initialized to indicate the amount of space pointed to by address.
+    // On return it contains the actual size of the address returned (in bytes)
+    if getsockname(CFSocketGetNative(sock), withUnsafePointer(&addrOut) {UnsafeMutablePointer<sockaddr>($0)}, &lenOut) < 0 {
+        assert(false, "Could not get socket address")
+    }
+    let port = CFSwapInt16BigToHost(addrOut.sin6_port)
+    assert(port > 0, "Could not get a listening port")
+
+    // Add this cf socket to the runloop so we get callbacks
+    let runLoopSourceRef = CFSocketCreateRunLoopSource(kCFAllocatorDefault, sock, 0)
+    CFRunLoopAddSource(CFRunLoopGetCurrent(), runLoopSourceRef, kCFRunLoopDefaultMode)
+
+    return (sock, port)
 }
 
 

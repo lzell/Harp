@@ -39,7 +39,7 @@ public func fromContext<T:AnyObject>(context: UnsafeMutablePointer<T>) -> T {
 // in theory work with reference and value types, but it doesn't. With a reference type, I would
 // expect the returned pointer to be to the same memory address as Unmanaged.passUnretained(refType).toOpaque().
 // Why is this not true?
-public func ptrCast<T>(voidPtr: UnsafeMutablePointer<Void>) -> UnsafeMutablePointer<T> {
+public func valuePtrCast<T>(voidPtr: UnsafeMutablePointer<Void>) -> UnsafeMutablePointer<T> {
     return UnsafeMutablePointer<T>(voidPtr)
 }
 

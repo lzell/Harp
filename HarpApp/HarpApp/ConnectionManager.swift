@@ -11,54 +11,84 @@ class ConnectionManager : ListeningSocketDelegate, CommSocketDelegate {
 
     let numConnections : Int
 
-    let acceptSocket : ListeningSocket
+    var listeningSock : CFSocket!
+    var listeningPort : UInt16!
+
+
     let udpWriteSocket : UDPWriteSocket
     var reg : BluetoothService.Registration!
 
     let regType = "_harp._tcp"
 
+    // TODO: When these drop out, we should immediately start searching again until we connect up to numConnections:
 
-    // When these drop out, we should immediately start searching again until we connect up to numConnections:
-    // TODO
-    var commSockets : [CommSocket]
+    // Sockets created from the accept socket are not in the listening state
+    var connectedSockets : [CFSocket]
 
     init(numConnections: Int) {
         // First phase
-        acceptSocket = ListeningSocket()
-        let data = CFSocketCopyAddress(acceptSocket.underlying)
-        let ptr = UnsafeMutablePointer<sockaddr_in6>(CFDataGetBytePtr(data))
-        print("------------------------")
-        printAddress(ptr.memory)
-        print("++++++++++++++++++++++++++")
 
+
+
+//
+//        ) { (ctxt) in
+//            let me = fromContext(UnsafeMutablePointer<ConnectionManager>(ctxt))
+//            print("Doing stuff: \(me)")
+//        }
+
+//        acceptSocket = ListeningSocket()
+//        let data = CFSocketCopyAddress(acceptSocket.underlying)
+//        let ptr = UnsafeMutablePointer<sockaddr_in6>(CFDataGetBytePtr(data))
+//        print("------------------------")
+//        printAddress(ptr.memory)
+//        print("++++++++++++++++++++++++++")
+//
         udpWriteSocket = UDPWriteSocket()
 
         self.numConnections = numConnections
-        commSockets = []
+        connectedSockets = []
 
         // Second phase
-        acceptSocket.delegate = self
-        acceptSocket.run()
+//        acceptSocket.delegate = self
+//        acceptSocket.run()
         udpWriteSocket.run()
+
+
+
+        let port : UInt16
+        let sock : CFSocket
+        (sock, port) = createBindedTCPListeningSocketWithAcceptCallback(toContext(self)) {
+            (_, _, _, data: UnsafePointer<Void>, info: UnsafeMutablePointer<Void>) in
+            // For an accept callback, the data parameter is a pointer to a CFSocketNativeHandle:
+            let nativeHandle: Int32 = UnsafePointer<Int32>(data).memory
+            let me = fromContext(UnsafeMutablePointer<ConnectionManager>(info))
+            print("Accepted something")
+        }
+
+        listeningSock = sock
+        listeningPort = port
+
+        print("LZLZL port is: \(port)")
+
     }
 
     func registerService() {
-        assert(acceptSocket.port > 0, "accept socket has not been configured")
-        reg = BluetoothService.Registration(format: regType, port: acceptSocket.port)
+        assert(listeningPort > 0, "accept socket has not been configured")
+        reg = BluetoothService.Registration(format: regType, port: listeningPort)
         reg.start()
     }
 
     // MARK: - SocketAcceptDelegate
     func didAccept(listeningSocket listeningSocket: ListeningSocket, connectedSocket: CommSocket) {
-        assert(commSockets.count < numConnections, "We accepted a connection when we shouldn't have been listening for one")
-        print("-------- accepted a socket ---- ")
-
-        // Hang on to this socket
-        commSockets.append(connectedSocket)
-        connectedSocket.delegate = self
-
-        // The client is going to send us the request... read it:
-        connectedSocket.run()
+//        assert(commSockets.count < numConnections, "We accepted a connection when we shouldn't have been listening for one")
+//        print("-------- accepted a socket ---- ")
+//
+//        // Hang on to this socket
+//        commSockets.append(connectedSocket)
+//        connectedSocket.delegate = self
+//
+//        // The client is going to send us the request... read it:
+//        connectedSocket.run()
     }
 
     func didConnect(commSocket: CommSocket) {
@@ -77,7 +107,10 @@ class ConnectionManager : ListeningSocketDelegate, CommSocketDelegate {
 
 //        let controller = dict["Controller"]
 
-        let tcpSockAddr6 = commSockets[0].peerAddress()
+        let data = CFSocketCopyPeerAddress(connectedSockets[0])
+        let sockaddr_in6_ptr = UnsafeMutablePointer<sockaddr_in6>(CFDataGetBytePtr(data))
+
+        let tcpSockAddr6 = sockaddr_in6_ptr.memory
         var sockAddr6 = tcpSockAddr6
         sockAddr6.sin6_port = CFSwapInt16HostToBig(daPort)
 //
