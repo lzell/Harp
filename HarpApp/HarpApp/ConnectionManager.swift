@@ -7,95 +7,80 @@ import HarpCommoniOS
 
 
 
-class ConnectionManager : ListeningSocketDelegate, CommSocketDelegate {
+class ConnectionManager {
 
-    let numConnections : Int
+    // This will write out the state of the controller
+    let udpWriteSocket : CFSocket
 
+    // Must be var because we can't satisfy first phase of init (we need self to construct the listeningSock)
     var listeningSock : CFSocket!
     var listeningPort : UInt16!
-
-
-    let udpWriteSocket : UDPWriteSocket
-    var reg : BluetoothService.Registration!
-
-    let regType = "_harp._tcp"
-
-    // TODO: When these drop out, we should immediately start searching again until we connect up to numConnections:
+    let maxNumConnections : Int
 
     // Sockets created from the accept socket are not in the listening state
     var connectedSockets : [CFSocket]
 
+    var reg : BluetoothService.Registration!
+    let regType = "_harp._tcp"
+
+    // TODO: When connections drop out, we should immediately re-register the service. Hm... do we want to de-register the service at all?  Maybe we just deny connections if we have one active.
+
+
     init(numConnections: Int) {
         // First phase
-
-
-
-//
-//        ) { (ctxt) in
-//            let me = fromContext(UnsafeMutablePointer<ConnectionManager>(ctxt))
-//            print("Doing stuff: \(me)")
-//        }
-
-//        acceptSocket = ListeningSocket()
-//        let data = CFSocketCopyAddress(acceptSocket.underlying)
-//        let ptr = UnsafeMutablePointer<sockaddr_in6>(CFDataGetBytePtr(data))
-//        print("------------------------")
-//        printAddress(ptr.memory)
-//        print("++++++++++++++++++++++++++")
-//
-        udpWriteSocket = UDPWriteSocket()
-
-        self.numConnections = numConnections
+        udpWriteSocket = createUDPWriteSocket()
+        maxNumConnections = numConnections
         connectedSockets = []
 
         // Second phase
-//        acceptSocket.delegate = self
-//        acceptSocket.run()
-        udpWriteSocket.run()
-
-
-
         let port : UInt16
         let sock : CFSocket
         (sock, port) = createBindedTCPListeningSocketWithAcceptCallback(toContext(self)) {
             (_, _, _, data: UnsafePointer<Void>, info: UnsafeMutablePointer<Void>) in
-            // For an accept callback, the data parameter is a pointer to a CFSocketNativeHandle:
-            let nativeHandle: Int32 = UnsafePointer<Int32>(data).memory
             let me = fromContext(UnsafeMutablePointer<ConnectionManager>(info))
-            print("Accepted something")
+            let nativeHandle = UnsafePointer<Int32>(data).memory
+            me.acceptedNewConnection(nativeHandle)
         }
 
         listeningSock = sock
         listeningPort = port
-
-        print("LZLZL port is: \(port)")
-
+        print("Listening on port: \(port)")
     }
 
-    func registerService() {
-        assert(listeningPort > 0, "accept socket has not been configured")
-        reg = BluetoothService.Registration(format: regType, port: listeningPort)
-        reg.start()
+    func acceptedNewConnection(handle: Int32) {
+        assert(connectedSockets.count < maxNumConnections, "We accepted a connection when we shouldn't have been listening for one")
+
+
+        let sock = createConnectedTCPSocketFromNativeHandleWithDataCallback(handle, toContext(self)) {
+            (sock, _, _, data: UnsafePointer<Void>, info: UnsafeMutablePointer<Void>) in
+                let me = fromContext(UnsafeMutablePointer<ConnectionManager>(info))
+                let cfdata = fromContext(UnsafePointer<CFData>(data))
+                if CFDataGetLength(cfdata) == 0 {
+                    print("Disconnected!")
+                    // TODO: We've disconnected
+                    // With a connection-oriented socket, if the connection is broken from the
+                    // other end, then one final kCFSocketReadCallBack or kCFSocketDataCallBack
+                    // will occur.  In the case of kCFSocketReadCallBack, the underlying socket
+                    // will have 0 bytes available to read.  In the case of kCFSocketDataCallBack,
+                    // the data argument will be a CFDataRef of length 0.
+                } else {
+                    print("We got some stuff, cool!")
+                    // Not putting in any protection about partial buffers! We'll 
+                    // see what happens in practice.
+                    if let request = String(data:cfdata, encoding: NSUTF8StringEncoding) {
+                        me.didReceiveClientRequest(sock, request)
+                    } else {
+                        assert(false, "Receiving something other than a string.")
+                    }
+                }
+        }
+
+
+        // Hang on to this socket
+        connectedSockets.append(sock)
     }
 
-    // MARK: - SocketAcceptDelegate
-    func didAccept(listeningSocket listeningSocket: ListeningSocket, connectedSocket: CommSocket) {
-//        assert(commSockets.count < numConnections, "We accepted a connection when we shouldn't have been listening for one")
-//        print("-------- accepted a socket ---- ")
-//
-//        // Hang on to this socket
-//        commSockets.append(connectedSocket)
-//        connectedSocket.delegate = self
-//
-//        // The client is going to send us the request... read it:
-//        connectedSocket.run()
-    }
-
-    func didConnect(commSocket: CommSocket) {
-        // We don't initiate connections on this side.
-    }
-
-    func didRead(commSocket: CommSocket, request: String) {
+    func didReceiveClientRequest(sock: CFSocket, _ request: String) {
         print("Client sent a message: \(request)")
 
         let dict = parseRequest(request)
@@ -103,30 +88,38 @@ class ConnectionManager : ListeningSocketDelegate, CommSocketDelegate {
         assert(dict["Protocol-Version"] != nil)
         assert(dict["Controller"] != nil)
 
-        let daPort = UInt16(dict["UDP-Port"]!)!
+        let receivePort = UInt16(dict["UDP-Port"]!)!
 
-//        let controller = dict["Controller"]
-
-        let data = CFSocketCopyPeerAddress(connectedSockets[0])
+        let data = CFSocketCopyPeerAddress(sock)
         let sockaddr_in6_ptr = UnsafeMutablePointer<sockaddr_in6>(CFDataGetBytePtr(data))
 
-        let tcpSockAddr6 = sockaddr_in6_ptr.memory
-        var sockAddr6 = tcpSockAddr6
-        sockAddr6.sin6_port = CFSwapInt16HostToBig(daPort)
-//
-//        var sock6Addr = sockaddr_in6()
-//        sock6Addr.sin6_len = UInt8(sizeof(sockaddr_in6))
-//        sock6Addr.sin6_addr = in6Addr
-//        sock6Addr.sin6_family = sa_family_t(AF_INET6)
-//        sock6Addr.sin6_port = CFSwapInt16HostToBig(daPort)
-//        
+        var sockAddr6 = sockaddr_in6_ptr.memory
+        sockAddr6.sin6_port = CFSwapInt16HostToBig(receivePort)
 
 
-        let ptr : UnsafePointer<sockaddr_in6> = withUnsafePointer(&sockAddr6) { $0 }
-        let cfdata = CFDataCreate(kCFAllocatorDefault, UnsafePointer<UInt8>(ptr), sizeof(sockaddr_in6))
-        udpWriteSocket.sendTo(cfdata)
-        udpWriteSocket.run()
+        let bytePtr = withUnsafePointer(&sockAddr6) { UnsafePointer<UInt8>($0) }
+        let addressData = CFDataCreateWithBytesNoCopy(kCFAllocatorDefault, bytePtr, sizeofValue(sockAddr6), kCFAllocatorNull)
+        //        let addressData = CFDataCreate(kCFAllocatorDefault, valuePtrCast(ptr), sizeof(sockaddr_in6))
+
+        // C interop with swift strings!  Awesome!
+        // Also see the String getBytes or getCString methods provided by Swift
+        let sendData = CFDataCreateWithBytesNoCopy(nil, "foo", "foo".lengthOfBytesUsingEncoding(NSUTF8StringEncoding), kCFAllocatorNull)
+        //        let sendData = CFDataCreate(nil, content, content.lengthOfBytesUsingEncoding(NSUTF8StringEncoding), nil)
+        if CFSocketSendData(udpWriteSocket, addressData, sendData, -1) != .Success {
+            print("UDP Socket send failed")
+        } else {
+            print("Sent something via UDP")
+        }
     }
+
+
+    func registerService() {
+        assert(listeningPort > 0, "accept socket has not been configured")
+        reg = BluetoothService.Registration(format: regType, port: listeningPort)
+        reg.start()
+    }
+
+
 
     func parseRequest(request: String) -> [String:String] {
         var ret : [String:String] = [:]

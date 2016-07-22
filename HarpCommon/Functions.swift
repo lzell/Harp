@@ -32,6 +32,13 @@ public func fromContext<T:AnyObject>(context: UnsafeMutablePointer<T>) -> T {
     return instance
 }
 
+// Overload, same implementation.  Probably a better way.
+public func fromContext<T:AnyObject>(context: UnsafePointer<T>) -> T {
+    let ptr = Unmanaged<T>.fromOpaque(COpaquePointer(context))
+    let instance = ptr.takeUnretainedValue()
+    return instance
+}
+
 // For reference types, these do not match:
 // unsafeAddressOf(f) and
 
