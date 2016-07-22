@@ -27,15 +27,17 @@ private func createCFCommSocketConnectingToAddress(addr6: sockaddr_in6, info: Un
 private func createCFDatagramReadSocket(info: UnsafeMutablePointer<Void>, callback: CFSocketCallBack) -> CFSocket {
     // Use kCFSocketReadCallBack here instead of Data if we determine that letting CFNetwork
     // chunk in the data in the background isn't responsive enough for our application
-    let callbackOpts : CFSocketCallBackType = [.DataCallBack]
+    let callbackOpts : CFSocketCallBackType = [.ReadCallBack]
     var sockCtxt = CFSocketContext(version: CFIndex(0), info: info, retain: nil, release: nil, copyDescription: nil)
     return CFSocketCreate(kCFAllocatorDefault, AF_INET6, SOCK_DGRAM, IPPROTO_UDP, callbackOpts.rawValue, callback, &sockCtxt)
 
 }
 
-private func createCFDatagramWriteSocket(info: UnsafeMutablePointer<Void>) -> CFSocket {
+// We aren't going to use callbacks for our udp write sockets.  We're not going to fill up the write buffer (the reason
+// to use a callback is to be notified when there's more room in the write buffer)
+private func createCFDatagramWriteSocket() -> CFSocket {
     let callbackOpts : CFSocketCallBackType = [.NoCallBack]
-    var sockCtxt = CFSocketContext(version: CFIndex(0), info: info, retain: nil, release: nil, copyDescription: nil)
+    var sockCtxt = CFSocketContext(version: CFIndex(0), info: nil, retain: nil, release: nil, copyDescription: nil)
     return CFSocketCreate(kCFAllocatorDefault, AF_INET6, SOCK_DGRAM, IPPROTO_UDP, callbackOpts.rawValue, nil, &sockCtxt)
 
 }
@@ -145,7 +147,7 @@ private func autoReadCallback(sock: CFSocket!, type: CFSocketCallBackType, addre
     }
 }
 
-private func autoUDPReadCallback(sock: CFSocket!, type: CFSocketCallBackType, address: CFData!, data: UnsafePointer<Void>, info: UnsafeMutablePointer<Void>) -> Void {
+private func udpReadCallback(sock: CFSocket!, type: CFSocketCallBackType, address: CFData!, data: UnsafePointer<Void>, info: UnsafeMutablePointer<Void>) -> Void {
     assert(type == .ReadCallBack, "Unexpected callback type")
     let udpReadSocket = fromContext(UnsafeMutablePointer<UDPReadSocket>(info))
     assert(udpReadSocket.underlying === sock, "Unexpected CF socket")
@@ -160,6 +162,7 @@ public protocol CommSocketDelegate : class {
     func didRead(commSocket: CommSocket, request: String)
 }
 
+// TODO: I don't like this design
 public class CommSocket : HarpSocket {
     public weak var delegate : CommSocketDelegate?
 
@@ -239,9 +242,13 @@ public class UDPReadSocket : HarpSocket {
 
     public override init() {
         super.init()
-        underlying = createCFDatagramReadSocket(toContext(self), callback: autoUDPReadCallback)
+        underlying = createCFDatagramReadSocket(toContext(self), callback: udpReadCallback)
         port = bindCFUDPSocketToAnyAddr(underlying)
         print("UDP port is: \(port)")
+    }
+
+    public func listen() {
+        run()
     }
 }
 
@@ -249,7 +256,11 @@ public class UDPReadSocket : HarpSocket {
 public class UDPWriteSocket : HarpSocket {
     public override init() {
         super.init()
-        underlying = createCFDatagramWriteSocket(toContext(self))
+        underlying = createCFDatagramWriteSocket()
+    }
+
+    public override func run() {
+        // Deliberately empty.  Not using callbacks for our write sockets
     }
 
     public func sendTo(addr6: CFData) {
