@@ -3,20 +3,27 @@ import HarpCommonOSX
 
 
 @NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate, UDPReadSocketDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate {
 
 
     @IBOutlet weak var window: NSWindow!
 
     var bluetoothServiceResolver : BluetoothService.Resolver!
-    var commSocket : CommSocket!
-    var udpReadSocket : UDPReadSocket!
+    var requestSocket : CFSocket!
+
+    var udpReadSocket : CFSocket!
+    var udpReadPort : UInt16!
 
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
-        udpReadSocket = UDPReadSocket()
-        udpReadSocket.delegate = self
-        udpReadSocket.listen()
+
+        let (sock, port) = createBindedUDPReadSocketWithReadCallback(toContext(self)) {
+            (_,_,_,data: UnsafePointer<Void>, info: UnsafeMutablePointer<Void>) in
+            print("READ UDP WHATUP")
+        }
+        udpReadSocket = sock
+        udpReadPort = port
+        print("Reading on UDP Port \(port)")
 
 
 //        var sock6Addr = sockaddr_in6()
@@ -60,34 +67,46 @@ class AppDelegate: NSObject, NSApplicationDelegate, UDPReadSocketDelegate {
 
     func connectTo(addr: sockaddr_in6) {
         // This should really be called something CommSocket(connectTo:)
-        commSocket = CommSocket(addr6: addr)
-        commSocket.delegate = self
-        commSocket.run()
+        createConnectingTCPSocketWithConnectCallback(addr, toContext(self)) {
+            (sock, _, _, data: UnsafePointer<Void>, info: UnsafeMutablePointer<Void>)
+            in
+
+            let me = fromContext(UnsafeMutablePointer<AppDelegate>(info))
+
+            if data == nil {
+                print("Connected woooooop!")
+                me.sendPayload(sock)
+            } else {
+                // Data is a pointer to an SInt32 error code in this case
+                assert(false, "Connection failed")
+            }
+        }
     }
 
     func applicationWillTerminate(aNotification: NSNotification) {
         // Insert code here to tear down your application
     }
 
-    func payload() -> String {
+    func sendPayload(sock: CFSocket) {
+        // C interop with swift strings!  Awesome!
+        // Also see the String getBytes or getCString methods provided by Swift
+        let content = payload()
+
+        let sendData = CFDataCreateWithBytesNoCopy(nil, content, content.lengthOfBytesUsingEncoding(NSUTF8StringEncoding), kCFAllocatorNull)
+        if CFSocketSendData(sock, nil, sendData, -1) != .Success {
+            assert(false, "Socket send failed")
+        }
+    }
+
+
+
+    private func payload() -> String {
         return  "Protocol-Version: 0.1.0\n" +
-                "UDP-Port: \(udpReadSocket.port)\n" +
+                "UDP-Port: \(udpReadPort)\n" +
                 "Controller: LZProto1"
     }
 
     func didRead() {
         print("UDP READ SOMETHING")
-    }
-}
-
-
-extension AppDelegate : CommSocketDelegate {
-    func didConnect(commSocket: CommSocket) {
-        commSocket.send(payload())
-    }
-
-    func didRead(commSocket: CommSocket, request: String) {
-        print("Got a message from the server: \(request)")
-        // The server doesn't send us anything at the moment.
     }
 }

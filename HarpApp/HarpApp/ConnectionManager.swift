@@ -33,17 +33,16 @@ class ConnectionManager {
         connectedSockets = []
 
         // Second phase
-        let port : UInt16
-        let sock : CFSocket
-        (sock, port) = createBindedTCPListeningSocketWithAcceptCallback(toContext(self)) {
+        let (sock, port) = createBindedTCPListeningSocketWithAcceptCallback(toContext(self)) {
             (_, _, _, data: UnsafePointer<Void>, info: UnsafeMutablePointer<Void>) in
             let me = fromContext(UnsafeMutablePointer<ConnectionManager>(info))
+            // For an accept callback, the data parameter is a pointer to a CFSocketNativeHandle:
             let nativeHandle = UnsafePointer<Int32>(data).memory
             me.acceptedNewConnection(nativeHandle)
         }
-
         listeningSock = sock
         listeningPort = port
+
         print("Listening on port: \(port)")
     }
 
