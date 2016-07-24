@@ -49,5 +49,6 @@ Go to View > Hide Toolbar to be able to shrink the two Xcode windows to only tak
 
 The trick to working on both apps: hide the toolbar with cmd+opt+t, make each window half screen, then switch the target with cmd+ctrl+[ and ]
 
-
+===
+Talk about use case on Apple TV.  I think there's more stuff in one of the Open* readme about why
 ===

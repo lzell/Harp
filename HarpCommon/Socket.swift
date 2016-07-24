@@ -145,6 +145,10 @@ public func createUDPWriteSocket() -> CFSocket {
     return sock
 }
 
+public func createSendData(msg: String) -> CFData {
+    return CFDataCreateWithBytesNoCopy(nil, msg, msg.lengthOfBytesUsingEncoding(NSUTF8StringEncoding), kCFAllocatorNull)
+}
+
 
 // MARK: - Private
 private func addSocketToRunLoop(sock: CFSocket) {

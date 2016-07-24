@@ -11,6 +11,7 @@
 import Foundation
 
 
+// MARK: - Socket helpers
 public func printAddress(address: sockaddr_in6) {
     var mutableAddress = address
     var ip = [CChar](count: Int(INET6_ADDRSTRLEN), repeatedValue: 0)
@@ -19,6 +20,7 @@ public func printAddress(address: sockaddr_in6) {
 }
 
 
+// MARK: - Working With C
 public func toContext(refType : AnyObject) -> UnsafeMutablePointer<Void> {
     // Is it possible to use this instead:
 //    var secondRef = refType
@@ -50,6 +52,8 @@ public func valuePtrCast<T>(voidPtr: UnsafeMutablePointer<Void>) -> UnsafeMutabl
     return UnsafeMutablePointer<T>(voidPtr)
 }
 
+// MARK: - String Helpers
 public func stripWhitespace(str: String) -> String {
     return String(str.characters.filter() {$0 != " "})
 }
+

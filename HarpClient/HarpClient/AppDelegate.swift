@@ -72,7 +72,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 
     private func doRead(sock: CFSocket) {
-        var buf = [UInt8](count: 256, repeatedValue: 0)
+        var buf = [UInt8](count: 8, repeatedValue: 0)
         let bytesRead = recv(CFSocketGetNative(sock), &buf, buf.count, 0)
         var posixErr: Int32 = 0
 
@@ -81,8 +81,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         } else if (bytesRead == 0) {
             posixErr = EPIPE
         } else {
-            let readData = CFDataCreateWithBytesNoCopy(kCFAllocatorDefault, &buf, bytesRead, kCFAllocatorNull)
-            print(String(data: readData, encoding: NSUTF8StringEncoding))
+            assert(bytesRead == 8)
+            var state: UInt64 = UInt64(buf[0])
+            for i in 1..<8 {
+                state <<= 8
+                state |= UInt64(buf[i])
+            }
+          print("State is: \(String(state, radix: 16))")
         }
 
         if (posixErr != 0) {
@@ -95,6 +100,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private func payload() -> String {
         return  "Protocol-Version: 0.1.0\n" +
                 "UDP-Port: \(udpReadPort)\n" +
-                "Controller: LZProto1"
+                "Controller: SingleButtonProtoViewController"
     }
 }

@@ -5,12 +5,19 @@
 import Foundation
 import HarpCommoniOS
 
+protocol ConnectionManagerDelegate : class {
+    func clientRequestsController(controllerName: String, receiveAddress: sockaddr_in6)
+}
+
 
 
 class ConnectionManager {
 
-    // This will write out the state of the controller
-    let udpWriteSocket : CFSocket
+    private let kRequestUdpPortKey = "UDP-Port"
+    private let kRequestProtocolVersionKey = "Protocol-Version"
+    private let kRequestControllerNameKey = "Controller"
+
+    weak var delegate : ConnectionManagerDelegate?
 
     // Must be var because we can't satisfy first phase of init (we need self to construct the listeningSock)
     var listeningSock : CFSocket!
@@ -28,7 +35,6 @@ class ConnectionManager {
 
     init(numConnections: Int) {
         // First phase
-        udpWriteSocket = createUDPWriteSocket()
         maxNumConnections = numConnections
         connectedSockets = []
 
@@ -83,32 +89,21 @@ class ConnectionManager {
         print("Client sent a message: \(request)")
 
         let dict = parseRequest(request)
-        assert(dict["UDP-Port"] != nil)
-        assert(dict["Protocol-Version"] != nil)
-        assert(dict["Controller"] != nil)
+        let udpPortStr = dict[kRequestUdpPortKey]
+        let controllerName = dict[kRequestControllerNameKey]
+        let _ = dict[kRequestProtocolVersionKey]
 
-        let receivePort = UInt16(dict["UDP-Port"]!)!
+        assert(udpPortStr != nil)
+        assert(controllerName != nil)
 
+        // We construct the remote UDP socket address based on the TCP address; the only
+        // property we overwrite is the port:
+        let receivePort = UInt16(udpPortStr!)!
         let data = CFSocketCopyPeerAddress(sock)
-        let sockaddr_in6_ptr = UnsafeMutablePointer<sockaddr_in6>(CFDataGetBytePtr(data))
-
-        var sockAddr6 = sockaddr_in6_ptr.memory
+        let sockAddr6Ptr = UnsafeMutablePointer<sockaddr_in6>(CFDataGetBytePtr(data))
+        var sockAddr6 = sockAddr6Ptr.memory
         sockAddr6.sin6_port = CFSwapInt16HostToBig(receivePort)
-
-
-        let bytePtr = withUnsafePointer(&sockAddr6) { UnsafePointer<UInt8>($0) }
-        let addressData = CFDataCreateWithBytesNoCopy(kCFAllocatorDefault, bytePtr, sizeofValue(sockAddr6), kCFAllocatorNull)
-        //        let addressData = CFDataCreate(kCFAllocatorDefault, valuePtrCast(ptr), sizeof(sockaddr_in6))
-
-        // C interop with swift strings!  Awesome!
-        // Also see the String getBytes or getCString methods provided by Swift
-        let sendData = CFDataCreateWithBytesNoCopy(nil, "foo", "foo".lengthOfBytesUsingEncoding(NSUTF8StringEncoding), kCFAllocatorNull)
-        //        let sendData = CFDataCreate(nil, content, content.lengthOfBytesUsingEncoding(NSUTF8StringEncoding), nil)
-        if CFSocketSendData(udpWriteSocket, addressData, sendData, -1) != .Success {
-            print("UDP Socket send failed")
-        } else {
-            print("Sent something via UDP")
-        }
+        delegate?.clientRequestsController(controllerName!, receiveAddress: sockAddr6)
     }
 
 
