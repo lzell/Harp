@@ -43,13 +43,6 @@ public func createBindedTCPListeningSocketWithAcceptCallback(context: UnsafeMuta
     let port = CFSwapInt16BigToHost(addrOut.sin6_port)
     assert(port > 0, "Could not get a listening port")
 
-    // Reuse address - is this necessary?
-    var on: UInt32 = 1
-    if setsockopt(CFSocketGetNative(sock), SOL_SOCKET, SO_REUSEADDR, &on, UInt32(sizeofValue(1))) != 0 {
-        assert(false)
-    }
-
-
     // Add this cf socket to the runloop so we get callbacks
     addSocketToRunLoop(sock)
 
@@ -140,7 +133,6 @@ public func createBindedUDPReadSocketWithReadCallback(info: UnsafeMutablePointer
 }
 
 
-
 // We aren't going to use callbacks for our udp write sockets.  We're not going to fill up the write buffer (the reason
 // to use a callback is to be notified when there's more room in the write buffer)
 public func createUDPWriteSocket() -> CFSocket {
@@ -160,4 +152,9 @@ private func addSocketToRunLoop(sock: CFSocket) {
     CFRunLoopAddSource(CFRunLoopGetCurrent(), runLoopSourceRef, kCFRunLoopDefaultMode)
 }
 
-
+private func setReuseAddress(sock: CFSocket) {
+    var on: UInt32 = 1
+    if setsockopt(CFSocketGetNative(sock), SOL_SOCKET, SO_REUSEADDR, &on, UInt32(sizeofValue(1))) != 0 {
+        assert(false)
+    }
+}
