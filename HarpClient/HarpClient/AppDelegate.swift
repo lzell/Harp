@@ -18,41 +18,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(aNotification: NSNotification) {
 
         let (sock, port) = createBindedUDPReadSocketWithReadCallback(toContext(self)) {
-            (_,_,_,data: UnsafePointer<Void>, info: UnsafeMutablePointer<Void>) in
-            print("READ UDP WHATUP")
+            (sock, _, _, _, info: UnsafeMutablePointer<Void>) in
+            let me = fromContext(UnsafeMutablePointer<AppDelegate>(info))
+            me.doRead(sock)
         }
         udpReadSocket = sock
         udpReadPort = port
         print("Reading on UDP Port \(port)")
-
-
-//        var sock6Addr = sockaddr_in6()
-//        sock6Addr.sin6_len = UInt8(sizeof(sockaddr_in6))
-//        sock6Addr.sin6_family = sa_family_t(AF_INET6)
-//        sock6Addr.sin6_port = CFSwapInt16HostToBig(udpReadSocket.port)
-//        sock6Addr.sin6_addr = in6addr_loopback
-//
-//
-//       let readAddress = CFSocketCopyAddress(self.udpReadSocket.underlying)
-//
-//
-//        let ptr : UnsafePointer<sockaddr_in6> = withUnsafePointer(&sock6Addr) { $0 }
-//        // let cfdata = CFDataCreate(kCFAllocatorDefault, UnsafePointer<UInt8>(ptr), sizeof(sockaddr_in6))
-//
-//        var buf : [CChar] = [CChar](count: 1024, repeatedValue: 0)
-//
-//        let res = sendto(CFSocketGetNative(udpWriteSocket.underlying), "hello", "hello".lengthOfBytesUsingEncoding(NSUTF8StringEncoding), 0, UnsafePointer<sockaddr>(ptr), UInt32(sizeof(sockaddr_in6)))
-//
-//        print(res)
-//
-////        udpWriteSocket.sendTo(cfdata)
-//
-//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-//            print(recv(CFSocketGetNative(self.udpReadSocket.underlying), &buf, 1, 0))
-//            print("HI")
-//        }
-
-
 
         bluetoothServiceResolver = BluetoothService.Resolver(format: "_harp._tcp")
         bluetoothServiceResolver.start() {  [weak self] (bluetoothService) in
@@ -99,14 +71,30 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
 
+    private func doRead(sock: CFSocket) {
+        var buf = [UInt8](count: 256, repeatedValue: 0)
+        let bytesRead = recv(CFSocketGetNative(sock), &buf, buf.count, 0)
+        var posixErr: Int32 = 0
+
+        if (bytesRead < 0) {
+            posixErr = errno
+        } else if (bytesRead == 0) {
+            posixErr = EPIPE
+        } else {
+            let readData = CFDataCreateWithBytesNoCopy(kCFAllocatorDefault, &buf, bytesRead, kCFAllocatorNull)
+            print(String(data: readData, encoding: NSUTF8StringEncoding))
+        }
+
+        if (posixErr != 0) {
+            assert(false, "Could not read udp data")
+        }
+    }
+
+
 
     private func payload() -> String {
         return  "Protocol-Version: 0.1.0\n" +
                 "UDP-Port: \(udpReadPort)\n" +
                 "Controller: LZProto1"
-    }
-
-    func didRead() {
-        print("UDP READ SOMETHING")
     }
 }

@@ -13,6 +13,11 @@ public func createBindedTCPListeningSocketWithAcceptCallback(context: UnsafeMuta
                               callback,
                               &sockCtxt)
 
+    var sockOpts = CFSocketGetSocketFlags(sock)
+    sockOpts |= kCFSocketCloseOnInvalidate
+    CFSocketSetSocketFlags(sock, sockOpts)
+
+
     // Give it an ipv6 address:
     var addr6In = sockaddr_in6(sin6_len: UInt8(sizeof(sockaddr_in6)),
                                sin6_family: sa_family_t(AF_INET6),
@@ -44,6 +49,7 @@ public func createBindedTCPListeningSocketWithAcceptCallback(context: UnsafeMuta
         assert(false)
     }
 
+
     // Add this cf socket to the runloop so we get callbacks
     addSocketToRunLoop(sock)
 
@@ -61,6 +67,11 @@ public func createConnectingTCPSocketWithConnectCallback(connectTo: sockaddr_in6
     let ptr : UnsafePointer<sockaddr_in6> = withUnsafePointer(&mutableAddr6) { $0 }
     let cfdata = CFDataCreate(kCFAllocatorDefault, UnsafePointer<UInt8>(ptr), sizeof(sockaddr_in6))
     let sock = CFSocketCreate(kCFAllocatorDefault, AF_INET6, SOCK_STREAM, IPPROTO_TCP, callbackOpts.rawValue, callback, &sockCtxt)
+
+    var sockOpts = CFSocketGetSocketFlags(sock)
+    sockOpts |= kCFSocketCloseOnInvalidate
+    CFSocketSetSocketFlags(sock, sockOpts)
+
     if CFSocketConnectToAddress(sock, cfdata, -1) != .Success {
         assert(false, "Could not issue connectToAddress call")
     }
@@ -76,6 +87,10 @@ public func createConnectedTCPSocketFromNativeHandleWithDataCallback(nativeHandl
     let callbackOpts: CFSocketCallBackType = [.DataCallBack]
     var sockCtxt = CFSocketContext(version: CFIndex(0), info: info, retain: nil, release: nil, copyDescription: nil)
     let sock = CFSocketCreateWithNative(kCFAllocatorDefault, nativeHandle, callbackOpts.rawValue, callback, &sockCtxt)
+    var sockOpts = CFSocketGetSocketFlags(sock)
+    sockOpts |= kCFSocketCloseOnInvalidate
+    CFSocketSetSocketFlags(sock, sockOpts)
+
 
     addSocketToRunLoop(sock)
 
@@ -90,6 +105,11 @@ public func createBindedUDPReadSocketWithReadCallback(info: UnsafeMutablePointer
     let callbackOpts : CFSocketCallBackType = [.ReadCallBack]
     var sockCtxt = CFSocketContext(version: CFIndex(0), info: info, retain: nil, release: nil, copyDescription: nil)
     let sock = CFSocketCreate(kCFAllocatorDefault, AF_INET6, SOCK_DGRAM, IPPROTO_UDP, callbackOpts.rawValue, callback, &sockCtxt)
+
+    var sockOpts = CFSocketGetSocketFlags(sock)
+    sockOpts |= kCFSocketCloseOnInvalidate | kCFSocketAutomaticallyReenableReadCallBack
+    CFSocketSetSocketFlags(sock, sockOpts)
+
 
     /* Bind it */
     // Note that binding a UDP socket using CFSocketSetAddress throws the "CFSocketSetAddress listen failure: 102"
@@ -126,8 +146,11 @@ public func createBindedUDPReadSocketWithReadCallback(info: UnsafeMutablePointer
 public func createUDPWriteSocket() -> CFSocket {
     let callbackOpts : CFSocketCallBackType = [.NoCallBack]
     var sockCtxt = CFSocketContext(version: CFIndex(0), info: nil, retain: nil, release: nil, copyDescription: nil)
-    return CFSocketCreate(kCFAllocatorDefault, AF_INET6, SOCK_DGRAM, IPPROTO_UDP, callbackOpts.rawValue, nil, &sockCtxt)
-
+    let sock = CFSocketCreate(kCFAllocatorDefault, AF_INET6, SOCK_DGRAM, IPPROTO_UDP, callbackOpts.rawValue, nil, &sockCtxt)
+    var sockOpts = CFSocketGetSocketFlags(sock)
+    sockOpts |= kCFSocketCloseOnInvalidate
+    CFSocketSetSocketFlags(sock, sockOpts)
+    return sock
 }
 
 
