@@ -16,8 +16,22 @@
 		9AA5ADA81D4567C30086587A /* SingleButtonProtoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5ADA71D4567C30086587A /* SingleButtonProtoViewController.swift */; };
 		9AA5ADAC1D45706D0086587A /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5ADAB1D45706D0086587A /* Functions.swift */; };
 		9AA5ADAF1D4583810086587A /* PadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5ADAE1D4583810086587A /* PadViewController.swift */; };
-		9AD637EC1D1CBA1A00BBF330 /* HarpCommoniOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AD637EB1D1CBA1A00BBF330 /* HarpCommoniOS.framework */; };
+		9AA5ADB11D45CBEF0086587A /* HarpCommoniOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AA5ADB01D45CBEF0086587A /* HarpCommoniOS.framework */; };
+		9AA5ADB31D45CDAA0086587A /* HarpCommoniOS.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9AA5ADB01D45CBEF0086587A /* HarpCommoniOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		9AA5ADB21D45CD780086587A /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				9AA5ADB31D45CDAA0086587A /* HarpCommoniOS.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		9A826DF31D1CB398007F2553 /* HarpApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HarpApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -31,6 +45,7 @@
 		9AA5ADA71D4567C30086587A /* SingleButtonProtoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleButtonProtoViewController.swift; sourceTree = "<group>"; };
 		9AA5ADAB1D45706D0086587A /* Functions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		9AA5ADAE1D4583810086587A /* PadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PadViewController.swift; sourceTree = "<group>"; };
+		9AA5ADB01D45CBEF0086587A /* HarpCommoniOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HarpCommoniOS.framework; path = "../../../Library/Developer/Xcode/DerivedData/Harp-gfeeamgbpaspjfbuwcmlifbmwqzj/Build/Products/Debug-iphoneos/HarpCommoniOS.framework"; sourceTree = "<group>"; };
 		9AD637EB1D1CBA1A00BBF330 /* HarpCommoniOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HarpCommoniOS.framework; path = "../../../Library/Developer/Xcode/DerivedData/Harp-gfeeamgbpaspjfbuwcmlifbmwqzj/Build/Products/Debug-iphonesimulator/HarpCommoniOS.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -39,7 +54,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9AD637EC1D1CBA1A00BBF330 /* HarpCommoniOS.framework in Frameworks */,
+				9AA5ADB11D45CBEF0086587A /* HarpCommoniOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -49,6 +64,7 @@
 		9A826DEA1D1CB398007F2553 = {
 			isa = PBXGroup;
 			children = (
+				9AA5ADB01D45CBEF0086587A /* HarpCommoniOS.framework */,
 				9A826DF51D1CB398007F2553 /* HarpApp */,
 				9AD637EB1D1CBA1A00BBF330 /* HarpCommoniOS.framework */,
 				9A826DF41D1CB398007F2553 /* Products */,
@@ -106,6 +122,7 @@
 				9A826DEF1D1CB398007F2553 /* Sources */,
 				9A826DF01D1CB398007F2553 /* Frameworks */,
 				9A826DF11D1CB398007F2553 /* Resources */,
+				9AA5ADB21D45CD780086587A /* CopyFiles */,
 			);
 			buildRules = (
 			);

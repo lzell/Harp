@@ -109,7 +109,7 @@ public func createBindedUDPReadSocketWithReadCallback(info: UnsafeMutablePointer
     // error.  Binding using the native handle:
     let handle : CFSocketNativeHandle = CFSocketGetNative(sock)
 
-    var addr6Len = sizeof(sockaddr_in6)
+    let addr6Len = sizeof(sockaddr_in6)
     var anyAddress = sockaddr_in6()
     anyAddress.sin6_len = UInt8(addr6Len)
     anyAddress.sin6_family = sa_family_t(AF_INET6)
@@ -118,6 +118,7 @@ public func createBindedUDPReadSocketWithReadCallback(info: UnsafeMutablePointer
 
     let anyAddrPtr = withUnsafeMutablePointer(&anyAddress) {$0}
     let err = bind(handle, UnsafePointer<sockaddr>(anyAddrPtr), UInt32(addr6Len))
+    print("bind err: \(err)")
 
     var lenOut : socklen_t = socklen_t(sizeof(sockaddr_in6))
 
