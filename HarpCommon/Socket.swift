@@ -37,7 +37,7 @@ public func createBindedTCPListeningSocketWithAcceptCallback(context: UnsafeMuta
 
     // The address_len parameter should be initialized to indicate the amount of space pointed to by address.
     // On return it contains the actual size of the address returned (in bytes)
-    if getsockname(CFSocketGetNative(sock), withUnsafePointer(&addrOut) {UnsafeMutablePointer<sockaddr>($0)}, &lenOut) < 0 {
+    if getsockname(CFSocketGetNative(sock), valuePtrCast(&addrOut), &lenOut) < 0 {
         assert(false, "Could not get socket address")
     }
     let port = CFSwapInt16BigToHost(addrOut.sin6_port)
@@ -57,8 +57,7 @@ public func createConnectingTCPSocketWithConnectCallback(connectTo: sockaddr_in6
     var sockCtxt = CFSocketContext(version: CFIndex(0), info: info, retain: nil, release: nil, copyDescription: nil)
 
     var mutableAddr6 = connectTo
-    let ptr : UnsafePointer<sockaddr_in6> = withUnsafePointer(&mutableAddr6) { $0 }
-    let cfdata = CFDataCreate(kCFAllocatorDefault, UnsafePointer<UInt8>(ptr), sizeof(sockaddr_in6))
+    let cfdata = CFDataCreate(kCFAllocatorDefault, valuePtrCast(&mutableAddr6), sizeof(sockaddr_in6))
     let sock = CFSocketCreate(kCFAllocatorDefault, AF_INET6, SOCK_STREAM, IPPROTO_TCP, callbackOpts.rawValue, callback, &sockCtxt)
 
     var sockOpts = CFSocketGetSocketFlags(sock)
@@ -108,7 +107,6 @@ public func createBindedUDPReadSocketWithReadCallback(info: UnsafeMutablePointer
     // Note that binding a UDP socket using CFSocketSetAddress throws the "CFSocketSetAddress listen failure: 102"
     // error.  Binding using the native handle:
     let handle : CFSocketNativeHandle = CFSocketGetNative(sock)
-
     let addr6Len = sizeof(sockaddr_in6)
     var anyAddress = sockaddr_in6()
     anyAddress.sin6_len = UInt8(addr6Len)
@@ -116,13 +114,13 @@ public func createBindedUDPReadSocketWithReadCallback(info: UnsafeMutablePointer
     anyAddress.sin6_port = CFSwapInt16HostToBig(UInt16(0))          // This swap is unnecessary
     anyAddress.sin6_addr = in6addr_any
 
-    let anyAddrPtr = withUnsafeMutablePointer(&anyAddress) {$0}
-    let err = bind(handle, UnsafePointer<sockaddr>(anyAddrPtr), UInt32(addr6Len))
-    print("bind err: \(err)")
+    if bind(handle, valuePtrCast(&anyAddress), UInt32(addr6Len)) != 0 {
+        assert(false, "Bind error is: \(errno)")
+    }
 
     var lenOut : socklen_t = socklen_t(sizeof(sockaddr_in6))
 
-    if getsockname(handle, withUnsafePointer(&anyAddress) {UnsafeMutablePointer<sockaddr>($0)}, &lenOut) < 0 {
+    if getsockname(handle, valuePtrCast(&anyAddress), &lenOut) < 0 {
         assert(false, "Could not get socket address")
     }
     let port = CFSwapInt16BigToHost(anyAddress.sin6_port)

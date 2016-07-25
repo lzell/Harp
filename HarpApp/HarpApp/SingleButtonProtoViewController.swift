@@ -28,8 +28,7 @@ class SingleButtonProtoViewController : PadViewController {
 
 
         var sock6Addr = clientUDPAddress
-        let bytePtr = withUnsafePointer(&sock6Addr) { UnsafePointer<UInt8>($0) }
-        let addressData = CFDataCreateWithBytesNoCopy(kCFAllocatorDefault, bytePtr, sizeofValue(sock6Addr), kCFAllocatorNull)
+        let addressData = CFDataCreateWithBytesNoCopy(kCFAllocatorDefault, valuePtrCast(&sock6Addr), sizeofValue(sock6Addr), kCFAllocatorNull)
         let sendData = CFDataCreateWithBytesNoCopy(kCFAllocatorDefault, &byteArray, sizeofValue(sock6Addr), kCFAllocatorNull)
         if CFSocketSendData(udpWriteSocket, addressData, sendData, -1) != .Success {
             assert(false, "UDP socket failed to send")
