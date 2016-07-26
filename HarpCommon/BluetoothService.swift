@@ -8,7 +8,6 @@
 // ====
 // Supposed to release peer connection with:
 // let err = PeerConnectionRelease(0x0, self.name, self.regType, self.domain)
-// print("Release error: \(err)")
 //
 // Notes
 // =====

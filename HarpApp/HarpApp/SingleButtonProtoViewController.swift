@@ -2,23 +2,23 @@ import UIKit
 import HarpCommoniOS
 
 
-class SingleButtonProtoViewController : PadViewController {
+class SingleButtonProtoViewController : PadViewController, DpadViewDelegate {
 
-    var state : UInt64 = 0
+    var bitState : UInt64 = 0
 
-    func pressed(sender: UIButton) {
-        state |= 1
-        sendState()
-    }
+//    func pressed(sender: UIButton) {
+//        bitState |= 1
+//        sendBitState()
+//    }
+//
+//    func released(sender: UIButton) {
+//        bitState &= ~(0x1)
+//        sendBitState()
+//    }
 
-    func released(sender: UIButton) {
-        state &= ~(0x1)
-        sendState()
-    }
-
-    private func sendState() {
+    private func sendBitState() {
         // Copy state
-        var x = state
+        var x = bitState
         var byteArray = [UInt8]()
         for _ in 0..<sizeof(UInt64) {
             byteArray.append(UInt8(x))
@@ -45,12 +45,23 @@ class SingleButtonProtoViewController : PadViewController {
 //        btn.addTarget(self, action: #selector(released(_:)), forControlEvents: [.TouchDragExit, .TouchCancel, .TouchUpInside, .TouchUpOutside, .TouchDragOutside])
 //        v.addSubview(btn)
 //        v.addConstraints(NSLayoutConstraint.superviewFillingConstraintsForView(btn))
+
         let dpadView = DpadView()
+        dpadView.delegate = self
         dpadView.translatesAutoresizingMaskIntoConstraints = false
         v.addSubview(dpadView)
         v.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[dpadView(200)]", options: NSLayoutFormatOptions(rawValue:0), metrics: nil, views: ["dpadView": dpadView]))
-        v.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[dpadView(200)]-|", options: NSLayoutFormatOptions(rawValue:0), metrics: nil, views: ["dpadView": dpadView]))
+        v.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[dpadView(200)]-20-|", options: NSLayoutFormatOptions(rawValue:0), metrics: nil, views: ["dpadView": dpadView]))
 
         view = v
+    }
+
+    // MARK: DpadViewDelegate
+    func dpadStateDidChange(dpadState: DpadState) {
+        let dpadBits : UInt64 = 0xF
+        let dpadMask : UInt64 = ~dpadBits
+        bitState &= dpadMask
+        bitState |= UInt64(dpadState.rawValue)
+        sendBitState()
     }
 }
