@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9A33CA091D4700A2008837A5 /* DpadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A33CA081D4700A2008837A5 /* DpadView.swift */; };
 		9A826DF71D1CB398007F2553 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A826DF61D1CB398007F2553 /* AppDelegate.swift */; };
 		9A826DF91D1CB398007F2553 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A826DF81D1CB398007F2553 /* ViewController.swift */; };
 		9A826DFC1D1CB398007F2553 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A826DFA1D1CB398007F2553 /* Main.storyboard */; };
@@ -34,6 +35,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9A33CA081D4700A2008837A5 /* DpadView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DpadView.swift; sourceTree = "<group>"; };
 		9A826DF31D1CB398007F2553 /* HarpApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HarpApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A826DF61D1CB398007F2553 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9A826DF81D1CB398007F2553 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -88,6 +90,7 @@
 				9A9E0B901D2318FA009A0538 /* ConnectionManager.swift */,
 				9A826DF81D1CB398007F2553 /* ViewController.swift */,
 				9AA5ADAB1D45706D0086587A /* Functions.swift */,
+				9A33CA081D4700A2008837A5 /* DpadView.swift */,
 			);
 			path = HarpApp;
 			sourceTree = "<group>";
@@ -188,6 +191,7 @@
 				9A826DF91D1CB398007F2553 /* ViewController.swift in Sources */,
 				9AA5ADA81D4567C30086587A /* SingleButtonProtoViewController.swift in Sources */,
 				9A826DF71D1CB398007F2553 /* AppDelegate.swift in Sources */,
+				9A33CA091D4700A2008837A5 /* DpadView.swift in Sources */,
 				9AA5ADAC1D45706D0086587A /* Functions.swift in Sources */,
 				9A9E0B911D2318FA009A0538 /* ConnectionManager.swift in Sources */,
 			);

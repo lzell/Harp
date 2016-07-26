@@ -37,13 +37,20 @@ class SingleButtonProtoViewController : PadViewController {
 
     override func loadView() {
         let v = UIView(frame: CGRectZero)
-        let btn = UIButton(type: UIButtonType.System)
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.setTitle("Push Me", forState: UIControlState.Normal)
-        btn.addTarget(self, action: #selector(pressed(_:)), forControlEvents: UIControlEvents.TouchDown)
-        btn.addTarget(self, action: #selector(released(_:)), forControlEvents: [.TouchDragExit, .TouchCancel, .TouchUpInside, .TouchUpOutside, .TouchDragOutside])
-        v.addSubview(btn)
-        v.addConstraints(NSLayoutConstraint.superviewFillingConstraintsForView(btn))
+        v.backgroundColor = UIColor.whiteColor()
+//        let btn = UIButton(type: UIButtonType.System)
+//        btn.translatesAutoresizingMaskIntoConstraints = false
+//        btn.setTitle("Push Me", forState: UIControlState.Normal)
+//        btn.addTarget(self, action: #selector(pressed(_:)), forControlEvents: UIControlEvents.TouchDown)
+//        btn.addTarget(self, action: #selector(released(_:)), forControlEvents: [.TouchDragExit, .TouchCancel, .TouchUpInside, .TouchUpOutside, .TouchDragOutside])
+//        v.addSubview(btn)
+//        v.addConstraints(NSLayoutConstraint.superviewFillingConstraintsForView(btn))
+        let dpadView = DpadView()
+        dpadView.translatesAutoresizingMaskIntoConstraints = false
+        v.addSubview(dpadView)
+        v.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[dpadView(200)]", options: NSLayoutFormatOptions(rawValue:0), metrics: nil, views: ["dpadView": dpadView]))
+        v.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[dpadView(200)]-|", options: NSLayoutFormatOptions(rawValue:0), metrics: nil, views: ["dpadView": dpadView]))
+
         view = v
     }
 }

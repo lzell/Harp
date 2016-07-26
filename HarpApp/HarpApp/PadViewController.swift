@@ -23,6 +23,10 @@ class PadViewController : UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
 
+    convenience init() {
+        self.init(clientUDPAddress: sockaddr_in6())
+    }
+
     // How do I get rid of this damn thing?
     required init?(coder: NSCoder) {
         assert(false)
