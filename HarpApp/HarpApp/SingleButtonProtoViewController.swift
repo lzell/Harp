@@ -2,30 +2,82 @@ import UIKit
 import HarpCommoniOS
 
 
-class SingleButtonProtoViewController : PadViewController, DpadViewDelegate {
+// How do I expose the byte pattern as something the client can adopt?
+//protocol ProtoReadContract {
+//    var bitpattern: UInt64 { get set }
+//    func dpadState() -> UInt8
+//    func bButtonState() -> UInt8
+//    func setDpadState(
+//}
 
-    var bitState : UInt64 = 0
+protocol ProtoWriteContract : class {
+    var bitPattern : UInt64 { get set }
+    func updateBitPatternWithDpadState(dpadState: DpadState)
+    func updateBitPatternWithAButtonState(buttonState: Bool)
+    func updateBitPatternWithBButtonState(buttonState: Bool)
+}
 
-//    func pressed(sender: UIButton) {
-//        bitState |= 1
-//        sendBitState()
-//    }
-//
-//    func released(sender: UIButton) {
-//        bitState &= ~(0x1)
-//        sendBitState()
-//    }
+extension ProtoWriteContract {
+    func updateBitPatternWithDpadState(dpadState: DpadState) {
+        let dpadBits : UInt64 = 0xF << 2
+        let dpadMask : UInt64 = ~dpadBits
+        bitPattern &= dpadMask
+        bitPattern |= (UInt64(dpadState.rawValue << 2))
+    }
 
-    private func sendBitState() {
+    func updateBitPatternWithAButtonState(buttonState: Bool) {
+        if buttonState {
+            bitPattern |= 1
+        } else {
+            bitPattern &= ~(0x1)
+        }
+    }
+
+    func updateBitPatternWithBButtonState(buttonState: Bool) {
+        if buttonState {
+            bitPattern |= 1 << 1
+        } else {
+            bitPattern &= ~(1 << 1)
+        }
+    }
+}
+
+
+
+class SingleButtonProtoViewController : PadViewController, DpadViewDelegate, ProtoWriteContract {
+
+    var bitPattern : UInt64 = 0
+
+    func aPressed(sender: ButtonView) {
+        updateBitPatternWithAButtonState(true)
+        sendBitPattern()
+    }
+
+    func aReleased(sender: ButtonView) {
+        updateBitPatternWithAButtonState(false)
+        sendBitPattern()
+    }
+
+
+    func bPressed(sender: ButtonView) {
+        updateBitPatternWithBButtonState(true)
+        sendBitPattern()
+    }
+
+    func bReleased(sender: ButtonView) {
+        updateBitPatternWithBButtonState(false)
+        sendBitPattern()
+    }
+
+    private func sendBitPattern() {
         // Copy state
-        var x = bitState
+        var x = bitPattern
         var byteArray = [UInt8]()
         for _ in 0..<sizeof(UInt64) {
             byteArray.append(UInt8(x))
             x >>= 8
         }
         byteArray = byteArray.reverse()
-
 
         var sock6Addr = clientUDPAddress
         let addressData = CFDataCreateWithBytesNoCopy(kCFAllocatorDefault, valuePtrCast(&sock6Addr), sizeofValue(sock6Addr), kCFAllocatorNull)
@@ -38,13 +90,25 @@ class SingleButtonProtoViewController : PadViewController, DpadViewDelegate {
     override func loadView() {
         let v = UIView(frame: CGRectZero)
         v.backgroundColor = UIColor.whiteColor()
-//        let btn = UIButton(type: UIButtonType.System)
-//        btn.translatesAutoresizingMaskIntoConstraints = false
-//        btn.setTitle("Push Me", forState: UIControlState.Normal)
-//        btn.addTarget(self, action: #selector(pressed(_:)), forControlEvents: UIControlEvents.TouchDown)
-//        btn.addTarget(self, action: #selector(released(_:)), forControlEvents: [.TouchDragExit, .TouchCancel, .TouchUpInside, .TouchUpOutside, .TouchDragOutside])
-//        v.addSubview(btn)
-//        v.addConstraints(NSLayoutConstraint.superviewFillingConstraintsForView(btn))
+
+        let aBtn = ButtonView()
+        aBtn.translatesAutoresizingMaskIntoConstraints = false
+        aBtn.didPress = aPressed
+        aBtn.didRelease = aReleased
+        v.addSubview(aBtn)
+        v.addConstraint(NSLayoutConstraint(item: aBtn, attribute: .Height, relatedBy: .Equal, toItem: v, attribute: .Height, multiplier: 1, constant: 0))
+        v.addConstraint(NSLayoutConstraint(item: aBtn, attribute: .Top, relatedBy: .Equal, toItem: v, attribute: .Top, multiplier: 1, constant: 0))
+        v.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[aBtn(100)]|", options: NSLayoutFormatOptions(rawValue:0), metrics: nil, views: ["aBtn": aBtn]))
+
+        let bBtn = ButtonView()
+        bBtn.translatesAutoresizingMaskIntoConstraints = false
+        bBtn.didPress = bPressed
+        bBtn.didRelease = bReleased
+        v.addSubview(bBtn)
+        v.addConstraint(NSLayoutConstraint(item: bBtn, attribute: .Height, relatedBy: .Equal, toItem: v, attribute: .Height, multiplier: 1, constant: 0))
+        v.addConstraint(NSLayoutConstraint(item: bBtn, attribute: .Top, relatedBy: .Equal, toItem: v, attribute: .Top, multiplier: 1, constant: 0))
+        v.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[bBtn(100)]-100-|", options: NSLayoutFormatOptions(rawValue:0), metrics: nil, views: ["bBtn": bBtn]))
+
 
         let dpadView = DpadView()
         dpadView.delegate = self
@@ -58,10 +122,7 @@ class SingleButtonProtoViewController : PadViewController, DpadViewDelegate {
 
     // MARK: DpadViewDelegate
     func dpadStateDidChange(dpadState: DpadState) {
-        let dpadBits : UInt64 = 0xF
-        let dpadMask : UInt64 = ~dpadBits
-        bitState &= dpadMask
-        bitState |= UInt64(dpadState.rawValue)
-        sendBitState()
+        updateBitPatternWithDpadState(dpadState)
+        sendBitPattern()
     }
 }
