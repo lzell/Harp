@@ -161,3 +161,11 @@ private func setReuseAddress(sock: CFSocket) {
         assert(false)
     }
 }
+
+private func setNonblocking(sock: CFSocket) {
+    var flags = fcntl(CFSocketGetNative(sock), F_GETFL)
+    if (fcntl(CFSocketGetNative(sock), F_SETFL, flags | O_NONBLOCK) < 0) {
+        perror(strerror(errno))
+        assert(false)
+    }
+}
