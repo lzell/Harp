@@ -25,6 +25,8 @@ class ButtonView : UIView {
         super.init(frame: CGRectZero)
         backgroundColor = UIColor.grayColor()
         multipleTouchEnabled = false
+        self.layer.borderWidth = 0.5
+        self.layer.borderColor = UIColor.whiteColor().CGColor
     }
 
     required init?(coder: NSCoder) { super.init(coder: coder); assert(false) }
