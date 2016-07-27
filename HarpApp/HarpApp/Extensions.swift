@@ -1,13 +1,3 @@
-//
-//  Functions.swift
-//  HarpApp
-//
-//  Created by Lou Zell on 7/24/16.
-//  Copyright © 2016 Lou Zell. All rights reserved.
-//
-
-import Foundation
-
 // MARK: - Autolayout
 import UIKit
 extension NSLayoutConstraint {

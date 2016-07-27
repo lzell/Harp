@@ -52,7 +52,7 @@ public func createBindedTCPListeningSocketWithAcceptCallback(context: UnsafeMuta
 
 /* Connecting */
 public func createConnectingTCPSocketWithConnectCallback(connectTo: sockaddr_in6, _ info: UnsafeMutablePointer<Void>, callback: CFSocketCallBack) -> CFSocket {
-    let callbackOpts : CFSocketCallBackType = [.ConnectCallBack]
+    let callbackOpts : CFSocketCallBackType = [.ConnectCallBack, .DataCallBack]
     // This is repeated all over the place:
     var sockCtxt = CFSocketContext(version: CFIndex(0), info: info, retain: nil, release: nil, copyDescription: nil)
 

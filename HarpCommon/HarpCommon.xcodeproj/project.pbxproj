@@ -56,9 +56,9 @@
 		9AD637C01D1CB7DD00BBF330 = {
 			isa = PBXGroup;
 			children = (
-				9A33CA111D483A46008837A5 /* ControllerContracts.swift */,
-				9A33CA0E1D4839FA008837A5 /* ControllerComponents.swift */,
 				9A404B831D1DD27D0006A3B3 /* BluetoothService.swift */,
+				9A33CA0E1D4839FA008837A5 /* ControllerComponents.swift */,
+				9A33CA111D483A46008837A5 /* ControllerContracts.swift */,
 				9A404B851D1DD27D0006A3B3 /* Functions.swift */,
 				9A9E0B931D231EA5009A0538 /* Socket.swift */,
 				9AD637CF1D1CB82900BBF330 /* HarpCommoniOS */,
