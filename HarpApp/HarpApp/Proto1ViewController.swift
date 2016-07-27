@@ -2,49 +2,10 @@ import UIKit
 import HarpCommoniOS
 
 
-// How do I expose the byte pattern as something the client can adopt?
-//protocol ProtoReadContract {
-//    var bitpattern: UInt64 { get set }
-//    func dpadState() -> UInt8
-//    func bButtonState() -> UInt8
-//    func setDpadState(
-//}
-
-protocol ProtoWriteContract : class {
-    var bitPattern : UInt64 { get set }
-    func updateBitPatternWithDpadState(dpadState: DpadState)
-    func updateBitPatternWithAButtonState(buttonState: Bool)
-    func updateBitPatternWithBButtonState(buttonState: Bool)
-}
-
-extension ProtoWriteContract {
-    func updateBitPatternWithDpadState(dpadState: DpadState) {
-        let dpadBits : UInt64 = 0xF << 2
-        let dpadMask : UInt64 = ~dpadBits
-        bitPattern &= dpadMask
-        bitPattern |= (UInt64(dpadState.rawValue << 2))
-    }
-
-    func updateBitPatternWithAButtonState(buttonState: Bool) {
-        if buttonState {
-            bitPattern |= 1
-        } else {
-            bitPattern &= ~(0x1)
-        }
-    }
-
-    func updateBitPatternWithBButtonState(buttonState: Bool) {
-        if buttonState {
-            bitPattern |= 1 << 1
-        } else {
-            bitPattern &= ~(1 << 1)
-        }
-    }
-}
 
 
 
-class SingleButtonProtoViewController : PadViewController, DpadViewDelegate, ProtoWriteContract {
+class Proto1ViewController : PadViewController, DpadViewDelegate, Proto1WriteContract {
 
     var bitPattern : UInt64 = 0
 

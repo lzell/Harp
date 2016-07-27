@@ -15,7 +15,7 @@
 		9A826DFE1D1CB398007F2553 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A826DFD1D1CB398007F2553 /* Assets.xcassets */; };
 		9A826E011D1CB398007F2553 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A826DFF1D1CB398007F2553 /* LaunchScreen.storyboard */; };
 		9A9E0B911D2318FA009A0538 /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E0B901D2318FA009A0538 /* ConnectionManager.swift */; };
-		9AA5ADA81D4567C30086587A /* SingleButtonProtoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5ADA71D4567C30086587A /* SingleButtonProtoViewController.swift */; };
+		9AA5ADA81D4567C30086587A /* Proto1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5ADA71D4567C30086587A /* Proto1ViewController.swift */; };
 		9AA5ADAC1D45706D0086587A /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5ADAB1D45706D0086587A /* Functions.swift */; };
 		9AA5ADAF1D4583810086587A /* PadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5ADAE1D4583810086587A /* PadViewController.swift */; };
 		9AA5ADB11D45CBEF0086587A /* HarpCommoniOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AA5ADB01D45CBEF0086587A /* HarpCommoniOS.framework */; };
@@ -46,7 +46,7 @@
 		9A826E001D1CB398007F2553 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9A826E021D1CB398007F2553 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = HarpApp/Info.plist; sourceTree = "<group>"; };
 		9A9E0B901D2318FA009A0538 /* ConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
-		9AA5ADA71D4567C30086587A /* SingleButtonProtoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleButtonProtoViewController.swift; sourceTree = "<group>"; };
+		9AA5ADA71D4567C30086587A /* Proto1ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Proto1ViewController.swift; sourceTree = "<group>"; };
 		9AA5ADAB1D45706D0086587A /* Functions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		9AA5ADAE1D4583810086587A /* PadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PadViewController.swift; sourceTree = "<group>"; };
 		9AA5ADB01D45CBEF0086587A /* HarpCommoniOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HarpCommoniOS.framework; path = "../../../Library/Developer/Xcode/DerivedData/Harp-gfeeamgbpaspjfbuwcmlifbmwqzj/Build/Products/Debug-iphoneos/HarpCommoniOS.framework"; sourceTree = "<group>"; };
@@ -112,7 +112,7 @@
 		9AA5ADAD1D4582050086587A /* Pads */ = {
 			isa = PBXGroup;
 			children = (
-				9AA5ADA71D4567C30086587A /* SingleButtonProtoViewController.swift */,
+				9AA5ADA71D4567C30086587A /* Proto1ViewController.swift */,
 				9AA5ADAE1D4583810086587A /* PadViewController.swift */,
 			);
 			name = Pads;
@@ -193,7 +193,7 @@
 				9AA5ADAF1D4583810086587A /* PadViewController.swift in Sources */,
 				9A826DF91D1CB398007F2553 /* ViewController.swift in Sources */,
 				9A33CA0D1D481FA9008837A5 /* ButtonView.swift in Sources */,
-				9AA5ADA81D4567C30086587A /* SingleButtonProtoViewController.swift in Sources */,
+				9AA5ADA81D4567C30086587A /* Proto1ViewController.swift in Sources */,
 				9A826DF71D1CB398007F2553 /* AppDelegate.swift in Sources */,
 				9A33CA091D4700A2008837A5 /* DpadView.swift in Sources */,
 				9AA5ADAC1D45706D0086587A /* Functions.swift in Sources */,

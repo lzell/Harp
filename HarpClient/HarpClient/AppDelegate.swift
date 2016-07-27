@@ -100,6 +100,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private func payload() -> String {
         return  "Protocol-Version: 0.1.0\n" +
                 "UDP-Port: \(udpReadPort)\n" +
-                "Controller: SingleButtonProtoViewController"
+                "Controller: Proto1ViewController"
     }
 }
