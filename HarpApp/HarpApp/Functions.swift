@@ -23,3 +23,11 @@ extension NSLayoutConstraint {
         return [w,h]
     }
 }
+
+extension UIView {
+    static func auto() -> Self {
+        let view = self.init(frame: CGRectZero)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }
+}

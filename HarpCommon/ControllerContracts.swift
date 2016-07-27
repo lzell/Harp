@@ -9,7 +9,6 @@ private struct Proto1Shift {
     static let dpad : UInt64 = 2
 }
 
-
 public protocol Proto1WriteContract : class {
     var bitPattern : UInt64 { get set }
     func updateBitPatternWithDpadState(dpadState: DpadState)

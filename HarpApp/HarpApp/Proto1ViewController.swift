@@ -52,8 +52,8 @@ class Proto1ViewController : PadViewController, DpadViewDelegate, Proto1WriteCon
         let v = UIView(frame: CGRectZero)
         v.backgroundColor = UIColor.whiteColor()
 
-        let aBtn = ButtonView()
-        aBtn.translatesAutoresizingMaskIntoConstraints = false
+        let aBtn = ButtonView.auto()
+        aBtn.label.text = "A"
         aBtn.didPress = aPressed
         aBtn.didRelease = aReleased
         v.addSubview(aBtn)
@@ -61,8 +61,8 @@ class Proto1ViewController : PadViewController, DpadViewDelegate, Proto1WriteCon
         v.addConstraint(NSLayoutConstraint(item: aBtn, attribute: .Top, relatedBy: .Equal, toItem: v, attribute: .Top, multiplier: 1, constant: 0))
         v.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[aBtn(100)]|", options: NSLayoutFormatOptions(rawValue:0), metrics: nil, views: ["aBtn": aBtn]))
 
-        let bBtn = ButtonView()
-        bBtn.translatesAutoresizingMaskIntoConstraints = false
+        let bBtn = ButtonView.auto()
+        bBtn.label.text = "B"
         bBtn.didPress = bPressed
         bBtn.didRelease = bReleased
         v.addSubview(bBtn)
@@ -71,12 +71,11 @@ class Proto1ViewController : PadViewController, DpadViewDelegate, Proto1WriteCon
         v.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[bBtn(100)]-100-|", options: NSLayoutFormatOptions(rawValue:0), metrics: nil, views: ["bBtn": bBtn]))
 
 
-        let dpadView = DpadView()
+        let dpadView = DpadView.auto()
         dpadView.delegate = self
-        dpadView.translatesAutoresizingMaskIntoConstraints = false
         v.addSubview(dpadView)
-        v.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[dpadView(200)]", options: NSLayoutFormatOptions(rawValue:0), metrics: nil, views: ["dpadView": dpadView]))
-        v.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[dpadView(200)]-20-|", options: NSLayoutFormatOptions(rawValue:0), metrics: nil, views: ["dpadView": dpadView]))
+        v.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-30-[dpadView(200)]", options: NSLayoutFormatOptions(rawValue:0), metrics: nil, views: ["dpadView": dpadView]))
+        v.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[dpadView(200)]-70-|", options: NSLayoutFormatOptions(rawValue:0), metrics: nil, views: ["dpadView": dpadView]))
 
         view = v
     }

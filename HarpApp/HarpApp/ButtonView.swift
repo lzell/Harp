@@ -6,6 +6,7 @@ class ButtonView : UIView {
 
     var didPress: ((sender: ButtonView) -> Void)?
     var didRelease: ((sender: ButtonView) -> Void)?
+    let label = UILabel.auto()
 
     var btnState : Bool = false {
         didSet {
@@ -21,12 +22,17 @@ class ButtonView : UIView {
         }
     }
 
-    init() {
-        super.init(frame: CGRectZero)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         backgroundColor = UIColor.grayColor()
         multipleTouchEnabled = false
-        self.layer.borderWidth = 0.5
-        self.layer.borderColor = UIColor.whiteColor().CGColor
+        layer.borderWidth = 0.5
+        layer.borderColor = UIColor.whiteColor().CGColor
+
+        addSubview(label)
+        addConstraint(NSLayoutConstraint(item: label, attribute: .CenterX, relatedBy: .Equal, toItem: self, attribute: .CenterX, multiplier: 1, constant: 0))
+        addConstraint(NSLayoutConstraint(item: label, attribute: .CenterY, relatedBy: .Equal, toItem: self, attribute: .CenterY, multiplier: 1, constant: 0))
+        label.text = "Tmp"
     }
 
     required init?(coder: NSCoder) { super.init(coder: coder); assert(false) }

@@ -51,14 +51,13 @@ class DpadView : UIView {
     let images = Images()
     var imgView : UIImageView!
 
-    init() {
+    override init(frame: CGRect) {
         // First Phase
-        super.init(frame: CGRectZero)
+        super.init(frame: frame)
 
         // Second phase
         multipleTouchEnabled = false
-        imgView = UIImageView(frame: CGRectZero)
-        imgView.translatesAutoresizingMaskIntoConstraints = false
+        imgView = UIImageView.auto()
         addSubview(imgView)
         addConstraints(NSLayoutConstraint.superviewFillingConstraintsForView(imgView))
         imgView.image = images.inactive
