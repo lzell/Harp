@@ -3,7 +3,7 @@ import HarpCommonOSX
 
 
 @NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, Proto1ReadContract {
 
 
     @IBOutlet weak var window: NSWindow!
@@ -87,12 +87,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 state <<= 8
                 state |= UInt64(buf[i])
             }
-          print("State is: \(String(state, radix: 16))")
+            handleState(state)
         }
 
         if (posixErr != 0) {
             assert(false, "Could not read udp data")
         }
+    }
+
+    private func handleState(bitPattern: UInt64) {
+        let dpadState = dpadStateFromBitPattern(bitPattern)
+        let bBtnState = bButtonStateFromBitPattern(bitPattern)
+        let aBtnState = aButtonStateFromBitPattern(bitPattern)
+        print("Dpad is: \(dpadState), b is: \(bBtnState), a is: \(aBtnState)")
     }
 
 
