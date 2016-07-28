@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9A213E471D4960E200CFFA24 /* HarpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A213E461D4960E200CFFA24 /* HarpClient.swift */; };
+		9A9052AC1D4AA7A200CF678F /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9052AB1D4AA7A200CF678F /* ConnectionManager.swift */; };
 		9AD637AC1D1CB46F00BBF330 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD637AB1D1CB46F00BBF330 /* AppDelegate.swift */; };
 		9AD637AE1D1CB46F00BBF330 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AD637AD1D1CB46F00BBF330 /* Assets.xcassets */; };
 		9AD637B11D1CB46F00BBF330 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AD637AF1D1CB46F00BBF330 /* MainMenu.xib */; };
@@ -15,8 +15,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		9A213E461D4960E200CFFA24 /* HarpClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HarpClient.swift; sourceTree = "<group>"; };
-		9AD637A81D1CB46F00BBF330 /* HarpClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HarpClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9A9052AB1D4AA7A200CF678F /* ConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
+		9AD637A81D1CB46F00BBF330 /* HarpHost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HarpHost.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AD637AB1D1CB46F00BBF330 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9AD637AD1D1CB46F00BBF330 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9AD637B01D1CB46F00BBF330 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
@@ -40,7 +40,7 @@
 			isa = PBXGroup;
 			children = (
 				9AD637E71D1CB99E00BBF330 /* HarpCommonOSX.framework */,
-				9AD637AA1D1CB46F00BBF330 /* HarpClient */,
+				9AD637AA1D1CB46F00BBF330 /* HarpHost */,
 				9AD637A91D1CB46F00BBF330 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -48,29 +48,30 @@
 		9AD637A91D1CB46F00BBF330 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9AD637A81D1CB46F00BBF330 /* HarpClient.app */,
+				9AD637A81D1CB46F00BBF330 /* HarpHost.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		9AD637AA1D1CB46F00BBF330 /* HarpClient */ = {
+		9AD637AA1D1CB46F00BBF330 /* HarpHost */ = {
 			isa = PBXGroup;
 			children = (
+				9A9052AB1D4AA7A200CF678F /* ConnectionManager.swift */,
 				9AD637AB1D1CB46F00BBF330 /* AppDelegate.swift */,
 				9AD637AD1D1CB46F00BBF330 /* Assets.xcassets */,
 				9AD637AF1D1CB46F00BBF330 /* MainMenu.xib */,
 				9AD637B21D1CB46F00BBF330 /* Info.plist */,
-				9A213E461D4960E200CFFA24 /* HarpClient.swift */,
 			);
+			name = HarpHost;
 			path = HarpClient;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		9AD637A71D1CB46F00BBF330 /* HarpClient */ = {
+		9AD637A71D1CB46F00BBF330 /* HarpHost */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9AD637B51D1CB46F00BBF330 /* Build configuration list for PBXNativeTarget "HarpClient" */;
+			buildConfigurationList = 9AD637B51D1CB46F00BBF330 /* Build configuration list for PBXNativeTarget "HarpHost" */;
 			buildPhases = (
 				9AD637A41D1CB46F00BBF330 /* Sources */,
 				9AD637A51D1CB46F00BBF330 /* Frameworks */,
@@ -80,9 +81,9 @@
 			);
 			dependencies = (
 			);
-			name = HarpClient;
+			name = HarpHost;
 			productName = HarpClient;
-			productReference = 9AD637A81D1CB46F00BBF330 /* HarpClient.app */;
+			productReference = 9AD637A81D1CB46F00BBF330 /* HarpHost.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -100,7 +101,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 9AD637A31D1CB46F00BBF330 /* Build configuration list for PBXProject "HarpClient" */;
+			buildConfigurationList = 9AD637A31D1CB46F00BBF330 /* Build configuration list for PBXProject "HarpHost" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -113,7 +114,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				9AD637A71D1CB46F00BBF330 /* HarpClient */,
+				9AD637A71D1CB46F00BBF330 /* HarpHost */,
 			);
 		};
 /* End PBXProject section */
@@ -136,7 +137,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9AD637AC1D1CB46F00BBF330 /* AppDelegate.swift in Sources */,
-				9A213E471D4960E200CFFA24 /* HarpClient.swift in Sources */,
+				9A9052AC1D4AA7A200CF678F /* ConnectionManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -244,7 +245,7 @@
 				INFOPLIST_FILE = HarpClient/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.fareharbor.HarpClient;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = HarpHost;
 			};
 			name = Debug;
 		};
@@ -256,14 +257,14 @@
 				INFOPLIST_FILE = HarpClient/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.fareharbor.HarpClient;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = HarpHost;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9AD637A31D1CB46F00BBF330 /* Build configuration list for PBXProject "HarpClient" */ = {
+		9AD637A31D1CB46F00BBF330 /* Build configuration list for PBXProject "HarpHost" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9AD637B31D1CB46F00BBF330 /* Debug */,
@@ -272,7 +273,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9AD637B51D1CB46F00BBF330 /* Build configuration list for PBXNativeTarget "HarpClient" */ = {
+		9AD637B51D1CB46F00BBF330 /* Build configuration list for PBXNativeTarget "HarpHost" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9AD637B61D1CB46F00BBF330 /* Debug */,

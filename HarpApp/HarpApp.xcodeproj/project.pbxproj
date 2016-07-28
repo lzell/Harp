@@ -9,27 +9,26 @@
 /* Begin PBXBuildFile section */
 		9A33CA091D4700A2008837A5 /* DpadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A33CA081D4700A2008837A5 /* DpadView.swift */; };
 		9A33CA0D1D481FA9008837A5 /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A33CA0C1D481FA9008837A5 /* ButtonView.swift */; };
+		9A80D7AD1D4AB0C400290848 /* HarpCommoniOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9A80D7AC1D4AB0C400290848 /* HarpCommoniOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9A826DF71D1CB398007F2553 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A826DF61D1CB398007F2553 /* AppDelegate.swift */; };
 		9A826DF91D1CB398007F2553 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A826DF81D1CB398007F2553 /* ViewController.swift */; };
 		9A826DFC1D1CB398007F2553 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A826DFA1D1CB398007F2553 /* Main.storyboard */; };
 		9A826DFE1D1CB398007F2553 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A826DFD1D1CB398007F2553 /* Assets.xcassets */; };
 		9A826E011D1CB398007F2553 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A826DFF1D1CB398007F2553 /* LaunchScreen.storyboard */; };
-		9A9E0B911D2318FA009A0538 /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E0B901D2318FA009A0538 /* ConnectionManager.swift */; };
+		9A9052AA1D4AA78600CF678F /* HarpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9052A91D4AA78600CF678F /* HarpClient.swift */; };
 		9AA5ADA81D4567C30086587A /* Proto1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5ADA71D4567C30086587A /* Proto1ViewController.swift */; };
 		9AA5ADAC1D45706D0086587A /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5ADAB1D45706D0086587A /* Extensions.swift */; };
 		9AA5ADAF1D4583810086587A /* PadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5ADAE1D4583810086587A /* PadViewController.swift */; };
-		9AA5ADB11D45CBEF0086587A /* HarpCommoniOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AA5ADB01D45CBEF0086587A /* HarpCommoniOS.framework */; };
-		9AA5ADB31D45CDAA0086587A /* HarpCommoniOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9AA5ADB01D45CBEF0086587A /* HarpCommoniOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		9AA5ADB21D45CD780086587A /* Embed Frameworks */ = {
+		9A80D7AB1D4AB0A900290848 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				9AA5ADB31D45CDAA0086587A /* HarpCommoniOS.framework in Embed Frameworks */,
+				9A80D7AD1D4AB0C400290848 /* HarpCommoniOS.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -39,6 +38,7 @@
 /* Begin PBXFileReference section */
 		9A33CA081D4700A2008837A5 /* DpadView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DpadView.swift; sourceTree = "<group>"; };
 		9A33CA0C1D481FA9008837A5 /* ButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
+		9A80D7AC1D4AB0C400290848 /* HarpCommoniOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HarpCommoniOS.framework; sourceTree = "<group>"; };
 		9A826DF31D1CB398007F2553 /* HarpApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HarpApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A826DF61D1CB398007F2553 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9A826DF81D1CB398007F2553 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -46,11 +46,10 @@
 		9A826DFD1D1CB398007F2553 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = HarpApp/Assets.xcassets; sourceTree = "<group>"; };
 		9A826E001D1CB398007F2553 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9A826E021D1CB398007F2553 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = HarpApp/Info.plist; sourceTree = "<group>"; };
-		9A9E0B901D2318FA009A0538 /* ConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
+		9A9052A91D4AA78600CF678F /* HarpClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HarpClient.swift; sourceTree = "<group>"; };
 		9AA5ADA71D4567C30086587A /* Proto1ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Proto1ViewController.swift; sourceTree = "<group>"; };
 		9AA5ADAB1D45706D0086587A /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		9AA5ADAE1D4583810086587A /* PadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PadViewController.swift; sourceTree = "<group>"; };
-		9AA5ADB01D45CBEF0086587A /* HarpCommoniOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HarpCommoniOS.framework; path = "../../../Library/Developer/Xcode/DerivedData/Harp-gfeeamgbpaspjfbuwcmlifbmwqzj/Build/Products/Debug-iphoneos/HarpCommoniOS.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,17 +57,25 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9AA5ADB11D45CBEF0086587A /* HarpCommoniOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9A80D7AE1D4AB90D00290848 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9A33CA081D4700A2008837A5 /* DpadView.swift */,
+				9A33CA0C1D481FA9008837A5 /* ButtonView.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
 		9A826DEA1D1CB398007F2553 = {
 			isa = PBXGroup;
 			children = (
-				9AA5ADB01D45CBEF0086587A /* HarpCommoniOS.framework */,
+				9A80D7AC1D4AB0C400290848 /* HarpCommoniOS.framework */,
 				9A826DF51D1CB398007F2553 /* HarpApp */,
 				9A826DF41D1CB398007F2553 /* Products */,
 				9A9E0B921D23197D009A0538 /* Supporting Files */,
@@ -86,13 +93,12 @@
 		9A826DF51D1CB398007F2553 /* HarpApp */ = {
 			isa = PBXGroup;
 			children = (
+				9A80D7AE1D4AB90D00290848 /* Views */,
 				9AA5ADAD1D4582050086587A /* Pads */,
 				9A826DF61D1CB398007F2553 /* AppDelegate.swift */,
-				9A9E0B901D2318FA009A0538 /* ConnectionManager.swift */,
+				9A9052A91D4AA78600CF678F /* HarpClient.swift */,
 				9A826DF81D1CB398007F2553 /* ViewController.swift */,
 				9AA5ADAB1D45706D0086587A /* Extensions.swift */,
-				9A33CA081D4700A2008837A5 /* DpadView.swift */,
-				9A33CA0C1D481FA9008837A5 /* ButtonView.swift */,
 			);
 			path = HarpApp;
 			sourceTree = "<group>";
@@ -127,7 +133,7 @@
 				9A826DEF1D1CB398007F2553 /* Sources */,
 				9A826DF01D1CB398007F2553 /* Frameworks */,
 				9A826DF11D1CB398007F2553 /* Resources */,
-				9AA5ADB21D45CD780086587A /* Embed Frameworks */,
+				9A80D7AB1D4AB0A900290848 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -189,6 +195,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A9052AA1D4AA78600CF678F /* HarpClient.swift in Sources */,
 				9AA5ADAF1D4583810086587A /* PadViewController.swift in Sources */,
 				9A826DF91D1CB398007F2553 /* ViewController.swift in Sources */,
 				9A33CA0D1D481FA9008837A5 /* ButtonView.swift in Sources */,
@@ -196,7 +203,6 @@
 				9A826DF71D1CB398007F2553 /* AppDelegate.swift in Sources */,
 				9A33CA091D4700A2008837A5 /* DpadView.swift in Sources */,
 				9AA5ADAC1D45706D0086587A /* Extensions.swift in Sources */,
-				9A9E0B911D2318FA009A0538 /* ConnectionManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

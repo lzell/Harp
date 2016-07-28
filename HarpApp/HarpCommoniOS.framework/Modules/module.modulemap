@@ -1,0 +1,10 @@
+framework module HarpCommoniOS {
+  umbrella header "HarpCommoniOS.h"
+
+  export *
+  module * { export * }
+}
+
+module HarpCommoniOS.Swift {
+    header "HarpCommoniOS-Swift.h"
+}

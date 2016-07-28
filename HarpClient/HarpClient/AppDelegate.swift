@@ -6,10 +6,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBOutlet weak var window: NSWindow!
 
-    let harpClient = HarpClient()
+    let cxnManager = ConnectionManager(numConnections: 1)
+
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
-        harpClient.startResolver()
+        cxnManager.registerService()
     }
-
 }

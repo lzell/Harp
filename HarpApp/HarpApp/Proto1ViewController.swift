@@ -2,9 +2,6 @@ import UIKit
 import HarpCommoniOS
 
 
-
-
-
 class Proto1ViewController : PadViewController, DpadViewDelegate, Proto1WriteContract {
 
     var bitPattern : UInt64 = 0

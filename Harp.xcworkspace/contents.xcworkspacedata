@@ -8,6 +8,6 @@
       location = "group:HarpApp/HarpApp.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:HarpClient/HarpClient.xcodeproj">
+      location = "group:/Users/lou/dev/Harp/HarpClient/HarpHost.xcodeproj">
    </FileRef>
 </Workspace>
