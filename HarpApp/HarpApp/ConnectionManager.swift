@@ -7,6 +7,7 @@ import HarpCommoniOS
 
 protocol ConnectionManagerDelegate : class {
     func clientRequestsController(controllerName: String, receiveAddress: sockaddr_in6)
+    func clientDidDisconnect()
 }
 
 
@@ -61,13 +62,12 @@ class ConnectionManager {
                 let me = fromContext(UnsafeMutablePointer<ConnectionManager>(info))
                 let cfdata = fromContext(UnsafePointer<CFData>(data))
                 if CFDataGetLength(cfdata) == 0 {
-                    print("Disconnected!")
-                    // TODO: We've disconnected
                     // With a connection-oriented socket, if the connection is broken from the
                     // other end, then one final kCFSocketReadCallBack or kCFSocketDataCallBack
                     // will occur.  In the case of kCFSocketReadCallBack, the underlying socket
                     // will have 0 bytes available to read.  In the case of kCFSocketDataCallBack,
                     // the data argument will be a CFDataRef of length 0.
+                    me.didDisconnectFromClient(sock)
                 } else {
                     print("We got some stuff, cool!")
                     // Not putting in any protection about partial buffers! We'll 
@@ -83,6 +83,10 @@ class ConnectionManager {
 
         // Hang on to this socket
         connectedSockets.append(sock)
+    }
+
+    func didDisconnectFromClient(sock: CFSocket) {
+        delegate?.clientDidDisconnect()
     }
 
     func didReceiveClientRequest(sock: CFSocket, _ request: String) {

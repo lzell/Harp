@@ -138,6 +138,7 @@ public class BluetoothService {
         //
         private func pluginBrowserHandling() {
             browser.found = { [weak self] (serviceIdentifier) in
+                printDebug("Found a harp service...")
 
                 // Upon finding a service we immediately progress down the chain to resolving its
                 // host and port.  We assume that if the browser is running then the client is
@@ -156,6 +157,7 @@ public class BluetoothService {
         private func resolveHostAndPortOfService(serviceIdentifier: NetServiceIdentifier) {
             let hostAndPortResolver = HostAndPortResolver(serviceIdentifier: serviceIdentifier)
             hostAndPortResolver.resolved = { [weak self] (resolver: HostAndPortResolver, hosttarget: String, port: UInt16) in
+                printDebug("Resolved host and port...")
                 if let safeSelf = self {
                     safeSelf.resolveAddress(hosttarget, port)
                     safeSelf.hostResolvers = safeSelf.hostResolvers.filter() { $0 !== resolver }
@@ -174,6 +176,7 @@ public class BluetoothService {
             let addressResolver = IPV6Resolver(hosttarget: hosttarget, port: port)
             var addressList = [sockaddr_in6]()
             addressResolver.resolved = { [weak self] (ipv6Resolver: IPV6Resolver, address: sockaddr_in6, moreComing: Bool) in
+                printDebug("Resolved address!")
                 if let safeSelf = self {
                     addressList.append(address)
                     if !moreComing {

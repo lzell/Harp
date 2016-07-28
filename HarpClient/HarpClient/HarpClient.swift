@@ -54,7 +54,6 @@ class HarpClient : Proto1ReadContract {
     }
 
     func connectTo(addr: sockaddr_in6) {
-        // This should really be called something CommSocket(connectTo:)
         let psock = createConnectingTCPSocketWithConnectCallback(addr, toContext(self)) {
             (sock, type, _, data: UnsafePointer<Void>, info: UnsafeMutablePointer<Void>)
             in
@@ -67,6 +66,8 @@ class HarpClient : Proto1ReadContract {
                     // Data is a pointer to an SInt32 error code in this case
                     let errCode = UnsafePointer<Int32>(data).memory
                     perror(strerror(errCode))
+                    // Perplexed by this.  I've only ever hit this assert on simulator.
+                    // Remedy on simulator: Start App, then start client
                     assert(false)
                 }
             } else {
