@@ -79,6 +79,7 @@ public class BluetoothService {
 
         public func stop() {
             if running {
+                running = false
                 registrar.stop()
             }
         }

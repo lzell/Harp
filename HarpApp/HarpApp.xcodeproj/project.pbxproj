@@ -18,7 +18,7 @@
 		9A9052AA1D4AA78600CF678F /* HarpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9052A91D4AA78600CF678F /* HarpClient.swift */; };
 		9AA5ADA81D4567C30086587A /* Proto1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5ADA71D4567C30086587A /* Proto1ViewController.swift */; };
 		9AA5ADAC1D45706D0086587A /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5ADAB1D45706D0086587A /* Extensions.swift */; };
-		9AA5ADAF1D4583810086587A /* PadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5ADAE1D4583810086587A /* PadViewController.swift */; };
+		9AA5ADAF1D4583810086587A /* RemoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5ADAE1D4583810086587A /* RemoteViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -49,7 +49,7 @@
 		9A9052A91D4AA78600CF678F /* HarpClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HarpClient.swift; sourceTree = "<group>"; };
 		9AA5ADA71D4567C30086587A /* Proto1ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Proto1ViewController.swift; sourceTree = "<group>"; };
 		9AA5ADAB1D45706D0086587A /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		9AA5ADAE1D4583810086587A /* PadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PadViewController.swift; sourceTree = "<group>"; };
+		9AA5ADAE1D4583810086587A /* RemoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,7 +94,7 @@
 			isa = PBXGroup;
 			children = (
 				9A80D7AE1D4AB90D00290848 /* Views */,
-				9AA5ADAD1D4582050086587A /* Pads */,
+				9AA5ADAD1D4582050086587A /* Controllers */,
 				9A826DF61D1CB398007F2553 /* AppDelegate.swift */,
 				9A9052A91D4AA78600CF678F /* HarpClient.swift */,
 				9A826DF81D1CB398007F2553 /* ViewController.swift */,
@@ -114,13 +114,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		9AA5ADAD1D4582050086587A /* Pads */ = {
+		9AA5ADAD1D4582050086587A /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				9AA5ADA71D4567C30086587A /* Proto1ViewController.swift */,
-				9AA5ADAE1D4583810086587A /* PadViewController.swift */,
+				9AA5ADAE1D4583810086587A /* RemoteViewController.swift */,
 			);
-			name = Pads;
+			name = Controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -196,7 +196,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9A9052AA1D4AA78600CF678F /* HarpClient.swift in Sources */,
-				9AA5ADAF1D4583810086587A /* PadViewController.swift in Sources */,
+				9AA5ADAF1D4583810086587A /* RemoteViewController.swift in Sources */,
 				9A826DF91D1CB398007F2553 /* ViewController.swift in Sources */,
 				9A33CA0D1D481FA9008837A5 /* ButtonView.swift in Sources */,
 				9AA5ADA81D4567C30086587A /* Proto1ViewController.swift in Sources */,

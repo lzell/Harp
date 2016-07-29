@@ -83,7 +83,6 @@ public func createConnectedTCPSocketFromNativeHandleWithDataCallback(nativeHandl
     sockOpts |= kCFSocketCloseOnInvalidate
     CFSocketSetSocketFlags(sock, sockOpts)
 
-
     addSocketToRunLoop(sock)
 
     return sock

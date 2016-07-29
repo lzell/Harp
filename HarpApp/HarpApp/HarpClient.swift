@@ -6,7 +6,7 @@ protocol HarpClientDelegate : class {
     func hostDidDisconnect()
 }
 
-class HarpClient : Proto1ReadContract {
+class HarpClient {
     var bluetoothServiceResolver : BluetoothService.Resolver!
 
     weak var delegate : HarpClientDelegate?

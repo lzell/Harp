@@ -1,15 +1,7 @@
-//
-//  PadViewController.swift
-//  HarpApp
-//
-//  Created by Lou Zell on 7/24/16.
-//  Copyright © 2016 Lou Zell. All rights reserved.
-//
-
 import UIKit
 import HarpCommoniOS
 
-class PadViewController : UIViewController {
+class RemoteViewController : UIViewController {
 
     // This will write out the state of the controller
     let udpWriteSocket : CFSocket = createUDPWriteSocket()

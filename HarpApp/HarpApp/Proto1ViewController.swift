@@ -2,7 +2,7 @@ import UIKit
 import HarpCommoniOS
 
 
-class Proto1ViewController : PadViewController, DpadViewDelegate, Proto1WriteContract {
+class Proto1ViewController : RemoteViewController, DpadViewDelegate, Proto1WriteContract {
 
     var bitPattern : UInt64 = 0
 

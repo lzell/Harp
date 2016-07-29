@@ -13,7 +13,7 @@ class ViewController: UIViewController, HarpClientDelegate {
     }
 
     func hostRequestsController(controllerName: String, receiveAddress: sockaddr_in6) {
-        let nextVC = (NSClassFromString("HarpApp." + controllerName) as! PadViewController.Type).init(clientUDPAddress:receiveAddress)
+        let nextVC = (NSClassFromString("HarpApp." + controllerName) as! RemoteViewController.Type).init(clientUDPAddress:receiveAddress)
         presentViewController(nextVC, animated: true, completion: nil)
     }
 

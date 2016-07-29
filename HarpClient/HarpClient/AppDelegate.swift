@@ -6,10 +6,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBOutlet weak var window: NSWindow!
 
-    let cxnManager = ConnectionManager(numConnections: 1)
-
+    let service = Service(maxConcurrentConnections: 2, controllerName: "Proto1ViewController")
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
-        cxnManager.registerService()
+        service.register()
+        window.backgroundColor = NSColor.redColor()
     }
+
+    // MARK: - Connection Manager Delegate
+    func didEstablishConnection(playerNum: Int, playerName: String) {}
+    func didDropConnection(playerNum: Int, playerName: String) {}
+    func didReceivePlayerInput(playerNum: Int, bitpattern: UInt64) {}
 }
+
+
+
