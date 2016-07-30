@@ -119,7 +119,7 @@ class Service : Proto1ReadContract {
                 state <<= 8
                 state |= UInt64(buf[i])
             }
-            translateState(state)
+            translateState(state, udpAddr: addrOut.sin6_addr)
         }
 
         if (posixErr != 0) {
@@ -175,7 +175,24 @@ class Service : Proto1ReadContract {
 //    func didDropConnection(playerNum: Int, playerName: String)
 //    func didReceivePlayerInput(playerNum: Int, bitpattern: UInt64)
 
-    func translateState(bitPattern: UInt64) {
+    func translateState(bitPattern: UInt64, udpAddr: in6_addr) {
+        var player: Int?
+        for sock in connectionSlotMap.keyEnumerator() {
+            let data = CFSocketCopyPeerAddress(sock as! CFSocket)
+            let sockaddr : sockaddr_in6 = valuePtrCast(CFDataGetBytePtr(data)).memory
+            var sockIn6 = sockaddr.sin6_addr
+
+            print("Size of in6_addr is: \(sizeofValue(sockIn6))")
+            var udpMut = udpAddr
+
+            if memcmp(&udpMut, &sockIn6, sizeofValue(sockIn6)) == 0 {
+                player = connectionSlotMap.objectForKey(sock) as! Int
+                break
+            }
+        }
+
+        print("player is: \(player)")
+
         let dpadState = dpadStateFromBitPattern(bitPattern)
         let bBtnState = bButtonStateFromBitPattern(bitPattern)
         let aBtnState = aButtonStateFromBitPattern(bitPattern)

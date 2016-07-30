@@ -29,6 +29,10 @@ public func valuePtrCast<T>(voidPtr: UnsafeMutablePointer<Void>) -> UnsafeMutabl
     return UnsafeMutablePointer<T>(voidPtr)
 }
 
+public func valuePtrCast<T>(voidPtr: UnsafePointer<Void>) -> UnsafePointer<T> {
+    return UnsafePointer<T>(voidPtr)
+}
+
 // MARK: - String Helpers
 
 public func stripWhitespace(str: String) -> String {
