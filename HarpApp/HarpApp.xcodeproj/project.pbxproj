@@ -66,8 +66,8 @@
 		9A80D7AE1D4AB90D00290848 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				9A33CA081D4700A2008837A5 /* DpadView.swift */,
 				9A33CA0C1D481FA9008837A5 /* ButtonView.swift */,
+				9A33CA081D4700A2008837A5 /* DpadView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -93,12 +93,12 @@
 		9A826DF51D1CB398007F2553 /* HarpApp */ = {
 			isa = PBXGroup;
 			children = (
-				9A80D7AE1D4AB90D00290848 /* Views */,
 				9AA5ADAD1D4582050086587A /* Controllers */,
+				9A80D7AE1D4AB90D00290848 /* Views */,
 				9A826DF61D1CB398007F2553 /* AppDelegate.swift */,
+				9AA5ADAB1D45706D0086587A /* Extensions.swift */,
 				9A9052A91D4AA78600CF678F /* HarpClient.swift */,
 				9A826DF81D1CB398007F2553 /* ViewController.swift */,
-				9AA5ADAB1D45706D0086587A /* Extensions.swift */,
 			);
 			path = HarpApp;
 			sourceTree = "<group>";

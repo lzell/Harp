@@ -27,24 +27,6 @@ class Proto1ViewController : RemoteViewController, DpadViewDelegate, Proto1Write
         sendBitPattern()
     }
 
-    private func sendBitPattern() {
-        // Copy state
-        var x = bitPattern
-        var byteArray = [UInt8]()
-        for _ in 0..<sizeof(UInt64) {
-            byteArray.append(UInt8(x))
-            x >>= 8
-        }
-        byteArray = byteArray.reverse()
-
-        var sock6Addr = clientUDPAddress
-        let addressData = CFDataCreateWithBytesNoCopy(kCFAllocatorDefault, valuePtrCast(&sock6Addr), sizeofValue(sock6Addr), kCFAllocatorNull)
-        let sendData = CFDataCreateWithBytesNoCopy(kCFAllocatorDefault, &byteArray, sizeofValue(sock6Addr), kCFAllocatorNull)
-        if CFSocketSendData(udpWriteSocket, addressData, sendData, -1) != .Success {
-            assert(false, "UDP socket failed to send")
-        }
-    }
-
     override func loadView() {
         let v = UIView(frame: CGRectZero)
         v.backgroundColor = UIColor.whiteColor()
@@ -81,5 +63,23 @@ class Proto1ViewController : RemoteViewController, DpadViewDelegate, Proto1Write
     func dpadStateDidChange(dpadState: DpadState) {
         updateBitPatternWithDpadState(dpadState)
         sendBitPattern()
+    }
+
+    private func sendBitPattern() {
+        // Copy state
+        var x = bitPattern
+        var byteArray = [UInt8]()
+        for _ in 0..<sizeof(UInt64) {
+            byteArray.append(UInt8(x))
+            x >>= 8
+        }
+        byteArray = byteArray.reverse()
+
+        var sock6Addr = clientUDPAddress
+        let addressData = CFDataCreateWithBytesNoCopy(kCFAllocatorDefault, valuePtrCast(&sock6Addr), sizeofValue(sock6Addr), kCFAllocatorNull)
+        let sendData = CFDataCreateWithBytesNoCopy(kCFAllocatorDefault, &byteArray, sizeofValue(sock6Addr), kCFAllocatorNull)
+        if CFSocketSendData(udpWriteSocket, addressData, sendData, -1) != .Success {
+            assert(false, "UDP socket failed to send")
+        }
     }
 }

@@ -7,7 +7,6 @@ class ViewController: UIViewController, HarpClientDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         harpClient.autoConnect()
         harpClient.delegate = self
     }
@@ -20,5 +19,4 @@ class ViewController: UIViewController, HarpClientDelegate {
     func hostDidDisconnect() {
         dismissViewControllerAnimated(true, completion: nil)
     }
-
 }

@@ -1,11 +1,3 @@
-//
-//  HarpCommoniOS.h
-//  HarpCommoniOS
-//
-//  Created by Lou Zell on 6/23/16.
-//
-//
-
 #import <UIKit/UIKit.h>
 
 //! Project version number for HarpCommoniOS.

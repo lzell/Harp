@@ -1,54 +1,68 @@
+Quick Start
+==========
+Build and run HarpHost.  Build and run HarpApp.  A gamepad will appear on
+HarpApp.  Tap some buttons.
+
+About
+=====
+This is an open source re-write from the ground up of the Joypad game
+controller, with the major caveat that it is not protocol-compliant with Joypad
+itself.  A handful of people worked on Joypad for multiple years, and this
+project is not aimed at being nearly as robust and featurefull as Joypad
+itself.  That said, this should take what many consider the hard part, network
+programming, out of your own initiatives to build bluetooth app controllers
+like Joypad.
+
+Individual bits of this project may be of use to other applications. For
+example, this is the first (that I'm aware of) pure swift wrapper around some
+of the dns_sd.h functionality -- the pieces required to locate and get the IPv6
+address and port of a bluetooth available service.
+
+One unintended but awesome implication of this design over Joypad is that it
+could be extended to allow each player to have a different controller layout.
+Imagine a bunch of people around an Apple TV that each have different
+functionality exposed to them!
+
+
 Known limitations
 =================
-Must start HarpApp before HarpClient, not sure why
+* When using the iOS simulator you must start HarpHost before HarpApp.  For
+	real devices you can start them in any order.
 
-//
-// Read: http://www.ietf.org/rfc/rfc6762.txt
-// https://developer.apple.com/library/ios/qa/qa1546/_index.html
-// https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/Streams/Articles/NetworkStreams.html
-// https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/Streams/Articles/ReadingInputStreams.html
-//
-// See this answer:
-// http://stackoverflow.com/questions/2605182/when-binding-a-client-tcp-socket-to-a-specific-local-port-with-winsock-so-reuse
+* Whereas Joypad used to "beam" skinned controllers over bluetooth, the design
+	here requires that the controller be built into controller app itself.
+	Meaning you can't just adjust some SDK calls and have a different controller
+	layout on the gamepad.  Instead, you have to build the gamepad in the HarpApp
+	(or your whitelabel) yourself.  See Proto1ViewController as an example
 
-// Unsafe ptr ref:
-// http://stackoverflow.com/a/33310021/143447
-
-// This seems promising:
-// https://developer.apple.com/library/mac/documentation/Networking/Reference/DNSServiceDiscovery_CRef/index.html#//apple_ref/doc/uid/TP40002994-CHdnssdhFunctions-SW9
-
-// https://developer.apple.com/library/ios/documentation/Swift/Conceptual/BuildingCocoaApps/InteractingWithCAPIs.html#//apple_ref/doc/uid/TP40014216-CH8-XID_11
-
-// https://developer.apple.com/library/mac/documentation/Networking/Conceptual/dns_discovery_api/Articles/registering.html
-// Research this flag: kDNSServiceFlagsIncludeAWDL, it seems promising
-// https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/NetServices/Introduction.html#//apple_ref/doc/uid/TP40002445-SW1
-// https://developer.apple.com/library/mac/documentation/Networking/Conceptual/NSNetServiceProgGuide/Introduction.html#//apple_ref/doc/uid/TP40002736
-
-// Read this:
-// https://developer.apple.com/library/ios/documentation/NetworkingInternet/Conceptual/NetworkingTopics/Articles/UsingSocketsandSocketStreams.html#//apple_ref/doc/uid/CH73-SW9
-
-// Also see "Working with packet-based sockets"
-
-// One thing I think would be interesting here is to send the full view hierarchy across the wire and have it reconstructed
-// on the other side.  Could we attach target and actions to them?  How about autolayout visual format across the wire?
-// But how to do special handling of the dpad?
-
-// Instruct from afar what the layout and behavior should be?  One way to do it would be to send all touches on that view across the
-// wire and let the client figure out what it wants to do w/ them?  Definitely excessive?  Or have a couple types (inform all movements,
-// inform tap state only)
-//
+* Hasn't been tested much
 
 
-
-======
 Notes:
-Easiest to work w/ two Xcode windows open.  Although the target stays in sync,
-it is possible to switch the output of the consoles to different apps
+======
+When debugging network prog issues, it's easiest to work with two Xcode windows
+open.  The Scheme > Target will stay in sync between the two windows,
+unfortunately, and I haven't found a way around that.  It is possible, though,
+to switch the console output between the two different running programs. Do
+this by going to View > Debug Area > Show Debug Area.  The toolbar item at the
+far right, with the tooltip of "Choose Stack Frame" (?), switches output
+between multiple running programs.
 
-Go to View > Hide Toolbar to be able to shrink the two Xcode windows to only take up half the screen
+When using the two window side-by-side technique it is best to be able to
+shrink the Xcode windows to take up only half the screen.  Do this by going to
+View > Hide Toolbar.  After that, the Xcode window can be resized (?!).
 
-The trick to working on both apps: hide the toolbar with cmd+opt+t, make each window half screen, then switch the target with cmd+ctrl+[ and ]
+Workflow: Create the second window with cmd+shift+t, hide the toolbar with
+cmd+opt+t, use spectacle hotkey to snap the windows to half size, and then
+switch targets blindly with cmd+ctrl+[
 
+
+FAQ
 ===
-Talk about use case on Apple TV.  I think there's more stuff in one of the Open* readme about why
-===
+
+Q. Why is there a huge delay from when I tap a button to when the input shows up?
+
+A. When you start the service, you specify the number of players to allow to
+connect simultaneously. If that limit has not been hit yet, then the bluetooth
+radio is still searching for other controllers in the area.  This significantly
+degrades performance.  So what do you do?  Make sure you set

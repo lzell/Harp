@@ -1,11 +1,3 @@
-//
-//  HarpCommonOSX.h
-//  HarpCommonOSX
-//
-//  Created by Lou Zell on 6/23/16.
-//
-//
-
 #import <Cocoa/Cocoa.h>
 
 //! Project version number for HarpCommonOSX.

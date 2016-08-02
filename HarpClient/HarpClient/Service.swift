@@ -1,17 +1,21 @@
+// This class should have no understanding of dpads, buttons, etc.
+
 import Foundation
 import HarpCommonOSX
 
-protocol ServiceCommunication : class {
-    func udpDataAvailable(sock: CFSocket)
-    func establishedTCPConnection(sock: CFSocket)
-
-
+protocol ServiceDelegate : class {
+    func didReceiveControllerInput(state: ControllerState, forPlayer playerNum: Int)
+    func didConnectToPlayer(playerNum: Int)
+    func didDisconnectFromPlayer(playerNum: Int)
 }
 
-class Service : Proto1ReadContract {
+class Service {
+
+    weak var delegate : ServiceDelegate?
 
     let maxConcurrentConnections : Int
     let controllerName : String
+    let inputTranslator : InputTranslator
 
     // We can't satisfy the first phase of init if these are constants (we pass self to the
     // constructors of these sockets) so we're using implicitly unwrapped vars instead:
@@ -25,13 +29,14 @@ class Service : Proto1ReadContract {
 
     var connectionSlotMap : NSMapTable
 
-    init(maxConcurrentConnections: Int, controllerName: String) {
-        // First phase
+    init(maxConcurrentConnections: Int, controllerName: String, inputTranslator: InputTranslator) {
+        /* First phase */
         self.maxConcurrentConnections = maxConcurrentConnections
         self.controllerName = controllerName
+        self.inputTranslator = inputTranslator
         connectionSlotMap = NSMapTable(keyOptions: NSPointerFunctionsOptions.OpaquePersonality, valueOptions: NSPointerFunctionsOptions.StrongMemory)
 
-        // Second phase
+        /* Second ohase */
         let (sock, port) = createBindedUDPReadSocketWithReadCallback(toContext(self)) {
             (sock, _, _, _, info: UnsafeMutablePointer<Void>) in
             let me = fromContext(UnsafeMutablePointer<Service>(info))
@@ -39,9 +44,7 @@ class Service : Proto1ReadContract {
         }
         udpReadSocket = sock
         udpReadPort = port
-        print("Reading on UDP Port \(port)")
 
-        // Second phase
         let (tcpsock, tcpport) = createBindedTCPListeningSocketWithAcceptCallback(toContext(self)) {
             (_, _, _, data: UnsafePointer<Void>, info: UnsafeMutablePointer<Void>) in
                 // TODO: Close native handle if we've already accepted maxConcurrent
@@ -52,8 +55,6 @@ class Service : Proto1ReadContract {
         }
         listeningSock = tcpsock
         listeningPort = tcpport
-
-        print("Listening on port: \(tcpport)")
     }
 
     func register() {
@@ -77,7 +78,6 @@ class Service : Proto1ReadContract {
 
         // Assign it a slot:
         let slot = findFreeSlotForSocket(sock)
-        print("Assigning to slot: \(slot)")
 
         // Hang on to this socket
         connectionSlotMap.setObject(slot, forKey: sock)
@@ -85,6 +85,9 @@ class Service : Proto1ReadContract {
         if connectionSlotMap.count >= maxConcurrentConnections {
             reg.stop()
         }
+
+        // Notify delegate
+        delegate?.didConnectToPlayer(slot)
     }
 
 
@@ -105,7 +108,6 @@ class Service : Proto1ReadContract {
         var addrOut = sockaddr_in6()
         var addrLenInOut = sizeof(sockaddr_in6)
         let bytesRead = recvfrom(CFSocketGetNative(sock), &buf, buf.count, 0, valuePtrCast(&addrOut), valuePtrCast(&addrLenInOut))
-        printAddress(addrOut)
         var posixErr: Int32 = 0
 
         if (bytesRead < 0) {
@@ -119,7 +121,7 @@ class Service : Proto1ReadContract {
                 state <<= 8
                 state |= UInt64(buf[i])
             }
-            translateState(state, udpAddr: addrOut.sin6_addr)
+            translateState(state, fromAddr: addrOut.sin6_addr)
         }
 
         if (posixErr != 0) {
@@ -148,7 +150,6 @@ class Service : Proto1ReadContract {
     }
 
 
-
     private func sendInitialDataToHarpApp(sock: CFSocket) {
         let content = payload()
         let sendData = CFDataCreateWithBytesNoCopy(nil, content, content.lengthOfBytesUsingEncoding(NSUTF8StringEncoding), kCFAllocatorNull)
@@ -158,55 +159,43 @@ class Service : Proto1ReadContract {
     }
 
     private func payload() -> String {
-        return  "Protocol-Version: 0.1.0\n" +
-            "UDP-Port: \(udpReadPort)\n" +
-        "Controller: \(controllerName)"
+        return "Protocol-Version: 0.1.0\n" +
+               "UDP-Port: \(udpReadPort)\n" +
+               "Controller: \(controllerName)"
     }
 
 
     func didDisconnect(sock: CFSocket) {
-        connectionSlotMap.removeObjectForKey(sock)
-        if connectionSlotMap.count < maxConcurrentConnections {
-            reg.start()
+        if let slot = connectionSlotMap.objectForKey(sock) as? Int {
+            connectionSlotMap.removeObjectForKey(sock)
+            if connectionSlotMap.count < maxConcurrentConnections {
+                reg.start()
+            }
+            delegate?.didDisconnectFromPlayer(slot)
+        } else {
+            assert(false)
         }
     }
 
-//    func didEstablishConnection(playerNum: Int, playerName: String)
-//    func didDropConnection(playerNum: Int, playerName: String)
-//    func didReceivePlayerInput(playerNum: Int, bitpattern: UInt64)
 
-    func translateState(bitPattern: UInt64, udpAddr: in6_addr) {
+    func translateState(bitPattern: UInt64, fromAddr _fromAddr: in6_addr) {
+        var fromAddr = _fromAddr
         var player: Int?
         for sock in connectionSlotMap.keyEnumerator() {
             let data = CFSocketCopyPeerAddress(sock as! CFSocket)
-            let sockaddr : sockaddr_in6 = valuePtrCast(CFDataGetBytePtr(data)).memory
-            var sockIn6 = sockaddr.sin6_addr
-
-            print("Size of in6_addr is: \(sizeofValue(sockIn6))")
-            var udpMut = udpAddr
-
-            if memcmp(&udpMut, &sockIn6, sizeofValue(sockIn6)) == 0 {
-                player = connectionSlotMap.objectForKey(sock) as! Int
+            let sadd : sockaddr_in6 = valuePtrCast(CFDataGetBytePtr(data)).memory
+            var commAddr = sadd.sin6_addr
+            if memcmp(&fromAddr, &commAddr, sizeofValue(commAddr)) == 0 {
+                player = connectionSlotMap.objectForKey(sock) as? Int
                 break
             }
         }
 
-        print("player is: \(player)")
-
-        let dpadState = dpadStateFromBitPattern(bitPattern)
-        let bBtnState = bButtonStateFromBitPattern(bitPattern)
-        let aBtnState = aButtonStateFromBitPattern(bitPattern)
-        print("Dpad is: \(dpadState), b is: \(bBtnState), a is: \(aBtnState)")
+        if let player = player {
+            let translated = inputTranslator.translate(bitPattern)
+            delegate?.didReceiveControllerInput(translated, forPlayer: player)
+        } else {
+            print("Ignoring packet from address not found in connection map")
+        }
     }
-
-//    func dpadStateChanged(dpadState: DpadState, forPlayer: Int)
-//    func bButtonStateChanged(bButtonState: Bool, forPlayer: Int)
-//    func aButtonStateChanged(aButtonState: Bool, forPlayer: Int)
-//
-//    func addConnection(from: sockaddr_in6)
-//    func dropConnection(from: sockaddr_in6)
-//    func translateState(bitPattern: UInt64, from: sockaddr_in6)
-//
-
-
 }
