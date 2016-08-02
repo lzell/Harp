@@ -1,7 +1,7 @@
 Quick Start
 ==========
-Build and run HarpHost.  Build and run HarpApp.  A gamepad will appear on
-HarpApp.  Tap some buttons.
+Open Harp.xcworkspace.  Build and run HarpHost.  Build and run HarpApp.  A
+gamepad will appear on HarpApp.  Tap some buttons.
 
 About
 =====
