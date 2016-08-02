@@ -253,7 +253,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = HarpClient/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.fareharbor.HarpClient;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lzell.HarpClient;
 				PRODUCT_NAME = HarpHost;
 			};
 			name = Debug;
@@ -265,7 +265,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = HarpClient/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.fareharbor.HarpClient;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lzell.HarpClient;
 				PRODUCT_NAME = HarpHost;
 			};
 			name = Release;
