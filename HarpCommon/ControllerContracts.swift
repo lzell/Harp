@@ -3,7 +3,7 @@ import Foundation
 // MARK: - Generic
 public protocol ControllerState {}
 public protocol InputTranslator {
-    func translate(bitPattern: UInt64) -> ControllerState
+    func translate(_ bitPattern: UInt64) -> ControllerState
 }
 
 
@@ -30,7 +30,7 @@ public struct Proto1InputTranslator : Proto1ReadContract, InputTranslator {
 
     public init() {}
 
-    public func translate(bitPattern: UInt64) -> ControllerState {
+    public func translate(_ bitPattern: UInt64) -> ControllerState {
         let ret = Proto1ControllerState(
             dpadState: dpadStateFromBitPattern(bitPattern),
             bButtonState : bButtonStateFromBitPattern(bitPattern),
@@ -41,24 +41,24 @@ public struct Proto1InputTranslator : Proto1ReadContract, InputTranslator {
 }
 
 public protocol Proto1ReadContract {
-    func dpadStateFromBitPattern(bitPattern: UInt64) -> DpadState
-    func aButtonStateFromBitPattern(bitPattern: UInt64) -> Bool
-    func bButtonStateFromBitPattern(bitPattern: UInt64) -> Bool
+    func dpadStateFromBitPattern(_ bitPattern: UInt64) -> DpadState
+    func aButtonStateFromBitPattern(_ bitPattern: UInt64) -> Bool
+    func bButtonStateFromBitPattern(_ bitPattern: UInt64) -> Bool
 }
 
 extension Proto1ReadContract {
-    public func dpadStateFromBitPattern(bitPattern: UInt64) -> DpadState {
+    public func dpadStateFromBitPattern(_ bitPattern: UInt64) -> DpadState {
         let shift = Proto1Shift.dpad
         let dpadBitsUnshifted = (bitPattern & (0xF << shift)) >> shift
         return DpadState(rawValue: Int(dpadBitsUnshifted))!
     }
 
-    public func aButtonStateFromBitPattern(bitPattern: UInt64) -> Bool {
+    public func aButtonStateFromBitPattern(_ bitPattern: UInt64) -> Bool {
         let shift = Proto1Shift.aButton
         let aButtonUnshifted = (bitPattern & (1 << shift)) >> shift
         return Bool(Int(aButtonUnshifted))
     }
-    public func bButtonStateFromBitPattern(bitPattern: UInt64) -> Bool {
+    public func bButtonStateFromBitPattern(_ bitPattern: UInt64) -> Bool {
         let shift = Proto1Shift.bButton
         let bButtonUnshifted = (bitPattern & (1 << shift)) >> shift
         return Bool(Int(bButtonUnshifted))
@@ -70,21 +70,21 @@ extension Proto1ReadContract {
 
 public protocol Proto1WriteContract : class {
     var bitPattern : UInt64 { get set }
-    func updateBitPatternWithDpadState(dpadState: DpadState)
-    func updateBitPatternWithAButtonState(buttonState: Bool)
-    func updateBitPatternWithBButtonState(buttonState: Bool)
+    func updateBitPatternWithDpadState(_ dpadState: DpadState)
+    func updateBitPatternWithAButtonState(_ buttonState: Bool)
+    func updateBitPatternWithBButtonState(_ buttonState: Bool)
 }
 
 extension Proto1WriteContract {
-    public func updateBitPatternWithDpadState(dpadState: DpadState) {
+    public func updateBitPatternWithDpadState(_ dpadState: DpadState) {
         let shift = Proto1Shift.dpad
-        var dpadBits : UInt64 = 0xF << shift
+        let dpadBits : UInt64 = 0xF << shift
         let dpadMask : UInt64 = ~dpadBits
         bitPattern &= dpadMask
         bitPattern |= UInt64(dpadState.rawValue) << shift
     }
 
-    public func updateBitPatternWithAButtonState(buttonState: Bool) {
+    public func updateBitPatternWithAButtonState(_ buttonState: Bool) {
         let shift = Proto1Shift.aButton
         if buttonState {
             bitPattern |= (1 << shift)
@@ -93,7 +93,7 @@ extension Proto1WriteContract {
         }
     }
 
-    public func updateBitPatternWithBButtonState(buttonState: Bool) {
+    public func updateBitPatternWithBButtonState(_ buttonState: Bool) {
         let shift = Proto1Shift.bButton
         if buttonState {
             bitPattern |= (1 << shift)
