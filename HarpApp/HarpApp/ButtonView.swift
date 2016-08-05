@@ -13,10 +13,10 @@ class ButtonView : UIView {
             if oldValue != btnState {
                 if btnState {
                     didPress?(sender: self)
-                    backgroundColor = UIColor.darkGrayColor()
+                    backgroundColor = UIColor.darkGray
                 } else {
                     didRelease?(sender: self)
-                    backgroundColor = UIColor.grayColor()
+                    backgroundColor = UIColor.gray
                 }
             }
         }
@@ -24,34 +24,34 @@ class ButtonView : UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor.grayColor()
-        multipleTouchEnabled = false
+        backgroundColor = UIColor.gray
+        isMultipleTouchEnabled = false
         layer.borderWidth = 0.5
-        layer.borderColor = UIColor.whiteColor().CGColor
+        layer.borderColor = UIColor.white.cgColor
 
         addSubview(label)
-        addConstraint(NSLayoutConstraint(item: label, attribute: .CenterX, relatedBy: .Equal, toItem: self, attribute: .CenterX, multiplier: 1, constant: 0))
-        addConstraint(NSLayoutConstraint(item: label, attribute: .CenterY, relatedBy: .Equal, toItem: self, attribute: .CenterY, multiplier: 1, constant: 0))
+        addConstraint(NSLayoutConstraint(item: label, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0))
+        addConstraint(NSLayoutConstraint(item: label, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0))
         label.text = "Tmp"
     }
 
     required init?(coder: NSCoder) { super.init(coder: coder); assert(false) }
 
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        let hit = hitTest(touches.first!.locationInView(self), withEvent: event) != nil
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let hit = hitTest(touches.first!.location(in: self), with: event) != nil
         btnState = hit
     }
 
-    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        let hit = hitTest(touches.first!.locationInView(self), withEvent: event) != nil
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let hit = hitTest(touches.first!.location(in: self), with: event) != nil
         btnState = hit
     }
 
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         btnState = false
     }
 
-    override func touchesCancelled(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         btnState = false
     }
 }

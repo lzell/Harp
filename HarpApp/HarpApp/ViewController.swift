@@ -13,7 +13,7 @@ class ViewController: UIViewController, HarpClientDelegate {
         postinit()
     }
 
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         postinit()
     }
@@ -21,52 +21,52 @@ class ViewController: UIViewController, HarpClientDelegate {
     private func postinit() {
         harpClient.startSearchForHarpHosts()
         harpClient.delegate = self
-        nc().addObserver(self, selector: #selector(didEnterBackground(_:)), name: UIApplicationDidEnterBackgroundNotification, object: nil)
-        nc().addObserver(self, selector: #selector(willEnterForeground(_:)), name: UIApplicationWillEnterForegroundNotification, object: nil)
+        nc().addObserver(self, selector: #selector(didEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
+        nc().addObserver(self, selector: #selector(willEnterForeground(_:)), name: Notification.Name.UIApplicationWillEnterForeground, object: nil)
     }
 
     deinit {
         harpClient.stopSearchingForHarpHosts()
-        nc().removeObserver(self, name: UIApplicationDidEnterBackgroundNotification, object: nil)
+        nc().removeObserver(self, name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
     }
 
 
     // MARK: - Incoming
 
-    @objc private func didEnterBackground(note: NSNotification) {
+    @objc private func didEnterBackground(_ note: Notification) {
         harpClient.closeAnyConnections()
         harpClient.stopSearchingForHarpHosts()
     }
 
-    @objc private func willEnterForeground(note: NSNotification) {
+    @objc private func willEnterForeground(_ note: Notification) {
         harpClient.startSearchForHarpHosts()
     }
 
 
-    func didFindHost(host: Host) {
+    func didFindHost(_ host: Host) {
         print("Found hostname:\(host.name) addressCount:\(host.addresses.count)")
         harpClient.stopSearchingForHarpHosts()
         harpClient.connectToHost(host)
     }
 
-    func didFailToConnectToHost(host: Host) {
+    func didFailToConnectToHost(_ host: Host) {
         print("Failed to connect to host")
     }
 
-    func didEstablishConnectionToHost(host: Host, withHandshakeInfo handshakeInfo: HandshakeInfo) {
+    func didEstablishConnectionToHost(_ host: Host, withHandshakeInfo handshakeInfo: HandshakeInfo) {
         print("Connected to hostname: \(host.name)")
         let nextVC = (NSClassFromString("HarpApp." + handshakeInfo.controllerName) as! RemoteViewController.Type).init(clientUDPAddress: handshakeInfo.udpReceiveAddress)
-        presentViewController(nextVC, animated: true, completion: nil)
+        present(nextVC, animated: true, completion: nil)
     }
 
-    func didDisconnectFromHost(host: Host) {
+    func didDisconnectFromHost(_ host: Host) {
         print("Disconnected from hostname: \(host.name)")
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
         harpClient.startSearchForHarpHosts()
     }
 
 
-    private func nc() -> NSNotificationCenter {
-        return NSNotificationCenter.defaultCenter()
+    private func nc() -> NotificationCenter {
+        return NotificationCenter.default
     }
 }
