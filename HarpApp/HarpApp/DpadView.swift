@@ -83,7 +83,7 @@ class DpadView : UIView {
         updateState(nil)
     }
 
-    override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
+    override func touchesCancelled(touches: Set<UITouch>, withEvent event: UIEvent?) {
         updateState(nil)
     }
 

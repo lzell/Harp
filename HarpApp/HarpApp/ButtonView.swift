@@ -51,7 +51,7 @@ class ButtonView : UIView {
         btnState = false
     }
 
-    override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
+    override func touchesCancelled(touches: Set<UITouch>, withEvent event: UIEvent?) {
         btnState = false
     }
 }
