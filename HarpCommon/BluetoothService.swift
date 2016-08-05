@@ -38,7 +38,7 @@ private func printDebug(str: String) {
 }
 
 
-public struct BluetoothServiceResult {
+public struct Host {
     public let name : String
     public let addresses : [sockaddr_in6]
 }
@@ -96,7 +96,7 @@ public class BluetoothService {
         private let browser : Browser
         private var hostResolvers : [HostAndPortResolver]
         private var addressResolvers : [IPV6Resolver]
-        private var consumer : ((BluetoothServiceResult) -> Void)?
+        private var consumer : ((Host) -> Void)?
         private var running : Bool = false
 
         public init(format: String) {
@@ -114,7 +114,7 @@ public class BluetoothService {
         // MARK: - Public API
         //
 
-        public func start(consumer: (service: BluetoothServiceResult) -> Void) {
+        public func start(consumer: (service: Host) -> Void) {
             if !running {
                 running = true
                 self.consumer = consumer
@@ -177,12 +177,11 @@ public class BluetoothService {
             let addressResolver = IPV6Resolver(hosttarget: hosttarget, port: port)
             var addressList = [sockaddr_in6]()
             addressResolver.resolved = { [weak self] (ipv6Resolver: IPV6Resolver, address: sockaddr_in6, moreComing: Bool) in
-                printDebug("Resolved address!")
                 if let safeSelf = self {
                     addressList.append(address)
                     if !moreComing {
                         // If there's no more coming, we are ready to notify the consumer:
-                        safeSelf.consumer?(BluetoothServiceResult(name: "foo", addresses: [address]))
+                        safeSelf.consumer?(Host(name: ipv6Resolver.hosttarget, addresses: [address]))
                         safeSelf.addressResolvers = safeSelf.addressResolvers.filter() {$0 !== ipv6Resolver}
                         addressList = []
                     }

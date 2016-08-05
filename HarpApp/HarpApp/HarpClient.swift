@@ -1,113 +1,155 @@
 import Foundation
 import HarpCommoniOS
 
+struct HandshakeInfo {
+    let protocolVersion : String
+    let controllerName : String
+    let udpReceiveAddress : sockaddr_in6
+}
+
 protocol HarpClientDelegate : class {
-    func hostRequestsController(controllerName: String, receiveAddress: sockaddr_in6)
-    func hostDidDisconnect()
+    func didFindHost(host: Host)
+    func didEstablishConnectionToHost(host: Host, withHandshakeInfo handshakeInfo: HandshakeInfo)
+    func didFailToConnectToHost(host: Host)
+    func didDisconnectFromHost(host: Host)
 }
 
 class HarpClient {
-    var bluetoothServiceResolver : BluetoothService.Resolver!
 
     weak var delegate : HarpClientDelegate?
+
+    private var bluetoothServiceResolver : BluetoothService.Resolver!
+    private var cxn : (sock: CFSocket, host: Host)?
 
     private let kRequestUdpPortKey = "UDP-Port"
     private let kRequestProtocolVersionKey = "Protocol-Version"
     private let kRequestControllerNameKey = "Controller"
 
-    let maxNumConcurrentConnections = 1
-    var connections : [CFSocket]
-    var pending : [CFSocket]
 
-    init() {
-        pending = []
-        connections = []
+    func startSearchForHarpHosts() {
+        startResolver()
     }
 
-    func removeSocket(sock: CFSocket, inout from: [CFSocket]) {
-        let _idx = from.indexOf() { $0 === sock }
-        if let idx = _idx {
-            from.removeAtIndex(idx)
+    func stopSearchingForHarpHosts() {
+        stopResolver()
+    }
+
+    func connectToHost(host: Host) {
+        assert(cxn == nil, "Assuming we only connect to one host")
+        assert(host.addresses.count > 0, "Need at least one address")
+        let addr = host.addresses.first!
+        let sock = createConnectingTCPSocketWithConnectCallback(addr, toContext(self)) { (sock, type, _, data, info) in
+            let me = fromContext(UnsafeMutablePointer<HarpClient>(info))
+            me.decipherSocketCallback(sock, type, data)
+        }
+        cxn = (sock, host)
+    }
+
+    // Note that invalidating a connected CF socket does not trigger the zero-data-length
+    // callback that we otherwise use to detect and surface a disconnected socket.  We'll
+    // notify the delegate ourselves.
+    func closeAnyConnections() {
+        if let (sock, host) = cxn {
+            let shouldNotify = CFSocketIsValid(sock)
+            CFSocketInvalidate(sock)
+            if shouldNotify {
+                notifyDidDisconnectFromHost(host)
+            }
+            cxn = nil
         }
     }
 
-    func stopResolver() {
+
+    // MARK: -
+
+    private func stopResolver() {
         guard bluetoothServiceResolver != nil else { return }
         bluetoothServiceResolver.stop()
         bluetoothServiceResolver = nil
     }
 
-    func startResolver() {
+    private func startResolver() {
         guard bluetoothServiceResolver == nil else { return }
         bluetoothServiceResolver = BluetoothService.Resolver(format: "_harp._tcp")
-        bluetoothServiceResolver.start() {  [weak self] (bluetoothService) in
-            print("Resolved: \(bluetoothService.addresses.count) addresses.  Connecting to first...")
-            self?.connectTo(bluetoothService.addresses[0])
-            self?.stopResolver()
-        }
+        bluetoothServiceResolver.start(notifyDidFindHost)
     }
 
-    func autoConnect() {
-        startResolver()
-    }
 
-    func connectTo(addr: sockaddr_in6) {
-        let psock = createConnectingTCPSocketWithConnectCallback(addr, toContext(self)) {
-            (sock, type, _, data: UnsafePointer<Void>, info: UnsafeMutablePointer<Void>)
-            in
+    // MARK: - Internal Socket handling
 
-            let me = fromContext(UnsafeMutablePointer<HarpClient>(info))
-            if type == .ConnectCallBack {
-                if data == nil {
-                    me.socketDidConnect(sock)
-                } else {
-                    // Data is a pointer to an SInt32 error code in this case
-                    let errCode = UnsafePointer<Int32>(data).memory
-                    perror(strerror(errCode))
-                    // Perplexed by this.  I've only ever hit this assert on simulator.
-                    // Remedy on simulator: Start Host, then start App
-                    assert(false)
-                }
+    private func decipherSocketCallback(sock: CFSocket, _ type: CFSocketCallBackType, _ data: UnsafePointer<Void>) {
+        if type == .ConnectCallBack {
+            // In this case the data argument is either NULL, or a pointer to
+            // an SInt32 error code if the connect failed
+            if data == nil {
+                socketDidConnect(sock)
             } else {
-                let cfdata = fromContext(UnsafePointer<CFData>(data))
-                if CFDataGetLength(cfdata) == 0 {
-                    // With a connection-oriented socket, if the connection is broken from the
-                    // other end, then one final kCFSocketReadCallBack or kCFSocketDataCallBack
-                    // will occur.  In the case of kCFSocketReadCallBack, the underlying socket
-                    // will have 0 bytes available to read.  In the case of kCFSocketDataCallBack,
-                    // the data argument will be a CFDataRef of length 0.
-                    me.socketDidDisconnect(sock)
+                let errCode = UnsafePointer<Int32>(data).memory
+                socketDidFailToConnect(sock, err: strerror(errCode))
+            }
+
+        } else if type == .DataCallBack {
+            // With a connection-oriented socket, if the connection is broken from the
+            // other end, then one final kCFSocketReadCallBack or kCFSocketDataCallBack
+            // will occur.  In the case of kCFSocketReadCallBack, the underlying socket
+            // will have 0 bytes available to read.  In the case of kCFSocketDataCallBack,
+            // the data argument will be a CFDataRef of length 0.
+            let cfdata = fromContext(UnsafePointer<CFData>(data))
+            if CFDataGetLength(cfdata) == 0 {
+                socketDidDisconnect(sock)
+            } else {
+                // Not putting in any protection about partial buffers! We'll
+                // see what happens in practice.
+                if let msg = String(data:cfdata, encoding: NSUTF8StringEncoding) {
+                    socketDidRead(sock, msg)
                 } else {
-                    // Not putting in any protection about partial buffers! We'll
-                    // see what happens in practice.
-                    if let request = String(data:cfdata, encoding: NSUTF8StringEncoding) {
-                        me.didReceiveInitialData(sock, request)
-                    } else {
-                        assert(false, "Receiving something other than a string.")
-                    }
+                    assert(false, "Receiving something other than a string.")
                 }
             }
-        }
 
-        pending.append(psock)
-    }
-
-    func socketDidDisconnect(sock: CFSocket) {
-        removeSocket(sock, from: &connections)
-        delegate?.hostDidDisconnect()
-
-        if connections.count < maxNumConcurrentConnections {
-            print("Connections dropped below max concurrent, restarting the search...")
-            startResolver()
+        } else {
+            assert(false)
         }
     }
 
-    func socketDidConnect(sock: CFSocket) {
-        removeSocket(sock, from: &pending)
-        connections.append(sock)
+
+    private func socketDidConnect(sock: CFSocket) {
+        assert(cxn != nil)
+        assert(cxn!.sock === sock)
     }
 
-    func parseRequest(request: String) -> [String:String] {
+    private func socketDidFailToConnect(sock: CFSocket, err: UnsafePointer<Int8>) {
+        assert(cxn != nil)
+        assert(cxn!.sock === sock)
+        perror(err)
+        // Perplexed by this.  I've only ever hit this assert on simulator.
+        // Remedy on simulator: Start Host, then start App
+        assert(false)
+        notifyDidFailToConnectToHost(cxn!.host)
+        cxn = nil
+    }
+
+    private func socketDidDisconnect(sock: CFSocket) {
+        assert(cxn != nil)
+        assert(cxn!.sock === sock)
+        notifyDidDisconnectFromHost(cxn!.host)
+        CFSocketInvalidate(cxn!.sock)   // Is this necessary?
+        cxn = nil
+    }
+
+    // Building in an assumption that the only read we get from the host is initial data.
+    private func socketDidRead(sock: CFSocket, _ msg: String) {
+        assert(cxn != nil)
+        assert(cxn!.sock === sock)
+
+        let handshakeInfo = createHandshakeInfo(parseRequest(msg), referenceSock: cxn!.sock)
+        notifyDidEstablishConnectionToHost(cxn!.host, withHandshakeInfo: handshakeInfo)
+    }
+
+
+    // MARK: - Utils
+
+    private func parseRequest(request: String) -> [String:String] {
         var ret : [String:String] = [:]
         let lines : [String] = request.componentsSeparatedByString("\n")
         lines.forEach { (line) in
@@ -117,26 +159,43 @@ class HarpClient {
         return ret
     }
 
-    func didReceiveInitialData(sock: CFSocket, _ request: String) {
-        print("Client sent a message: \(request)")
 
-        let dict = parseRequest(request)
+    // We construct the remote UDP socket address based on the TCP address of a reference socket, with 
+    // the only overrided property being port.
+    private func createHandshakeInfo(dict: [String:String], referenceSock: CFSocket) -> HandshakeInfo {
         let udpPortStr = dict[kRequestUdpPortKey]
         let controllerName = dict[kRequestControllerNameKey]
-        let _ = dict[kRequestProtocolVersionKey]
+        let protoVersion = dict[kRequestProtocolVersionKey]
 
         assert(udpPortStr != nil)
         assert(controllerName != nil)
+        assert(protoVersion != nil)
 
-        // We construct the remote UDP socket address based on the TCP address; the only
-        // property we overwrite is the port:
         let receivePort = UInt16(udpPortStr!)!
-        let data = CFSocketCopyPeerAddress(sock)
-        let sockAddr6Ptr = UnsafeMutablePointer<sockaddr_in6>(CFDataGetBytePtr(data))
-        var sockAddr6 = sockAddr6Ptr.memory
-        sockAddr6.sin6_port = CFSwapInt16HostToBig(receivePort)
-        delegate?.hostRequestsController(controllerName!, receiveAddress: sockAddr6)
+        let data = CFSocketCopyPeerAddress(referenceSock)
+        var sadd : sockaddr_in6 = valuePtrCast(CFDataGetBytePtr(data)).memory
+        sadd.sin6_port = CFSwapInt16HostToBig(receivePort)
+
+        return HandshakeInfo(protocolVersion: protoVersion!, controllerName: controllerName!, udpReceiveAddress: sadd)
     }
 
 
+    // MARK: - Outgoing
+
+    func notifyDidFindHost(host: Host) {
+        delegate?.didFindHost(host)
+    }
+
+
+    func notifyDidDisconnectFromHost(host: Host) {
+        delegate?.didDisconnectFromHost(host)
+    }
+
+    func notifyDidFailToConnectToHost(host: Host) {
+        delegate?.didFailToConnectToHost(host)
+    }
+
+    func notifyDidEstablishConnectionToHost(host: Host, withHandshakeInfo handshakeInfo: HandshakeInfo) {
+        delegate?.didEstablishConnectionToHost(host, withHandshakeInfo: handshakeInfo)
+    }
 }
