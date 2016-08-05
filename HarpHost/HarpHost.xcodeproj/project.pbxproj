@@ -18,9 +18,9 @@
 		9A9052AB1D4AA7A200CF678F /* Service.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		9AD637A81D1CB46F00BBF330 /* HarpHost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HarpHost.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AD637AB1D1CB46F00BBF330 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		9AD637AD1D1CB46F00BBF330 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = HarpClient/Assets.xcassets; sourceTree = "<group>"; };
+		9AD637AD1D1CB46F00BBF330 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = HarpHost/Assets.xcassets; sourceTree = "<group>"; };
 		9AD637B01D1CB46F00BBF330 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		9AD637B21D1CB46F00BBF330 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = HarpClient/Info.plist; sourceTree = "<group>"; };
+		9AD637B21D1CB46F00BBF330 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = HarpHost/Info.plist; sourceTree = "<group>"; };
 		9AD637E71D1CB99E00BBF330 /* HarpCommonOSX.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HarpCommonOSX.framework; path = "../../../Library/Developer/Xcode/DerivedData/Harp-gfeeamgbpaspjfbuwcmlifbmwqzj/Build/Products/Debug/HarpCommonOSX.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -70,8 +70,7 @@
 				9AD637AB1D1CB46F00BBF330 /* AppDelegate.swift */,
 				9A9052AB1D4AA7A200CF678F /* Service.swift */,
 			);
-			name = HarpHost;
-			path = HarpClient;
+			path = HarpHost;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -159,7 +158,7 @@
 				9AD637B01D1CB46F00BBF330 /* Base */,
 			);
 			name = MainMenu.xib;
-			path = HarpClient;
+			path = HarpHost;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -252,9 +251,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = HarpClient/Info.plist;
+				INFOPLIST_FILE = HarpHost/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.lzell.HarpClient;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lzell.HarpHost;
 				PRODUCT_NAME = HarpHost;
 				SWIFT_VERSION = 3.0;
 			};
@@ -265,9 +264,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = HarpClient/Info.plist;
+				INFOPLIST_FILE = HarpHost/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.lzell.HarpClient;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lzell.HarpHost;
 				PRODUCT_NAME = HarpHost;
 				SWIFT_VERSION = 3.0;
 			};

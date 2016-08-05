@@ -5,7 +5,7 @@
       location = "group:HarpCommon/HarpCommon.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:/Users/lou/dev/Harp/HarpClient/HarpHost.xcodeproj">
+      location = "group:/Users/lou/dev/Harp/HarpHost/HarpHost.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:HarpApp/HarpApp.xcodeproj">
