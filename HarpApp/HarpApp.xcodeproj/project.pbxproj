@@ -7,28 +7,30 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9A33CA091D4700A2008837A5 /* DpadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A33CA081D4700A2008837A5 /* DpadView.swift */; };
-		9A33CA0D1D481FA9008837A5 /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A33CA0C1D481FA9008837A5 /* ButtonView.swift */; };
-		9A80D7AD1D4AB0C400290848 /* HarpCommoniOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9A80D7AC1D4AB0C400290848 /* HarpCommoniOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		9A826DF71D1CB398007F2553 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A826DF61D1CB398007F2553 /* AppDelegate.swift */; };
-		9A826DF91D1CB398007F2553 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A826DF81D1CB398007F2553 /* ViewController.swift */; };
-		9A826DFC1D1CB398007F2553 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A826DFA1D1CB398007F2553 /* Main.storyboard */; };
-		9A826DFE1D1CB398007F2553 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A826DFD1D1CB398007F2553 /* Assets.xcassets */; };
-		9A826E011D1CB398007F2553 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A826DFF1D1CB398007F2553 /* LaunchScreen.storyboard */; };
-		9A9052AA1D4AA78600CF678F /* HarpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9052A91D4AA78600CF678F /* HarpClient.swift */; };
-		9AA5ADA81D4567C30086587A /* Proto1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5ADA71D4567C30086587A /* Proto1ViewController.swift */; };
-		9AA5ADAC1D45706D0086587A /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5ADAB1D45706D0086587A /* Extensions.swift */; };
-		9AA5ADAF1D4583810086587A /* RemoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5ADAE1D4583810086587A /* RemoteViewController.swift */; };
+		9AD0145F1D55542F001BEE77 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD014541D55542F001BEE77 /* AppDelegate.swift */; };
+		9AD014601D55542F001BEE77 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AD014551D55542F001BEE77 /* Assets.xcassets */; };
+		9AD014611D55542F001BEE77 /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD014561D55542F001BEE77 /* ButtonView.swift */; };
+		9AD014621D55542F001BEE77 /* DpadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD014571D55542F001BEE77 /* DpadView.swift */; };
+		9AD014631D55542F001BEE77 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD014581D55542F001BEE77 /* Extensions.swift */; };
+		9AD014641D55542F001BEE77 /* HarpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD014591D55542F001BEE77 /* HarpClient.swift */; };
+		9AD014651D55542F001BEE77 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9AD0145A1D55542F001BEE77 /* Info.plist */; };
+		9AD014661D55542F001BEE77 /* Proto1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD0145B1D55542F001BEE77 /* Proto1ViewController.swift */; };
+		9AD014671D55542F001BEE77 /* RemoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD0145C1D55542F001BEE77 /* RemoteViewController.swift */; };
+		9AD014681D55542F001BEE77 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD0145D1D55542F001BEE77 /* ViewController.swift */; };
+		9AD014691D55542F001BEE77 /* Base.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 9AD0145E1D55542F001BEE77 /* Base.lproj */; };
+		9AD0146C1D555482001BEE77 /* HarpCommoniOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9AD0146B1D555482001BEE77 /* HarpCommoniOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		9AD014711D55552F001BEE77 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9AD0146D1D55552F001BEE77 /* LaunchScreen.storyboard */; };
+		9AD014721D55552F001BEE77 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9AD0146F1D55552F001BEE77 /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		9A80D7AB1D4AB0A900290848 /* Embed Frameworks */ = {
+		9AD0146A1D55546B001BEE77 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				9A80D7AD1D4AB0C400290848 /* HarpCommoniOS.framework in Embed Frameworks */,
+				9AD0146C1D555482001BEE77 /* HarpCommoniOS.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -36,24 +38,26 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		9A33CA081D4700A2008837A5 /* DpadView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DpadView.swift; sourceTree = "<group>"; };
-		9A33CA0C1D481FA9008837A5 /* ButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
-		9A80D7AC1D4AB0C400290848 /* HarpCommoniOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HarpCommoniOS.framework; sourceTree = "<group>"; };
-		9A826DF31D1CB398007F2553 /* HarpApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HarpApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		9A826DF61D1CB398007F2553 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		9A826DF81D1CB398007F2553 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		9A826DFB1D1CB398007F2553 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		9A826DFD1D1CB398007F2553 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = HarpApp/Assets.xcassets; sourceTree = "<group>"; };
-		9A826E001D1CB398007F2553 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		9A826E021D1CB398007F2553 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = HarpApp/Info.plist; sourceTree = "<group>"; };
-		9A9052A91D4AA78600CF678F /* HarpClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HarpClient.swift; sourceTree = "<group>"; };
-		9AA5ADA71D4567C30086587A /* Proto1ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Proto1ViewController.swift; sourceTree = "<group>"; };
-		9AA5ADAB1D45706D0086587A /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		9AA5ADAE1D4583810086587A /* RemoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteViewController.swift; sourceTree = "<group>"; };
+		9AD0143E1D5553C4001BEE77 /* HarpApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HarpApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9AD014531D55542F001BEE77 /* HarpApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HarpApp-Bridging-Header.h"; sourceTree = "<group>"; };
+		9AD014541D55542F001BEE77 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		9AD014551D55542F001BEE77 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9AD014561D55542F001BEE77 /* ButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
+		9AD014571D55542F001BEE77 /* DpadView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DpadView.swift; sourceTree = "<group>"; };
+		9AD014581D55542F001BEE77 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		9AD014591D55542F001BEE77 /* HarpClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HarpClient.swift; sourceTree = "<group>"; };
+		9AD0145A1D55542F001BEE77 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9AD0145B1D55542F001BEE77 /* Proto1ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Proto1ViewController.swift; sourceTree = "<group>"; };
+		9AD0145C1D55542F001BEE77 /* RemoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteViewController.swift; sourceTree = "<group>"; };
+		9AD0145D1D55542F001BEE77 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		9AD0145E1D55542F001BEE77 /* Base.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Base.lproj; sourceTree = "<group>"; };
+		9AD0146B1D555482001BEE77 /* HarpCommoniOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HarpCommoniOS.framework; sourceTree = "<group>"; };
+		9AD0146E1D55552F001BEE77 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		9AD014701D55552F001BEE77 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		9A826DF01D1CB398007F2553 /* Frameworks */ = {
+		9AD0143B1D5553C4001BEE77 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -63,77 +67,80 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		9A80D7AE1D4AB90D00290848 /* Views */ = {
+		9AD014351D5553C4001BEE77 = {
 			isa = PBXGroup;
 			children = (
-				9A33CA0C1D481FA9008837A5 /* ButtonView.swift */,
-				9A33CA081D4700A2008837A5 /* DpadView.swift */,
-			);
-			name = Views;
-			sourceTree = "<group>";
-		};
-		9A826DEA1D1CB398007F2553 = {
-			isa = PBXGroup;
-			children = (
-				9A80D7AC1D4AB0C400290848 /* HarpCommoniOS.framework */,
-				9A826DF51D1CB398007F2553 /* HarpApp */,
-				9A826DF41D1CB398007F2553 /* Products */,
-				9A9E0B921D23197D009A0538 /* Supporting Files */,
+				9AD0146B1D555482001BEE77 /* HarpCommoniOS.framework */,
+				9AD014401D5553C4001BEE77 /* HarpApp */,
+				9AD0143F1D5553C4001BEE77 /* Products */,
+				9AD014751D562DA3001BEE77 /* Supporting Files */,
 			);
 			sourceTree = "<group>";
 		};
-		9A826DF41D1CB398007F2553 /* Products */ = {
+		9AD0143F1D5553C4001BEE77 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9A826DF31D1CB398007F2553 /* HarpApp.app */,
+				9AD0143E1D5553C4001BEE77 /* HarpApp.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		9A826DF51D1CB398007F2553 /* HarpApp */ = {
+		9AD014401D5553C4001BEE77 /* HarpApp */ = {
 			isa = PBXGroup;
 			children = (
-				9AA5ADAD1D4582050086587A /* Controllers */,
-				9A80D7AE1D4AB90D00290848 /* Views */,
-				9A826DF61D1CB398007F2553 /* AppDelegate.swift */,
-				9AA5ADAB1D45706D0086587A /* Extensions.swift */,
-				9A9052A91D4AA78600CF678F /* HarpClient.swift */,
-				9A826DF81D1CB398007F2553 /* ViewController.swift */,
+				9AD014731D562D5C001BEE77 /* Controllers */,
+				9AD014741D562D75001BEE77 /* Views */,
+				9AD014541D55542F001BEE77 /* AppDelegate.swift */,
+				9AD014581D55542F001BEE77 /* Extensions.swift */,
+				9AD014591D55542F001BEE77 /* HarpClient.swift */,
+				9AD0145D1D55542F001BEE77 /* ViewController.swift */,
 			);
 			path = HarpApp;
 			sourceTree = "<group>";
 		};
-		9A9E0B921D23197D009A0538 /* Supporting Files */ = {
+		9AD014731D562D5C001BEE77 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				9A826DFD1D1CB398007F2553 /* Assets.xcassets */,
-				9A826E021D1CB398007F2553 /* Info.plist */,
-				9A826DFF1D1CB398007F2553 /* LaunchScreen.storyboard */,
-				9A826DFA1D1CB398007F2553 /* Main.storyboard */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		9AA5ADAD1D4582050086587A /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				9AA5ADA71D4567C30086587A /* Proto1ViewController.swift */,
-				9AA5ADAE1D4583810086587A /* RemoteViewController.swift */,
+				9AD0145B1D55542F001BEE77 /* Proto1ViewController.swift */,
+				9AD0145C1D55542F001BEE77 /* RemoteViewController.swift */,
 			);
 			name = Controllers;
+			sourceTree = "<group>";
+		};
+		9AD014741D562D75001BEE77 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9AD014561D55542F001BEE77 /* ButtonView.swift */,
+				9AD014571D55542F001BEE77 /* DpadView.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		9AD014751D562DA3001BEE77 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9AD014551D55542F001BEE77 /* Assets.xcassets */,
+				9AD0145E1D55542F001BEE77 /* Base.lproj */,
+				9AD014531D55542F001BEE77 /* HarpApp-Bridging-Header.h */,
+				9AD0145A1D55542F001BEE77 /* Info.plist */,
+				9AD0146D1D55552F001BEE77 /* LaunchScreen.storyboard */,
+				9AD0146F1D55552F001BEE77 /* Main.storyboard */,
+			);
+			name = "Supporting Files";
+			path = HarpApp;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		9A826DF21D1CB398007F2553 /* HarpApp */ = {
+		9AD0143D1D5553C4001BEE77 /* HarpApp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9A826E051D1CB398007F2553 /* Build configuration list for PBXNativeTarget "HarpApp" */;
+			buildConfigurationList = 9AD014501D5553C4001BEE77 /* Build configuration list for PBXNativeTarget "HarpApp" */;
 			buildPhases = (
-				9A826DEF1D1CB398007F2553 /* Sources */,
-				9A826DF01D1CB398007F2553 /* Frameworks */,
-				9A826DF11D1CB398007F2553 /* Resources */,
-				9A80D7AB1D4AB0A900290848 /* Embed Frameworks */,
+				9AD0143A1D5553C4001BEE77 /* Sources */,
+				9AD0143B1D5553C4001BEE77 /* Frameworks */,
+				9AD0143C1D5553C4001BEE77 /* Resources */,
+				9AD0146A1D55546B001BEE77 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -141,26 +148,27 @@
 			);
 			name = HarpApp;
 			productName = HarpApp;
-			productReference = 9A826DF31D1CB398007F2553 /* HarpApp.app */;
+			productReference = 9AD0143E1D5553C4001BEE77 /* HarpApp.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		9A826DEB1D1CB398007F2553 /* Project object */ = {
+		9AD014361D5553C4001BEE77 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0730;
+				LastSwiftUpdateCheck = 0800;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Lou Zell";
 				TargetAttributes = {
-					9A826DF21D1CB398007F2553 = {
-						CreatedOnToolsVersion = 7.3;
+					9AD0143D1D5553C4001BEE77 = {
+						CreatedOnToolsVersion = 8.0;
 						LastSwiftMigration = 0800;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
-			buildConfigurationList = 9A826DEE1D1CB398007F2553 /* Build configuration list for PBXProject "HarpApp" */;
+			buildConfigurationList = 9AD014391D5553C4001BEE77 /* Build configuration list for PBXProject "HarpApp" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -168,70 +176,70 @@
 				en,
 				Base,
 			);
-			mainGroup = 9A826DEA1D1CB398007F2553;
-			productRefGroup = 9A826DF41D1CB398007F2553 /* Products */;
+			mainGroup = 9AD014351D5553C4001BEE77;
+			productRefGroup = 9AD0143F1D5553C4001BEE77 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				9A826DF21D1CB398007F2553 /* HarpApp */,
+				9AD0143D1D5553C4001BEE77 /* HarpApp */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		9A826DF11D1CB398007F2553 /* Resources */ = {
+		9AD0143C1D5553C4001BEE77 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9A826E011D1CB398007F2553 /* LaunchScreen.storyboard in Resources */,
-				9A826DFE1D1CB398007F2553 /* Assets.xcassets in Resources */,
-				9A826DFC1D1CB398007F2553 /* Main.storyboard in Resources */,
+				9AD014651D55542F001BEE77 /* Info.plist in Resources */,
+				9AD014721D55552F001BEE77 /* Main.storyboard in Resources */,
+				9AD014711D55552F001BEE77 /* LaunchScreen.storyboard in Resources */,
+				9AD014691D55542F001BEE77 /* Base.lproj in Resources */,
+				9AD014601D55542F001BEE77 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		9A826DEF1D1CB398007F2553 /* Sources */ = {
+		9AD0143A1D5553C4001BEE77 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9A9052AA1D4AA78600CF678F /* HarpClient.swift in Sources */,
-				9AA5ADAF1D4583810086587A /* RemoteViewController.swift in Sources */,
-				9A826DF91D1CB398007F2553 /* ViewController.swift in Sources */,
-				9A33CA0D1D481FA9008837A5 /* ButtonView.swift in Sources */,
-				9AA5ADA81D4567C30086587A /* Proto1ViewController.swift in Sources */,
-				9A826DF71D1CB398007F2553 /* AppDelegate.swift in Sources */,
-				9A33CA091D4700A2008837A5 /* DpadView.swift in Sources */,
-				9AA5ADAC1D45706D0086587A /* Extensions.swift in Sources */,
+				9AD014621D55542F001BEE77 /* DpadView.swift in Sources */,
+				9AD014661D55542F001BEE77 /* Proto1ViewController.swift in Sources */,
+				9AD014611D55542F001BEE77 /* ButtonView.swift in Sources */,
+				9AD0145F1D55542F001BEE77 /* AppDelegate.swift in Sources */,
+				9AD014641D55542F001BEE77 /* HarpClient.swift in Sources */,
+				9AD014631D55542F001BEE77 /* Extensions.swift in Sources */,
+				9AD014681D55542F001BEE77 /* ViewController.swift in Sources */,
+				9AD014671D55542F001BEE77 /* RemoteViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		9A826DFA1D1CB398007F2553 /* Main.storyboard */ = {
+		9AD0146D1D55552F001BEE77 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				9A826DFB1D1CB398007F2553 /* Base */,
-			);
-			name = Main.storyboard;
-			path = HarpApp;
-			sourceTree = "<group>";
-		};
-		9A826DFF1D1CB398007F2553 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				9A826E001D1CB398007F2553 /* Base */,
+				9AD0146E1D55552F001BEE77 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
-			path = HarpApp;
+			sourceTree = "<group>";
+		};
+		9AD0146F1D55552F001BEE77 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9AD014701D55552F001BEE77 /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		9A826E031D1CB398007F2553 /* Debug */ = {
+		9AD0144E1D5553C4001BEE77 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -243,10 +251,13 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -268,16 +279,17 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		9A826E041D1CB398007F2553 /* Release */ = {
+		9AD0144F1D5553C4001BEE77 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -289,10 +301,13 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -308,34 +323,40 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
-		9A826E061D1CB398007F2553 /* Debug */ = {
+		9AD014511D5553C4001BEE77 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = HarpApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lzell.HarpApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "HarpApp/HarpApp-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
-		9A826E071D1CB398007F2553 /* Release */ = {
+		9AD014521D5553C4001BEE77 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = HarpApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lzell.HarpApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "HarpApp/HarpApp-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
@@ -343,25 +364,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9A826DEE1D1CB398007F2553 /* Build configuration list for PBXProject "HarpApp" */ = {
+		9AD014391D5553C4001BEE77 /* Build configuration list for PBXProject "HarpApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				9A826E031D1CB398007F2553 /* Debug */,
-				9A826E041D1CB398007F2553 /* Release */,
+				9AD0144E1D5553C4001BEE77 /* Debug */,
+				9AD0144F1D5553C4001BEE77 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9A826E051D1CB398007F2553 /* Build configuration list for PBXNativeTarget "HarpApp" */ = {
+		9AD014501D5553C4001BEE77 /* Build configuration list for PBXNativeTarget "HarpApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				9A826E061D1CB398007F2553 /* Debug */,
-				9A826E071D1CB398007F2553 /* Release */,
+				9AD014511D5553C4001BEE77 /* Debug */,
+				9AD014521D5553C4001BEE77 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 9A826DEB1D1CB398007F2553 /* Project object */;
+	rootObject = 9AD014361D5553C4001BEE77 /* Project object */;
 }

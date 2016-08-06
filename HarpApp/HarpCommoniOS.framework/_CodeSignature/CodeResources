@@ -6,23 +6,23 @@
 	<dict>
 		<key>Headers/HarpCommoniOS-Swift.h</key>
 		<data>
-		iZ0p4ETGiHGHsyB+ARNvtYaUckw=
+		IpLMAtxzyAUdRZnKinQRys2CWfM=
 		</data>
 		<key>Headers/HarpCommoniOS.h</key>
 		<data>
-		g0+WdSMFNC59uJzXJs4IXOLxHtY=
+		ZGAMpzgR0twZy6W+r2J2wQiWuLg=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		yEGFDMobWTPos7EAkxNKfmGX7dQ=
+		sfaZSy+U0zQBz0Q/rRRRla1y/jU=
 		</data>
-		<key>Modules/HarpCommoniOS.swiftmodule/arm64.swiftdoc</key>
+		<key>Modules/HarpCommoniOS.swiftmodule/x86_64.swiftdoc</key>
 		<data>
-		/cfOduQw89Xt+4EOYoAzGdX0zeM=
+		i1DgFEMys9DjihZDFY8UFD8UTh8=
 		</data>
-		<key>Modules/HarpCommoniOS.swiftmodule/arm64.swiftmodule</key>
+		<key>Modules/HarpCommoniOS.swiftmodule/x86_64.swiftmodule</key>
 		<data>
-		jMf7Aa2Oakg2W2v8NntHf3KX90w=
+		P87GJRCpJjzJP19b+gkE+4rm0Tg=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -32,25 +32,60 @@
 	<key>files2</key>
 	<dict>
 		<key>Headers/HarpCommoniOS-Swift.h</key>
-		<data>
-		iZ0p4ETGiHGHsyB+ARNvtYaUckw=
-		</data>
+		<dict>
+			<key>hash</key>
+			<data>
+			IpLMAtxzyAUdRZnKinQRys2CWfM=
+			</data>
+			<key>hash2</key>
+			<data>
+			CgQn8BWaqX/moikE1r899jYcyYkCs5pe/P/1jegubaI=
+			</data>
+		</dict>
 		<key>Headers/HarpCommoniOS.h</key>
-		<data>
-		g0+WdSMFNC59uJzXJs4IXOLxHtY=
-		</data>
-		<key>Modules/HarpCommoniOS.swiftmodule/arm64.swiftdoc</key>
-		<data>
-		/cfOduQw89Xt+4EOYoAzGdX0zeM=
-		</data>
-		<key>Modules/HarpCommoniOS.swiftmodule/arm64.swiftmodule</key>
-		<data>
-		jMf7Aa2Oakg2W2v8NntHf3KX90w=
-		</data>
+		<dict>
+			<key>hash</key>
+			<data>
+			ZGAMpzgR0twZy6W+r2J2wQiWuLg=
+			</data>
+			<key>hash2</key>
+			<data>
+			KnA71yq0QtvG5ZjfJzGIFhE9/2TuVGf8pZnJbsb/OmM=
+			</data>
+		</dict>
+		<key>Modules/HarpCommoniOS.swiftmodule/x86_64.swiftdoc</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			i1DgFEMys9DjihZDFY8UFD8UTh8=
+			</data>
+			<key>hash2</key>
+			<data>
+			DMXJv7djaiwmiA6RkxtDsQkjW/3ktCdOQRzPnAR5miQ=
+			</data>
+		</dict>
+		<key>Modules/HarpCommoniOS.swiftmodule/x86_64.swiftmodule</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			P87GJRCpJjzJP19b+gkE+4rm0Tg=
+			</data>
+			<key>hash2</key>
+			<data>
+			CrdchVIP1BAJOWn7BCDF9IqxuTHRyqM7DpivqxpVH4A=
+			</data>
+		</dict>
 		<key>Modules/module.modulemap</key>
-		<data>
-		/Oka8chz67VMxfz4UDurreMVgmA=
-		</data>
+		<dict>
+			<key>hash</key>
+			<data>
+			/Oka8chz67VMxfz4UDurreMVgmA=
+			</data>
+			<key>hash2</key>
+			<data>
+			dkkzAqwGwKP41inqJuPOjtnxt/MyUBwX+t/EihYS6xI=
+			</data>
+		</dict>
 	</dict>
 	<key>rules</key>
 	<dict>
