@@ -160,7 +160,7 @@ class Service {
 
     private func payload() -> String {
         return "Protocol-Version: 0.1.0\n" +
-               "UDP-Port: \(udpReadPort)\n" +
+               "UDP-Port: \(udpReadPort!)\n" +
                "Controller: \(controllerName)"
     }
 
