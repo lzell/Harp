@@ -36,7 +36,7 @@ class Service {
         self.inputTranslator = inputTranslator
         connectionSlotMap = NSMapTable(keyOptions: NSPointerFunctions.Options.opaquePersonality, valueOptions: NSPointerFunctions.Options.strongMemory)
 
-        /* Second ohase */
+        /* Second phase */
         let (sock, port) = createBindedUDPReadSocketWithReadCallback(toContext(self)) {
             (sock, _, _, _, info: UnsafeMutablePointer<Void>?) in
             let me = fromContext(UnsafeMutablePointer<Service>(info!))
@@ -151,15 +151,24 @@ class Service {
 
 
     private func sendInitialDataToHarpApp(_ sock: CFSocket) {
+        // On the receive side, use CFDataReplaceBytes
+        // On the send side
         let content = payload()
-        let sendData = CFDataCreateWithBytesNoCopy(nil, content, content.lengthOfBytes(using: String.Encoding.utf8), kCFAllocatorNull)
-        if CFSocketSendData(sock, nil, sendData, -1) != .success {
+        let numUtf8Bytes = content.lengthOfBytes(using: String.Encoding.utf8)
+        assert(numUtf8Bytes < Int(~UInt16(0)))
+        var header = UInt16(numUtf8Bytes)
+        let numHeaderBytes = sizeofValue(header)
+        let capacity = numUtf8Bytes + numHeaderBytes
+        let buf = CFDataCreateMutable(nil, capacity)
+        CFDataAppendBytes(buf, withUnsafePointer(&header) { UnsafePointer<UInt8>($0) }, numHeaderBytes)
+        CFDataAppendBytes(buf, content, numUtf8Bytes)
+        if CFSocketSendData(sock, nil, buf, -1) != .success {
             assert(false, "Socket send failed")
         }
     }
 
     private func payload() -> String {
-        return "Protocol-Version: 0.1.0\n" +
+        return "Protocol-Version: 0.1.1\n" +
                "UDP-Port: \(udpReadPort!)\n" +
                "Controller: \(controllerName)"
     }

@@ -98,9 +98,18 @@ class HarpClient {
             if CFDataGetLength(cfdata) == 0 {
                 socketDidDisconnect(sock)
             } else {
-                // Not putting in any protection about partial buffers! We'll
-                // see what happens in practice.
-                if let msg = String(data:cfdata as Data, encoding: String.Encoding.utf8) {
+                // Get length
+                var header : UInt16 = 0
+                CFDataGetBytes(cfdata, CFRangeMake(0, sizeof(UInt16.self)), withUnsafeMutablePointer(&header) { UnsafeMutablePointer<UInt8>($0) })
+                let datalen = Int(header)   // Interesting, lengthOfBytes(using: String.Encoding.utf8) does not include nul termination byte
+
+                print(header)
+                var stuff = [UInt8](repeating:0, count: datalen)
+                CFDataGetBytes(cfdata, CFRangeMake(sizeof(UInt16.self), datalen), &stuff)
+
+
+
+                if let msg = String(bytes:stuff, encoding: String.Encoding.utf8) {
                     socketDidRead(sock, msg)
                 } else {
                     assert(false, "Receiving something other than a string.")
