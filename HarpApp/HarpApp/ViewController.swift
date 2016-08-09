@@ -5,6 +5,8 @@ class ViewController: UIViewController, HarpClientDelegate {
 
     let harpClient = HarpClient()
 
+    var receiveAddr : sockaddr_in6?
+
 
     // MARK: - Init/Deinit
 
@@ -43,28 +45,40 @@ class ViewController: UIViewController, HarpClientDelegate {
     }
 
 
-    func didFindHost(_ host: Host) {
+    func didFind(host: Host) {
         print("Found hostname:\(host.name) addressCount:\(host.addresses.count)")
         harpClient.stopSearchingForHarpHosts()
         harpClient.connectToHost(host)
     }
 
-    func didFailToConnectToHost(_ host: Host) {
+
+    func didFailToConnectTo(host: Host) {
         print("Failed to connect to host")
     }
 
-    func didEstablishConnectionToHost(_ host: Host, withHandshakeInfo handshakeInfo: HandshakeInfo) {
+    func didEstablishConnectionTo(host: Host, withHandshakeInfo handshakeInfo: HandshakeInfo) {
         print("Connected to hostname: \(host.name)")
-        let nextVC = (NSClassFromString("HarpApp." + handshakeInfo.controllerName) as! RemoteViewController.Type).init(clientUDPAddress: handshakeInfo.udpReceiveAddress)
-        present(nextVC, animated: true, completion: nil)
+        receiveAddr = handshakeInfo.udpReceiveAddress
     }
 
-    func didDisconnectFromHost(_ host: Host) {
+    func didDisconnectFrom(host: Host) {
         print("Disconnected from hostname: \(host.name)")
         dismiss(animated: true, completion: nil)
         harpClient.startSearchForHarpHosts()
     }
 
+
+    func didReceiveRequestForController(name: String, from host: Host) {
+        print("Received request for controller: \(name)")
+        let nextVC = (NSClassFromString("HarpApp." + name) as! RemoteViewController.Type).init(clientUDPAddress: receiveAddr!)
+        if presentedViewController != nil {
+            dismiss(animated: true, completion: {
+                self.present(nextVC, animated: true, completion: nil)
+            })
+        } else {
+            present(nextVC, animated: true, completion: nil)
+        }
+    }
 
     private func nc() -> NotificationCenter {
         return NotificationCenter.default

@@ -3,15 +3,15 @@ import HarpCommoniOS
 
 struct HandshakeInfo {
     let protocolVersion : String
-    let controllerName : String
     let udpReceiveAddress : sockaddr_in6
 }
 
 protocol HarpClientDelegate : class {
-    func didFindHost(_ host: Host)
-    func didEstablishConnectionToHost(_ host: Host, withHandshakeInfo handshakeInfo: HandshakeInfo)
-    func didFailToConnectToHost(_ host: Host)
-    func didDisconnectFromHost(_ host: Host)
+    func didFind(host: Host)
+    func didEstablishConnectionTo(host: Host, withHandshakeInfo handshakeInfo: HandshakeInfo)
+    func didFailToConnectTo(host: Host)
+    func didDisconnectFrom(host: Host)
+    func didReceiveRequestForController(name: String, from host:Host)
 }
 
 class HarpClient {
@@ -21,9 +21,11 @@ class HarpClient {
     private var bluetoothServiceResolver : BluetoothService.Resolver!
     private var cxn : (sock: CFSocket, host: Host)?
 
-    private let kRequestUdpPortKey = "UDP-Port"
-    private let kRequestProtocolVersionKey = "Protocol-Version"
-    private let kRequestControllerNameKey = "Controller"
+    private let kRequestUdpPortKey = "udpPort"
+    private let kRequestProtocolVersionKey = "protocolVersion"
+    private let kRequestControllerNameKey = "controllerName"
+    private let kRequestHeaderHandshake = "handshake"
+    private let kRequestHeaderControllerChange = "controllerChange"
 
 
     func startSearchForHarpHosts() {
@@ -162,21 +164,32 @@ class HarpClient {
         assert(cxn != nil)
         assert(cxn!.sock === sock)
 
-        let handshakeInfo = createHandshakeInfo(parseRequest(msg), referenceSock: cxn!.sock)
-        notifyDidEstablishConnectionToHost(cxn!.host, withHandshakeInfo: handshakeInfo)
+        let (header, body) = parseRequest(msg)
+        switch header {
+        case kRequestHeaderControllerChange:
+            let controllerName = body[kRequestControllerNameKey]
+            assert(controllerName != nil)
+            notifyDidReceiveRequestForController(name: controllerName!, from: cxn!.host)
+        case kRequestHeaderHandshake:
+            let handshakeInfo = createHandshakeInfo(body, referenceSock: cxn!.sock)
+            notifyDidEstablishConnectionToHost(cxn!.host, withHandshakeInfo: handshakeInfo)
+        default:
+            assert(false)
+        }
     }
 
 
     // MARK: - Utils
 
-    private func parseRequest(_ request: String) -> [String:String] {
-        var ret : [String:String] = [:]
-        let lines : [String] = request.components(separatedBy: "\n")
+    private func parseRequest(_ request: String) -> (String, [String:String]) {
+        var body : [String:String] = [:]
+        var lines : [String] = request.components(separatedBy: "\n")
+        let header = lines.removeFirst()
         lines.forEach { (line) in
             let pair = line.components(separatedBy: ":").map() { (comp) in stripWhitespace(comp) }
-            ret[pair[0]] = pair[1]
+            body[pair[0]] = pair[1]
         }
-        return ret
+        return (header, body)
     }
 
 
@@ -184,11 +197,9 @@ class HarpClient {
     // the only overrided property being port.
     private func createHandshakeInfo(_ dict: [String:String], referenceSock: CFSocket) -> HandshakeInfo {
         let udpPortStr = dict[kRequestUdpPortKey]
-        let controllerName = dict[kRequestControllerNameKey]
         let protoVersion = dict[kRequestProtocolVersionKey]
 
         assert(udpPortStr != nil)
-        assert(controllerName != nil)
         assert(protoVersion != nil)
 
         let receivePort = UInt16(udpPortStr!)!
@@ -196,26 +207,29 @@ class HarpClient {
         var sadd : sockaddr_in6 = valuePtrCast(CFDataGetBytePtr(data)).pointee
         sadd.sin6_port = CFSwapInt16HostToBig(receivePort)
 
-        return HandshakeInfo(protocolVersion: protoVersion!, controllerName: controllerName!, udpReceiveAddress: sadd)
+        return HandshakeInfo(protocolVersion: protoVersion!, udpReceiveAddress: sadd)
     }
 
 
     // MARK: - Outgoing
 
     func notifyDidFindHost(_ host: Host) {
-        delegate?.didFindHost(host)
+        delegate?.didFind(host: host)
     }
 
-
     func notifyDidDisconnectFromHost(_ host: Host) {
-        delegate?.didDisconnectFromHost(host)
+        delegate?.didDisconnectFrom(host: host)
     }
 
     func notifyDidFailToConnectToHost(_ host: Host) {
-        delegate?.didFailToConnectToHost(host)
+        delegate?.didFailToConnectTo(host: host)
     }
 
     func notifyDidEstablishConnectionToHost(_ host: Host, withHandshakeInfo handshakeInfo: HandshakeInfo) {
-        delegate?.didEstablishConnectionToHost(host, withHandshakeInfo: handshakeInfo)
+        delegate?.didEstablishConnectionTo(host: host, withHandshakeInfo: handshakeInfo)
+    }
+
+    func notifyDidReceiveRequestForController(name: String, from host: Host) {
+        delegate?.didReceiveRequestForController(name: name, from: host)
     }
 }

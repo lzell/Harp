@@ -14,8 +14,8 @@ class Service {
     weak var delegate : ServiceDelegate?
 
     let maxConcurrentConnections : Int
-    let controllerName : String
-    let inputTranslator : InputTranslator
+    var controllerName : String?
+    var inputTranslator : InputTranslator?
 
     // We can't satisfy the first phase of init if these are constants (we pass self to the
     // constructors of these sockets) so we're using implicitly unwrapped vars instead:
@@ -29,11 +29,9 @@ class Service {
 
     var connectionSlotMap : NSMapTable<CFSocket, NSNumber>
 
-    init(maxConcurrentConnections: Int, controllerName: String, inputTranslator: InputTranslator) {
+    init(maxConcurrentConnections: Int) {
         /* First phase */
         self.maxConcurrentConnections = maxConcurrentConnections
-        self.controllerName = controllerName
-        self.inputTranslator = inputTranslator
         connectionSlotMap = NSMapTable(keyOptions: NSPointerFunctions.Options.opaquePersonality, valueOptions: NSPointerFunctions.Options.strongMemory)
 
         /* Second phase */
@@ -63,6 +61,17 @@ class Service {
         reg.start()
     }
 
+    func setController(name: String, inputTranslator: InputTranslator /*, forPlayer playerNum: Int */) {
+        self.controllerName = name
+        self.inputTranslator = inputTranslator
+
+        for sock in connectionSlotMap.keyEnumerator() {
+            let cfsock = sock as! CFSocket
+            send(content: controllerChangePayload(), on: cfsock)
+            send(content: controllerChangePayload(), on: cfsock)
+        }
+    }
+
 
     private func didAcceptNewConnection(_ handle: Int32) {
         assert(connectionSlotMap.count < maxConcurrentConnections, "We accepted a connection when we shouldn't have been listening for one")
@@ -74,7 +83,7 @@ class Service {
         }
 
         // Send initial data down:
-        sendInitialDataToHarpApp(sock)
+        send(content: handshakePayload(), on: sock)
 
         // Assign it a slot:
         let slot = findFreeSlotForSocket(sock)
@@ -143,11 +152,7 @@ class Service {
         }
     }
 
-
-    private func sendInitialDataToHarpApp(_ sock: CFSocket) {
-        // On the receive side, use CFDataReplaceBytes
-        // On the send side
-        let content = payload()
+    private func send(content: String, on socket: CFSocket) {
         let numUtf8Bytes = content.lengthOfBytes(using: String.Encoding.utf8)
         assert(numUtf8Bytes < Int(~UInt16(0)))
         var header = UInt16(numUtf8Bytes)
@@ -156,15 +161,21 @@ class Service {
         let buf = CFDataCreateMutable(nil, capacity)
         CFDataAppendBytes(buf, withUnsafePointer(&header) { UnsafePointer<UInt8>($0) }, numHeaderBytes)
         CFDataAppendBytes(buf, content, numUtf8Bytes)
-        if CFSocketSendData(sock, nil, buf, -1) != .success {
+        if CFSocketSendData(socket, nil, buf, -1) != .success {
             assert(false, "Socket send failed")
         }
     }
 
-    private func payload() -> String {
-        return "Protocol-Version: 0.1.1\n" +
-               "UDP-Port: \(udpReadPort!)\n" +
-               "Controller: \(controllerName)"
+
+    private func handshakePayload() -> String {
+        return "handshake\n" +
+               "protocolVersion: 0.1.2\n" +
+               "udpPort: \(udpReadPort!)"
+    }
+
+    private func controllerChangePayload() -> String {
+        return "controllerChange\n" +
+               "controllerName: \(controllerName!)"
     }
 
 
@@ -196,7 +207,7 @@ class Service {
         }
 
         if let player = player {
-            let translated = inputTranslator.translate(bitPattern)
+            let translated = inputTranslator!.translate(bitPattern)
             delegate?.didReceiveControllerInput(translated, forPlayer: player)
         } else {
             print("Ignoring packet from address not found in connection map")

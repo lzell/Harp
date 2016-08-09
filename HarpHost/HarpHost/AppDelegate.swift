@@ -8,7 +8,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, ServiceDelegate {
     @IBOutlet weak var window: NSWindow!
     @IBOutlet var textView: NSTextView!
 
-    let service = Service(maxConcurrentConnections: 2, controllerName: "Proto1ViewController", inputTranslator: Proto1InputTranslator())
+    @IBAction func switchController(sender: AnyObject) {
+        service.setController(name: "Proto1ViewController", inputTranslator: Proto1InputTranslator() /*, forPlayer: playerNum */)
+    }
+
+    let service = Service(maxConcurrentConnections: 2)
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         service.delegate = self
@@ -24,6 +28,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ServiceDelegate {
     }
 
     func didConnectToPlayer(_ playerNum: Int) {
+        service.setController(name: "Proto1ViewController", inputTranslator: Proto1InputTranslator() /*, forPlayer: playerNum */)
         log("Player: \(playerNum) connected")
     }
 
