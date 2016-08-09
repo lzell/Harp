@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9ACDB4D71D59606F0000F1F2 /* CircularBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACDB4D61D59606F0000F1F2 /* CircularBuffer.swift */; };
 		9AD0145F1D55542F001BEE77 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD014541D55542F001BEE77 /* AppDelegate.swift */; };
 		9AD014601D55542F001BEE77 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AD014551D55542F001BEE77 /* Assets.xcassets */; };
 		9AD014611D55542F001BEE77 /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD014561D55542F001BEE77 /* ButtonView.swift */; };
@@ -38,6 +39,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9ACDB4D61D59606F0000F1F2 /* CircularBuffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularBuffer.swift; sourceTree = "<group>"; };
 		9AD0143E1D5553C4001BEE77 /* HarpApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HarpApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AD014531D55542F001BEE77 /* HarpApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HarpApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		9AD014541D55542F001BEE77 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 				9AD014581D55542F001BEE77 /* Extensions.swift */,
 				9AD014591D55542F001BEE77 /* HarpClient.swift */,
 				9AD0145D1D55542F001BEE77 /* ViewController.swift */,
+				9ACDB4D61D59606F0000F1F2 /* CircularBuffer.swift */,
 			);
 			path = HarpApp;
 			sourceTree = "<group>";
@@ -206,6 +209,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9ACDB4D71D59606F0000F1F2 /* CircularBuffer.swift in Sources */,
 				9AD014621D55542F001BEE77 /* DpadView.swift in Sources */,
 				9AD014661D55542F001BEE77 /* Proto1ViewController.swift in Sources */,
 				9AD014611D55542F001BEE77 /* ButtonView.swift in Sources */,
@@ -380,6 +384,7 @@
 				9AD014521D5553C4001BEE77 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

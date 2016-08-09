@@ -139,13 +139,7 @@ class Service {
             // the data argument will be a CFDataRef of length 0.
             didDisconnect(sock)
         } else {
-            // Not putting in any protection about partial buffers! We'll see what happens
-            // in practice first.
-            if let message = String(data:cfdata as Data, encoding: String.Encoding.utf8) {
-                print("HarpApp sent us a message: \(message)")
-            } else {
-                assert(false, "Receiving something other than a string.")
-            }
+            assert(false)
         }
     }
 

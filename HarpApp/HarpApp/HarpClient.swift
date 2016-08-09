@@ -77,6 +77,13 @@ class HarpClient {
 
     // MARK: - Internal Socket handling
 
+    var circleBuf = CircularBuffer()
+
+    static let maxMessageSize = 1024
+    static let workingBufLen = 2 * maxMessageSize
+    var workingBuf = CFDataCreateMutable(nil, workingBufLen)
+    var idx : Int = 0
+
     private func decipherSocketCallback(_ sock: CFSocket, _ type: CFSocketCallBackType, _ data: UnsafePointer<Void>?) {
         if type == .connectCallBack {
             // In this case the data argument is either NULL, or a pointer to
@@ -95,24 +102,28 @@ class HarpClient {
             // will have 0 bytes available to read.  In the case of kCFSocketDataCallBack,
             // the data argument will be a CFDataRef of length 0.
             let cfdata = fromContext(UnsafePointer<CFData>(data!))
-            if CFDataGetLength(cfdata) == 0 {
+            let datalen = CFDataGetLength(cfdata)
+            if  datalen == 0 {
                 socketDidDisconnect(sock)
             } else {
-                // Get length
-                var header : UInt16 = 0
-                CFDataGetBytes(cfdata, CFRangeMake(0, sizeof(UInt16.self)), withUnsafeMutablePointer(&header) { UnsafeMutablePointer<UInt8>($0) })
-                let datalen = Int(header)   // Interesting, lengthOfBytes(using: String.Encoding.utf8) does not include nul termination byte
-
-                print(header)
-                var stuff = [UInt8](repeating:0, count: datalen)
-                CFDataGetBytes(cfdata, CFRangeMake(sizeof(UInt16.self), datalen), &stuff)
-
-
-
-                if let msg = String(bytes:stuff, encoding: String.Encoding.utf8) {
-                    socketDidRead(sock, msg)
-                } else {
-                    assert(false, "Receiving something other than a string.")
+                // CFNetworking chunked some data in on our behalf.  Maybe we got a full packet maybe not.
+                // Appending all data to a circular buf and reading from head:
+                circleBuf.append(data: cfdata, len: datalen)
+                let headerSize = sizeof(UInt16.self)
+                while let packLenBytes = circleBuf.peakTail(len: headerSize) {
+                    // Get length of packet msg
+                    var header : UInt16 = 0
+                    CFDataGetBytes(packLenBytes, CFRangeMake(0, headerSize), withUnsafeMutablePointer(&header) { UnsafeMutablePointer<UInt8>($0) })
+                    let packetLen = Int(header)
+                    if circleBuf.lengthStored >= packetLen + headerSize {
+                        _ = circleBuf.read(len: headerSize)
+                        let packetMsg = circleBuf.read(len: packetLen)
+                        let packetMsgBytePtr = CFDataGetBytePtr(packetMsg)!
+                        let msg = String(cString: UnsafePointer<CChar>(packetMsgBytePtr))
+                        socketDidRead(sock, msg)
+                    } else {
+                        break
+                    }
                 }
             }
 
