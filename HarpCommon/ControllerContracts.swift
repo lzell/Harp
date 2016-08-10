@@ -102,3 +102,90 @@ extension Proto1WriteContract {
         }
     }
 }
+
+
+// MARK: - Proto2 Specific
+
+/* Proto 2 Template Setup */
+
+public struct Proto2ControllerState : ControllerState {
+    public let stickState : StickState
+    public let aButtonState : Bool
+}
+
+private struct Proto2Shift {
+    static let stick : UInt64 = 1
+    static let aButton : UInt64 = 0
+}
+
+
+/* Proto 2 Read Side */
+
+public struct Proto12nputTranslator : Proto2ReadContract, InputTranslator {
+
+    public init() {}
+
+    public func translate(_ bitPattern: UInt64) -> ControllerState {
+        let ret = Proto2ControllerState(
+            stickState: stickStateFromBitPattern(bitPattern),
+            aButtonState: aButtonStateFromBitPattern(bitPattern)
+        )
+        return ret
+    }
+}
+
+public protocol Proto2ReadContract {
+    func stickStateFromBitPattern(_ bitPattern: UInt64) -> StickState
+    func aButtonStateFromBitPattern(_ bitPattern: UInt64) -> Bool
+}
+
+extension Proto2ReadContract {
+    public func stickStateFromBitPattern(_ bitPattern: UInt64) -> StickState {
+        // Let's use 8 signed bits for normalized x and y ranges, that gives us 256 discrete distances [-128, 127]
+        let shift = Proto2Shift.stick
+        let stickBitsUnshifted = (bitPattern & (0xFFFF << shift)) >> shift
+        var reg = stickBitsUnshifted
+        let y = reg & 0xFF
+        reg >>= 8
+        return StickState(x: Int8(reg), y: Int8(y))
+    }
+
+    public func aButtonStateFromBitPattern(_ bitPattern: UInt64) -> Bool {
+        let shift = Proto2Shift.aButton
+        let aButtonUnshifted = (bitPattern & (1 << shift)) >> shift
+        return Bool(Int(aButtonUnshifted))
+    }
+}
+
+
+/* Proto 2 Write Side */
+
+public protocol Proto2WriteContract : class {
+    var bitPattern : UInt64 { get set }
+    func updateBitPatternWithStickState(_ stickState: StickState)
+    func updateBitPatternWithAButtonState(_ buttonState: Bool)
+}
+
+extension Proto2WriteContract {
+    public func updateBitPatternWithStickState(_ stickState: StickState) {
+        let shift = Proto2Shift.stick
+        let xShift = 8 + shift
+        let yShift = 0 + shift
+        let xBits : UInt64 = 0xFF << xShift
+        let yBits : UInt64 = 0xFF << yShift
+        let stickBits : UInt64 = xBits | yBits
+        let stickMask : UInt64 = ~stickBits
+        bitPattern &= stickMask
+        bitPattern |= (UInt64(stickState.x) << xShift) | (UInt64(stickState.y) << yShift)
+    }
+
+    public func updateBitPatternWithAButtonState(_ buttonState: Bool) {
+        let shift = Proto2Shift.aButton
+        if buttonState {
+            bitPattern |= (1 << shift)
+        } else {
+            bitPattern &= ~(0x1 << shift)
+        }
+    }
+}
+

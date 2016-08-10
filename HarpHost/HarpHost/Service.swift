@@ -68,7 +68,6 @@ class Service {
         for sock in connectionSlotMap.keyEnumerator() {
             let cfsock = sock as! CFSocket
             send(content: controllerChangePayload(), on: cfsock)
-            send(content: controllerChangePayload(), on: cfsock)
         }
     }
 
