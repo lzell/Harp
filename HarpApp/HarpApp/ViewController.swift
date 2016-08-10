@@ -25,6 +25,11 @@ class ViewController: UIViewController, HarpClientDelegate {
         harpClient.delegate = self
         nc().addObserver(self, selector: #selector(didEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
         nc().addObserver(self, selector: #selector(willEnterForeground(_:)), name: Notification.Name.UIApplicationWillEnterForeground, object: nil)
+
+        let delay = DispatchTimeInterval.milliseconds(1)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delay) {
+            self.present(Proto2ViewController(clientUDPAddress: sockaddr_in6()), animated: true, completion: nil)
+        }
     }
 
     deinit {

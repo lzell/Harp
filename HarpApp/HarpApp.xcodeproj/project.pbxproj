@@ -22,6 +22,8 @@
 		9AD0146C1D555482001BEE77 /* HarpCommoniOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9AD0146B1D555482001BEE77 /* HarpCommoniOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9AD014711D55552F001BEE77 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9AD0146D1D55552F001BEE77 /* LaunchScreen.storyboard */; };
 		9AD014721D55552F001BEE77 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9AD0146F1D55552F001BEE77 /* Main.storyboard */; };
+		9AD566361D5A73AC00EBED84 /* Proto2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD566351D5A73AC00EBED84 /* Proto2ViewController.swift */; };
+		9AD566381D5AAAB400EBED84 /* StickView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD566371D5AAAB400EBED84 /* StickView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -56,6 +58,8 @@
 		9AD0146B1D555482001BEE77 /* HarpCommoniOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HarpCommoniOS.framework; sourceTree = "<group>"; };
 		9AD0146E1D55552F001BEE77 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9AD014701D55552F001BEE77 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		9AD566351D5A73AC00EBED84 /* Proto2ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Proto2ViewController.swift; sourceTree = "<group>"; };
+		9AD566371D5AAAB400EBED84 /* StickView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				9AD0145B1D55542F001BEE77 /* Proto1ViewController.swift */,
+				9AD566351D5A73AC00EBED84 /* Proto2ViewController.swift */,
 				9AD0145C1D55542F001BEE77 /* RemoteViewController.swift */,
 			);
 			name = Controllers;
@@ -115,6 +120,7 @@
 			children = (
 				9AD014561D55542F001BEE77 /* ButtonView.swift */,
 				9AD014571D55542F001BEE77 /* DpadView.swift */,
+				9AD566371D5AAAB400EBED84 /* StickView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -213,6 +219,8 @@
 				9AD014621D55542F001BEE77 /* DpadView.swift in Sources */,
 				9AD014661D55542F001BEE77 /* Proto1ViewController.swift in Sources */,
 				9AD014611D55542F001BEE77 /* ButtonView.swift in Sources */,
+				9AD566381D5AAAB400EBED84 /* StickView.swift in Sources */,
+				9AD566361D5A73AC00EBED84 /* Proto2ViewController.swift in Sources */,
 				9AD0145F1D55542F001BEE77 /* AppDelegate.swift in Sources */,
 				9AD014641D55542F001BEE77 /* HarpClient.swift in Sources */,
 				9AD014631D55542F001BEE77 /* Extensions.swift in Sources */,

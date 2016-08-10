@@ -4,8 +4,6 @@ import HarpCommoniOS
 
 class Proto1ViewController : RemoteViewController, DpadViewDelegate, Proto1WriteContract {
 
-    var bitPattern : UInt64 = 0
-
     func aPressed(_ sender: ButtonView) {
         updateBitPatternWithAButtonState(true)
         sendBitPattern()
@@ -29,7 +27,6 @@ class Proto1ViewController : RemoteViewController, DpadViewDelegate, Proto1Write
 
     override func loadView() {
         let v = UIView(frame: CGRect.zero)
-        v.backgroundColor = UIColor.white
 
         let aBtn = ButtonView.auto()
         aBtn.label.text = "A"
@@ -63,23 +60,5 @@ class Proto1ViewController : RemoteViewController, DpadViewDelegate, Proto1Write
     func dpadStateDidChange(_ dpadState: DpadState) {
         updateBitPatternWithDpadState(dpadState)
         sendBitPattern()
-    }
-
-    private func sendBitPattern() {
-        // Copy state
-        var x = bitPattern
-        var byteArray = [UInt8]()
-        for _ in 0..<sizeof(UInt64.self) {
-            byteArray.append(UInt8(x))
-            x >>= 8
-        }
-        byteArray = byteArray.reversed()
-
-        var sock6Addr = clientUDPAddress
-        let addressData = CFDataCreateWithBytesNoCopy(kCFAllocatorDefault, valuePtrCast(&sock6Addr), sizeofValue(sock6Addr), kCFAllocatorNull)
-        let sendData = CFDataCreateWithBytesNoCopy(kCFAllocatorDefault, &byteArray, sizeofValue(sock6Addr), kCFAllocatorNull)
-        if CFSocketSendData(udpWriteSocket, addressData, sendData, -1) != .success {
-            assert(false, "UDP socket failed to send")
-        }
     }
 }

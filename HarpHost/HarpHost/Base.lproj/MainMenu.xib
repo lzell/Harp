@@ -705,15 +705,26 @@
                         </scroller>
                     </scrollView>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Efz-kx-TVZ">
-                        <rect key="frame" x="14" y="1" width="145" height="32"/>
+                        <rect key="frame" x="16" y="1" width="142" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="push" title="Switch Controller" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="aP2-Ok-fEY">
+                        <buttonCell key="cell" type="push" title="Proto1 Controller" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="aP2-Ok-fEY">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                         <connections>
-                            <action selector="switchControllerWithSender:" target="Voe-Tx-rLC" id="7cH-th-ZzB"/>
+                            <action selector="switchToController1WithSender:" target="Voe-Tx-rLC" id="XvB-np-nXx"/>
                         </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XZi-iP-YUB">
+                        <rect key="frame" x="158" y="1" width="144" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Proto2 Controller" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="BWz-84-cpb">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <connections>
+                                <action selector="switchToController2WithSender:" target="Voe-Tx-rLC" id="b9V-lt-27n"/>
+                            </connections>
+                        </buttonCell>
                     </button>
                 </subviews>
             </view>

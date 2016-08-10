@@ -8,9 +8,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, ServiceDelegate {
     @IBOutlet weak var window: NSWindow!
     @IBOutlet var textView: NSTextView!
 
-    @IBAction func switchController(sender: AnyObject) {
+    @IBAction func switchToController1(sender: AnyObject) {
         service.setController(name: "Proto1ViewController", inputTranslator: Proto1InputTranslator() /*, forPlayer: playerNum */)
     }
+
+    @IBAction func switchToController2(sender: AnyObject) {
+        service.setController(name: "Proto2ViewController", inputTranslator: Proto1InputTranslator() /*, forPlayer: playerNum */)
+    }
+
 
     let service = Service(maxConcurrentConnections: 2)
 
