@@ -1,7 +1,7 @@
 import Foundation
 import HarpCommoniOS
 
-class Proto2ViewController : RemoteViewController, Proto2WriteContract {
+class Proto2ViewController : RemoteViewController, Proto2WriteContract, StickViewDelegate {
 
     func aPressed(_ sender: ButtonView) {
         updateBitPatternWithAButtonState(true)
@@ -26,6 +26,7 @@ class Proto2ViewController : RemoteViewController, Proto2WriteContract {
         v.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[aBtn(200)]|", options: NSLayoutFormatOptions(rawValue:0), metrics: nil, views: ["aBtn": aBtn]))
 
         let stick = StickView.auto()
+        stick.delegate = self
         v.addSubview(stick)
         v.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-(30)-[stick(200)]", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["stick": stick]))
 
@@ -34,6 +35,13 @@ class Proto2ViewController : RemoteViewController, Proto2WriteContract {
 
 
         view = v
+    }
+
+    // MARK: - StickViewDelegate
+    func stickStateDidChange(_ stickState: StickState) {
+        print(stickState.xDiscrete)
+        updateBitPatternWithStickState(stickState)
+        sendBitPattern()
     }
     
 }

@@ -34,7 +34,7 @@ class RemoteViewController : UIViewController {
             var x = bitPattern
             var byteArray = [UInt8]()
             for _ in 0..<sizeof(UInt64.self) {
-                byteArray.append(UInt8(x))
+                byteArray.append(UInt8(x & 0xFF))
                 x >>= 8
             }
             byteArray = byteArray.reversed()

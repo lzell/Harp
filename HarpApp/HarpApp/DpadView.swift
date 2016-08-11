@@ -2,7 +2,6 @@ import UIKit
 import HarpCommoniOS
 
 
-
 protocol DpadViewDelegate : class {
     func dpadStateDidChange(_ dpadState: DpadState)
 }

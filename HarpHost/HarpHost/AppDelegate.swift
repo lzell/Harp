@@ -13,7 +13,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ServiceDelegate {
     }
 
     @IBAction func switchToController2(sender: AnyObject) {
-        service.setController(name: "Proto2ViewController", inputTranslator: Proto1InputTranslator() /*, forPlayer: playerNum */)
+        service.setController(name: "Proto2ViewController", inputTranslator: Proto2InputTranslator() /*, forPlayer: playerNum */)
     }
 
 
@@ -28,8 +28,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, ServiceDelegate {
 
     // MARK: - ServiceDelegate
     func didReceiveControllerInput(_ state: ControllerState, forPlayer playerNum: Int) {
-        let s = state as! Proto1ControllerState
-        log("Player \(playerNum):  Dpad: \(s.dpadState)  B: \(s.bButtonState)  A: \(s.aButtonState)")
+        if let s = state as? Proto1ControllerState {
+            log("Player \(playerNum):  Dpad: \(s.dpadState)  B: \(s.bButtonState)  A: \(s.aButtonState)")
+        } else if let s = state as? Proto2ControllerState {
+            log("Player \(playerNum):  AnalogStick x: \(s.stickState.xNormalized) y: \(s.stickState.yNormalized)  A: \(s.aButtonState)")
+        }
     }
 
     func didConnectToPlayer(_ playerNum: Int) {

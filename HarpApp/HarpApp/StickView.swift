@@ -1,7 +1,15 @@
 import UIKit
 import HarpCommoniOS
 
+
+protocol StickViewDelegate : class {
+    func stickStateDidChange(_ stickState: StickState)
+}
+
+
 class StickView : UIView {
+
+    weak var delegate : StickViewDelegate?
 
     let boundary : UIView
     let stick : UIView
@@ -9,37 +17,34 @@ class StickView : UIView {
     let horizontalBar : UIView
     var stickRadius : CGFloat?
 
-    /*
-    var state : StickState {
-        didSet {
-            print("Set it")
-        }
-    }
- */
 
     override init(frame: CGRect) {
+        // First phase
         boundary = UIView(frame: CGRect.zero)
+        boundary.backgroundColor = UIColor.lightGray
+
         stick = UIView(frame: CGRect.zero)
+        stick.backgroundColor = UIColor.darkGray
+
         verticalBar = UIView(frame: CGRect.zero)
+        verticalBar.backgroundColor = UIColor.darkGray
+
         horizontalBar = UIView(frame: CGRect.zero)
+        horizontalBar.backgroundColor = UIColor.darkGray
 
         super.init(frame: frame)
 
+        // Second phase
         isMultipleTouchEnabled = false
         backgroundColor = UIColor(white: 0.8, alpha: 0.5)
         layer.cornerRadius = 5
+
         addSubview(boundary)
         addSubview(stick)
         addSubview(verticalBar)
         addSubview(horizontalBar)
-
-        boundary.backgroundColor = UIColor.lightGray
-        stick.backgroundColor = UIColor.darkGray
-        verticalBar.backgroundColor = UIColor.darkGray
-        horizontalBar.backgroundColor = UIColor.darkGray
     }
 
-    required init?(coder: NSCoder) { boundary = UIView(); stick = UIView(); horizontalBar = UIView(); verticalBar = UIView(); super.init(coder: coder); assert(false) }
 
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -53,7 +58,9 @@ class StickView : UIView {
         let r = bounds.width / 10.0
         stick.frame = CGRect(x: bounds.midX - r, y: bounds.midY - r, width: 2 * r, height: 2 * r)
         stick.layer.cornerRadius = r
-        stick.layer.shadowPath = UIBezierPath(roundedRect: stick.bounds, byRoundingCorners: UIRectCorner.allCorners, cornerRadii: CGSize(width: r, height: r)).cgPath
+        stick.layer.shadowPath = UIBezierPath(roundedRect: stick.bounds,
+                                              byRoundingCorners: UIRectCorner.allCorners,
+                                              cornerRadii: CGSize(width: r, height: r)).cgPath
         stick.layer.shadowRadius = 4
         stick.layer.shadowOffset = CGSize(width: 0, height: 3)
         stick.layer.shadowOpacity = 1
@@ -64,7 +71,9 @@ class StickView : UIView {
         stickRadius = r
     }
 
+
     // MARK: - Tracking
+
     var trackingTouch : UITouch?
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         trackingTouch = touches.first
@@ -86,50 +95,47 @@ class StickView : UIView {
         updateState(nil)
     }
 
-    private func updateState(_ touch: UITouch?) {
-        let pt = trackingTouch!.location(in: self)
-        stick.center = pt
 
-        let dx = pt.x - bounds.midX
-        let dy = pt.y - bounds.midY
+    private func updateState(_ touch: UITouch?) {
+        let p = trackingTouch!.location(in: self)
+        let dx = p.x - bounds.midX
+        let dy = p.y - bounds.midY
         let r = bounds.midX
 
-        let l = sqrt(dx * dx + dy * dy) // Distance from origin to touch
-        let c = l - sqrt(r * r)         // Distance from edge of circle to touch
+        let d = sqrt(dx * dx + dy * dy) // Distance from origin to touch
+        let c = d - sqrt(r * r)         // Distance from edge of circle to touch
 
+        let x : CGFloat
+        let y : CGFloat
         if c > 0 {
-            let yprime = c * dy / l     // Ratio of y component to touch hypotenuse, times c
-            let xprime = c * dx / l
-            stick.center = CGPoint(x: pt.x - xprime, y: pt.y - yprime)
-        }
-/*
-        if dx * dx + dy * dy > r * r {
-            // Use similar triangle:
-            let distance = sqrt(dx * dx + dy * dy)
-            let x = (stickRadius! * dx) / distance
-            print("x is \(x)")
-
-            let y = (stickRadius! * dy) / distance
-            stick.center = CGPoint(x: x, y: y)
-        }
- */
-
-
-
-        /*
-        if let t = touch {
-            let loc = t.location(in: self)
-            let origin = CGPoint(x: bounds.midX, y: bounds.midY)
-            let dy = loc.y - origin.y
-            let dx = loc.x - origin.x
-            let theta = atan2(dy, dx)
-            let width = bounds.width
-            let squaredDistanceRatio = (dy * dy + dx * dx) / (width * width)
-            state = stateForAngle(Double(theta), Double(squaredDistanceRatio))
+            let yprime = c * dy / d     // Ratio of y component to touch hypotenuse, times c
+            let xprime = c * dx / d
+            x = p.x - xprime
+            y = p.y - yprime
         } else {
-            trackingTouch = nil
-            state = .default
+            x = p.x
+            y = p.y
         }
-         */
+        stick.center = CGPoint(x: x, y: y)
+
+        // Now get the ratio of the touch points to the total height and width:
+        let xNormalized = (x - bounds.midX) / r
+        let yNormalized = -(y - bounds.midY) / r    // Multiplying by -1 here to invert UIKit coordinate system
+
+        let state = StickState(fromNormalized: xNormalized, yNormalized)
+        notifyStickStateDidChange(state)
     }
+
+
+    // MARK: - Outgoing
+
+    func notifyStickStateDidChange(_ state: StickState) {
+        delegate?.stickStateDidChange(state)
+    }
+
+
+    // MARK: - Junk
+
+    required init?(coder: NSCoder) { boundary = UIView(); stick = UIView(); horizontalBar = UIView(); verticalBar = UIView(); super.init(coder: coder); assert(false) }
+
 }

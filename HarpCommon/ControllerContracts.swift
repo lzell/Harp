@@ -121,7 +121,7 @@ private struct Proto2Shift {
 
 /* Proto 2 Read Side */
 
-public struct Proto12nputTranslator : Proto2ReadContract, InputTranslator {
+public struct Proto2InputTranslator : Proto2ReadContract, InputTranslator {
 
     public init() {}
 
@@ -143,11 +143,28 @@ extension Proto2ReadContract {
     public func stickStateFromBitPattern(_ bitPattern: UInt64) -> StickState {
         // Let's use 8 signed bits for normalized x and y ranges, that gives us 256 discrete distances [-128, 127]
         let shift = Proto2Shift.stick
-        let stickBitsUnshifted = (bitPattern & (0xFFFF << shift)) >> shift
-        var reg = stickBitsUnshifted
-        let y = reg & 0xFF
-        reg >>= 8
-        return StickState(x: Int8(reg), y: Int8(y))
+        var reg = (bitPattern & (0xFFFF << shift)) >> shift
+        var yBits = UInt8(reg & 0xFF)
+        var xBits = UInt8((reg >> 8) & 0xFF)
+        var ySigned : Int8
+        var xSigned : Int8
+        if yBits & 0x80 > 0 {
+            ySigned = -128
+            var bits = yBits & 0x7F
+            ySigned |= Int8(bits)
+        } else {
+            ySigned = Int8(yBits)
+        }
+
+        if xBits & 0x80 > 0 {
+            xSigned = -128
+            var bits = xBits & 0x7F
+            xSigned |= Int8(bits)
+        } else {
+            xSigned = Int8(xBits)
+        }
+
+        return StickState(fromDiscrete: xSigned, ySigned)
     }
 
     public func aButtonStateFromBitPattern(_ bitPattern: UInt64) -> Bool {
@@ -176,7 +193,20 @@ extension Proto2WriteContract {
         let stickBits : UInt64 = xBits | yBits
         let stickMask : UInt64 = ~stickBits
         bitPattern &= stickMask
-        bitPattern |= (UInt64(stickState.x) << xShift) | (UInt64(stickState.y) << yShift)
+
+        // Well, shit. Thought I was helping myself by using signed ints:
+        var x = UInt8(stickState.xDiscrete & 0x7F)
+        if stickState.xDiscrete < 0 {
+            x |= 0x80
+        }
+
+        var y = UInt8(stickState.yDiscrete & 0x7F)
+        if stickState.yDiscrete < 0 {
+            y |= 0x80
+        }
+
+        bitPattern |= UInt64(x) << xShift
+        bitPattern |= UInt64(y) << yShift
     }
 
     public func updateBitPatternWithAButtonState(_ buttonState: Bool) {
