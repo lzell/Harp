@@ -1,15 +1,15 @@
 import Foundation
 
 public enum DpadState : Int {
-    case `default` = 0
-    case right
-    case downRight
-    case down
-    case downLeft
-    case left
-    case upLeft
-    case up
-    case upRight
+    case Default = 0
+    case Right
+    case DownRight
+    case Down
+    case DownLeft
+    case Left
+    case UpLeft
+    case Up
+    case UpRight
 }
 
 
@@ -33,7 +33,7 @@ public struct StickState {
         yDiscrete = StickState.mapNormalToDiscrete(y)
     }
 
-    static func mapNormalToDiscrete(_ norm: CGFloat) -> Int8 {
+    static func mapNormalToDiscrete(norm: CGFloat) -> Int8 {
         if norm > 0 {
             return Int8(round(CGFloat(Int8.max) * norm))
         } else if norm < 0 {
@@ -43,7 +43,7 @@ public struct StickState {
         }
     }
 
-    static func mapDiscreteToNormal(_ discrete: Int8) -> CGFloat {
+    static func mapDiscreteToNormal(discrete: Int8) -> CGFloat {
         if discrete > 0 {
             return CGFloat(discrete) / CGFloat(Int8.max)
         } else if discrete < 0 {

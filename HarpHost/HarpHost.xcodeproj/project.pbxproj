@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9A77C5E61D627DED0049766C /* HarpCommonOSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A77C5E51D627DED0049766C /* HarpCommonOSX.framework */; };
+		9A77C5E71D627DED0049766C /* HarpCommonOSX.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9A77C5E51D627DED0049766C /* HarpCommonOSX.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9A9052AC1D4AA7A200CF678F /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9052AB1D4AA7A200CF678F /* Service.swift */; };
-		9AA9E6111D626FDD00C72E2C /* HarpCommonOSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AA9E6101D626FDD00C72E2C /* HarpCommonOSX.framework */; };
-		9AA9E6121D626FDD00C72E2C /* HarpCommonOSX.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9AA9E6101D626FDD00C72E2C /* HarpCommonOSX.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9AD637AC1D1CB46F00BBF330 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD637AB1D1CB46F00BBF330 /* AppDelegate.swift */; };
 		9AD637AE1D1CB46F00BBF330 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AD637AD1D1CB46F00BBF330 /* Assets.xcassets */; };
 		9AD637B11D1CB46F00BBF330 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AD637AF1D1CB46F00BBF330 /* MainMenu.xib */; };
@@ -22,7 +22,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				9AA9E6121D626FDD00C72E2C /* HarpCommonOSX.framework in Embed Frameworks */,
+				9A77C5E71D627DED0049766C /* HarpCommonOSX.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -30,9 +30,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9A77C5E51D627DED0049766C /* HarpCommonOSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = HarpCommonOSX.framework; path = "/Users/lou/Library/Developer/Xcode/DerivedData/Harp-gfeeamgbpaspjfbuwcmlifbmwqzj/Build/Products/Debug/HarpCommonOSX.framework"; sourceTree = "<absolute>"; };
 		9A9052AB1D4AA7A200CF678F /* Service.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		9AA9E60E1D626FCC00C72E2C /* HarpCommonOSX.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HarpCommonOSX.framework; path = ../HarpCommon/build/Debug/HarpCommonOSX.framework; sourceTree = "<group>"; };
-		9AA9E6101D626FDD00C72E2C /* HarpCommonOSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = HarpCommonOSX.framework; path = "/Users/lou/Library/Developer/Xcode/DerivedData/Harp-gfeeamgbpaspjfbuwcmlifbmwqzj/Build/Products/Debug/HarpCommonOSX.framework"; sourceTree = "<absolute>"; };
 		9AD637A81D1CB46F00BBF330 /* HarpHost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HarpHost.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AD637AB1D1CB46F00BBF330 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9AD637AD1D1CB46F00BBF330 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = HarpHost/Assets.xcassets; sourceTree = "<group>"; };
@@ -45,7 +45,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9AA9E6111D626FDD00C72E2C /* HarpCommonOSX.framework in Frameworks */,
+				9A77C5E61D627DED0049766C /* HarpCommonOSX.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -57,7 +57,6 @@
 			children = (
 				9AD637AD1D1CB46F00BBF330 /* Assets.xcassets */,
 				9AD637B21D1CB46F00BBF330 /* Info.plist */,
-				9AD637AF1D1CB46F00BBF330 /* MainMenu.xib */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -73,7 +72,7 @@
 		9AD6379F1D1CB46F00BBF330 = {
 			isa = PBXGroup;
 			children = (
-				9AA9E6101D626FDD00C72E2C /* HarpCommonOSX.framework */,
+				9A77C5E51D627DED0049766C /* HarpCommonOSX.framework */,
 				9AD637AA1D1CB46F00BBF330 /* HarpHost */,
 				9AD637A91D1CB46F00BBF330 /* Products */,
 				9A80D7B31D4B01F300290848 /* Supporting Files */,
@@ -93,6 +92,7 @@
 			isa = PBXGroup;
 			children = (
 				9AD637AB1D1CB46F00BBF330 /* AppDelegate.swift */,
+				9AD637AF1D1CB46F00BBF330 /* MainMenu.xib */,
 				9A9052AB1D4AA7A200CF678F /* Service.swift */,
 			);
 			path = HarpHost;
@@ -184,7 +184,6 @@
 				9AD637B01D1CB46F00BBF330 /* Base */,
 			);
 			name = MainMenu.xib;
-			path = HarpHost;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

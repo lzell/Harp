@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9AA9E60B1D626F7F00C72E2C /* HarpCommoniOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AA9E60A1D626F7F00C72E2C /* HarpCommoniOS.framework */; };
-		9AA9E60C1D626F7F00C72E2C /* HarpCommoniOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9AA9E60A1D626F7F00C72E2C /* HarpCommoniOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		9A77C5E21D627DDA0049766C /* HarpCommoniOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A77C5E11D627DDA0049766C /* HarpCommoniOS.framework */; };
+		9A77C5E31D627DDA0049766C /* HarpCommoniOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9A77C5E11D627DDA0049766C /* HarpCommoniOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9ACDB4D71D59606F0000F1F2 /* CircularBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACDB4D61D59606F0000F1F2 /* CircularBuffer.swift */; };
 		9AD0145F1D55542F001BEE77 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD014541D55542F001BEE77 /* AppDelegate.swift */; };
 		9AD014601D55542F001BEE77 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AD014551D55542F001BEE77 /* Assets.xcassets */; };
@@ -16,7 +16,6 @@
 		9AD014621D55542F001BEE77 /* DpadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD014571D55542F001BEE77 /* DpadView.swift */; };
 		9AD014631D55542F001BEE77 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD014581D55542F001BEE77 /* Extensions.swift */; };
 		9AD014641D55542F001BEE77 /* HarpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD014591D55542F001BEE77 /* HarpClient.swift */; };
-		9AD014651D55542F001BEE77 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9AD0145A1D55542F001BEE77 /* Info.plist */; };
 		9AD014661D55542F001BEE77 /* Proto1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD0145B1D55542F001BEE77 /* Proto1ViewController.swift */; };
 		9AD014671D55542F001BEE77 /* RemoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD0145C1D55542F001BEE77 /* RemoteViewController.swift */; };
 		9AD014681D55542F001BEE77 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD0145D1D55542F001BEE77 /* ViewController.swift */; };
@@ -28,13 +27,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		9AD0146A1D55546B001BEE77 /* Embed Frameworks */ = {
+		9A77C5E41D627DDA0049766C /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				9AA9E60C1D626F7F00C72E2C /* HarpCommoniOS.framework in Embed Frameworks */,
+				9A77C5E31D627DDA0049766C /* HarpCommoniOS.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -42,7 +41,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		9AA9E60A1D626F7F00C72E2C /* HarpCommoniOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = HarpCommoniOS.framework; path = "/Users/lou/Library/Developer/Xcode/DerivedData/Harp-gfeeamgbpaspjfbuwcmlifbmwqzj/Build/Products/Debug-iphoneos/HarpCommoniOS.framework"; sourceTree = "<absolute>"; };
+		9A77C5E11D627DDA0049766C /* HarpCommoniOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = HarpCommoniOS.framework; path = "/Users/lou/Library/Developer/Xcode/DerivedData/Harp-gfeeamgbpaspjfbuwcmlifbmwqzj/Build/Products/Debug-iphonesimulator/HarpCommoniOS.framework"; sourceTree = "<absolute>"; };
 		9ACDB4D61D59606F0000F1F2 /* CircularBuffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularBuffer.swift; sourceTree = "<group>"; };
 		9AD0143E1D5553C4001BEE77 /* HarpApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HarpApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AD014531D55542F001BEE77 /* HarpApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HarpApp-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -68,7 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9AA9E60B1D626F7F00C72E2C /* HarpCommoniOS.framework in Frameworks */,
+				9A77C5E21D627DDA0049766C /* HarpCommoniOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,7 +77,7 @@
 		9AD014351D5553C4001BEE77 = {
 			isa = PBXGroup;
 			children = (
-				9AA9E60A1D626F7F00C72E2C /* HarpCommoniOS.framework */,
+				9A77C5E11D627DDA0049766C /* HarpCommoniOS.framework */,
 				9AD014401D5553C4001BEE77 /* HarpApp */,
 				9AD0143F1D5553C4001BEE77 /* Products */,
 				9AD014751D562DA3001BEE77 /* Supporting Files */,
@@ -151,7 +150,7 @@
 				9AD0143A1D5553C4001BEE77 /* Sources */,
 				9AD0143B1D5553C4001BEE77 /* Frameworks */,
 				9AD0143C1D5553C4001BEE77 /* Resources */,
-				9AD0146A1D55546B001BEE77 /* Embed Frameworks */,
+				9A77C5E41D627DDA0049766C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -202,7 +201,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9AD014651D55542F001BEE77 /* Info.plist in Resources */,
 				9AD014721D55552F001BEE77 /* Main.storyboard in Resources */,
 				9AD014711D55552F001BEE77 /* LaunchScreen.storyboard in Resources */,
 				9AD014691D55542F001BEE77 /* Base.lproj in Resources */,
@@ -293,7 +291,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -337,7 +335,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";

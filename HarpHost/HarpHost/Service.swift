@@ -4,9 +4,9 @@ import Foundation
 import HarpCommonOSX
 
 protocol ServiceDelegate : class {
-    func didReceiveControllerInput(_ state: ControllerState, forPlayer playerNum: Int)
-    func didConnectToPlayer(_ playerNum: Int)
-    func didDisconnectFromPlayer(_ playerNum: Int)
+    func didReceiveControllerInput(state: ControllerState, forPlayer playerNum: Int)
+    func didConnectToPlayer(playerNum: Int)
+    func didDisconnectFromPlayer(playerNum: Int)
 }
 
 class Service {
@@ -27,28 +27,28 @@ class Service {
     var reg : BluetoothService.Registration!
     let regType = "_harp._tcp"
 
-    var connectionSlotMap : NSMapTable<CFSocket, NSNumber>
+    var connectionSlotMap : NSMapTable
 
     init(maxConcurrentConnections: Int) {
         /* First phase */
         self.maxConcurrentConnections = maxConcurrentConnections
-        connectionSlotMap = NSMapTable(keyOptions: NSPointerFunctions.Options.opaquePersonality, valueOptions: NSPointerFunctions.Options.strongMemory)
+        connectionSlotMap = NSMapTable(keyOptions: NSPointerFunctionsOptions.OpaquePersonality, valueOptions: NSPointerFunctionsOptions.StrongMemory)
 
         /* Second phase */
         let (sock, port) = createBindedUDPReadSocketWithReadCallback(toContext(self)) {
-            (sock, _, _, _, info: UnsafeMutablePointer<Void>?) in
-            let me = fromContext(UnsafeMutablePointer<Service>(info!))
+            (sock, _, _, _, info: UnsafeMutablePointer<Void>) in
+            let me = fromContext(UnsafeMutablePointer<Service>(info))
             me.udpDataIsAvailable(sock!)
         }
         udpReadSocket = sock
         udpReadPort = port
 
         let (tcpsock, tcpport) = createBindedTCPListeningSocketWithAcceptCallback(toContext(self)) {
-            (_, _, _, data: UnsafePointer<Void>?, info: UnsafeMutablePointer<Void>?) in
+            (_, _, _, data: UnsafePointer<Void>, info: UnsafeMutablePointer<Void>) in
                 // TODO: Close native handle if we've already accepted maxConcurrent
-                let me = fromContext(UnsafeMutablePointer<Service>(info!))
+                let me = fromContext(UnsafeMutablePointer<Service>(info))
                 // For an accept callback, the data parameter is a pointer to a CFSocketNativeHandle:
-                let nativeHandle = UnsafePointer<Int32>(data!).pointee
+                let nativeHandle = UnsafePointer<Int32>(data).memory
                 me.didAcceptNewConnection(nativeHandle)
         }
         listeningSock = tcpsock
@@ -67,22 +67,22 @@ class Service {
 
         for sock in connectionSlotMap.keyEnumerator() {
             let cfsock = sock as! CFSocket
-            send(content: controllerChangePayload(), on: cfsock)
+            send(controllerChangePayload(), on: cfsock)
         }
     }
 
 
-    private func didAcceptNewConnection(_ handle: Int32) {
+    private func didAcceptNewConnection(handle: Int32) {
         assert(connectionSlotMap.count < maxConcurrentConnections, "We accepted a connection when we shouldn't have been listening for one")
 
         let sock = createConnectedTCPSocketFromNativeHandleWithDataCallback(handle, toContext(self)) {
-            (sock, _, _, data: UnsafePointer<Void>?, info: UnsafeMutablePointer<Void>?) in
-            let me = fromContext(UnsafeMutablePointer<Service>(info!))
-            me.didReadFromConnectedSocket(sock!, data!)
+            (sock, _, _, data: UnsafePointer<Void>, info: UnsafeMutablePointer<Void>) in
+            let me = fromContext(UnsafeMutablePointer<Service>(info))
+            me.didReadFromConnectedSocket(sock, data)
         }
 
         // Send initial data down:
-        send(content: handshakePayload(), on: sock)
+        send(handshakePayload(), on: sock)
 
         // Assign it a slot:
         let slot = findFreeSlotForSocket(sock)
@@ -99,8 +99,8 @@ class Service {
     }
 
 
-    func findFreeSlotForSocket(_ sock: CFSocket) -> Int {
-        let used = connectionSlotMap.objectEnumerator()!.map(){ $0 as! Int }.sorted(by: <)
+    func findFreeSlotForSocket(sock: CFSocket) -> Int {
+        let used = connectionSlotMap.objectEnumerator()!.map(){ $0 as! Int }.sort(<)
         var slot = 1
         var idx = 0
         while idx < used.count && used[idx] == slot {
@@ -111,8 +111,8 @@ class Service {
     }
 
 
-    private func udpDataIsAvailable(_ sock: CFSocket) {
-        var buf = [UInt8](repeating: 0, count: 8)
+    private func udpDataIsAvailable(sock: CFSocket) {
+        var buf = [UInt8](count: 8, repeatedValue: 0)
         var addrOut = sockaddr_in6()
         var addrLenInOut = sizeof(sockaddr_in6.self)
         let bytesRead = recvfrom(CFSocketGetNative(sock), &buf, buf.count, 0, valuePtrCast(&addrOut), valuePtrCast(&addrLenInOut))
@@ -137,7 +137,7 @@ class Service {
         }
     }
 
-    private func didReadFromConnectedSocket(_ sock: CFSocket, _ data: UnsafePointer<Void>) {
+    private func didReadFromConnectedSocket(sock: CFSocket, _ data: UnsafePointer<Void>) {
         let cfdata = fromContext(UnsafePointer<CFData>(data))
         if CFDataGetLength(cfdata) == 0 {
             // With a connection-oriented socket, if the connection is broken from the
@@ -152,7 +152,7 @@ class Service {
     }
 
     private func send(content: String, on socket: CFSocket) {
-        let numUtf8Bytes = content.lengthOfBytes(using: String.Encoding.utf8)
+        let numUtf8Bytes = content.lengthOfBytesUsingEncoding(NSUTF8StringEncoding)
         assert(numUtf8Bytes < Int(~UInt16(0)))
         var header = UInt16(numUtf8Bytes)
         let numHeaderBytes = sizeofValue(header)
@@ -160,7 +160,7 @@ class Service {
         let buf = CFDataCreateMutable(nil, capacity)
         CFDataAppendBytes(buf, withUnsafePointer(&header) { UnsafePointer<UInt8>($0) }, numHeaderBytes)
         CFDataAppendBytes(buf, content, numUtf8Bytes)
-        if CFSocketSendData(socket, nil, buf, -1) != .success {
+        if CFSocketSendData(socket, nil, buf, -1) != .Success {
             assert(false, "Socket send failed")
         }
     }
@@ -169,7 +169,7 @@ class Service {
     private func handshakePayload() -> String {
         return "handshake\n" +
                "protocolVersion: 0.1.2\n" +
-               "udpPort: \(udpReadPort!)"
+               "udpPort: \(udpReadPort)"
     }
 
     private func controllerChangePayload() -> String {
@@ -178,9 +178,9 @@ class Service {
     }
 
 
-    func didDisconnect(_ sock: CFSocket) {
-        if let slot = connectionSlotMap.object(forKey: sock) as? Int {
-            connectionSlotMap.removeObject(forKey: sock)
+    func didDisconnect(sock: CFSocket) {
+        if let slot = connectionSlotMap.objectForKey(sock) as? Int {
+            connectionSlotMap.removeObjectForKey(sock)
             if connectionSlotMap.count < maxConcurrentConnections {
                 reg.start()
             }
@@ -191,16 +191,16 @@ class Service {
     }
 
 
-    func translateState(_ bitPattern: UInt64, fromAddr _fromAddr: in6_addr) {
+    func translateState(bitPattern: UInt64, fromAddr _fromAddr: in6_addr) {
         var fromAddr = _fromAddr
         var player: Int?
         for sock in connectionSlotMap.keyEnumerator() {
             let sock : CFSocket = sock as! CFSocket
             let data = CFSocketCopyPeerAddress(sock)
-            let sadd : sockaddr_in6 = valuePtrCast(CFDataGetBytePtr(data)).pointee
+            let sadd : sockaddr_in6 = valuePtrCast(CFDataGetBytePtr(data)).memory
             var commAddr = sadd.sin6_addr
             if memcmp(&fromAddr, &commAddr, sizeofValue(commAddr)) == 0 {
-                player = connectionSlotMap.object(forKey: sock)! as Int
+                player = connectionSlotMap.objectForKey(sock)! as? Int
                 break
             }
         }

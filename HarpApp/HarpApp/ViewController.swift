@@ -15,7 +15,7 @@ class ViewController: UIViewController, HarpClientDelegate {
         postinit()
     }
 
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         postinit()
     }
@@ -23,8 +23,8 @@ class ViewController: UIViewController, HarpClientDelegate {
     private func postinit() {
         harpClient.startSearchForHarpHosts()
         harpClient.delegate = self
-        nc().addObserver(self, selector: #selector(didEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
-        nc().addObserver(self, selector: #selector(willEnterForeground(_:)), name: Notification.Name.UIApplicationWillEnterForeground, object: nil)
+        nc().addObserver(self, selector: #selector(didEnterBackground(_:)), name: UIApplicationDidEnterBackgroundNotification, object: nil)
+        nc().addObserver(self, selector: #selector(willEnterForeground(_:)), name: UIApplicationWillEnterForegroundNotification, object: nil)
 
         /* let delay = DispatchTimeInterval.milliseconds(1)
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delay) {
@@ -35,18 +35,19 @@ class ViewController: UIViewController, HarpClientDelegate {
 
     deinit {
         harpClient.stopSearchingForHarpHosts()
-        nc().removeObserver(self, name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
+        nc().removeObserver(self, name: UIApplicationDidEnterBackgroundNotification, object: nil)
+        nc().removeObserver(self, name: UIApplicationWillEnterForegroundNotification, object: nil)
     }
 
 
     // MARK: - Incoming
 
-    @objc private func didEnterBackground(_ note: Notification) {
+    @objc private func didEnterBackground(note: NSNotification) {
         harpClient.closeAnyConnections()
         harpClient.stopSearchingForHarpHosts()
     }
 
-    @objc private func willEnterForeground(_ note: Notification) {
+    @objc private func willEnterForeground(note: NSNotification) {
         harpClient.startSearchForHarpHosts()
     }
 
@@ -69,7 +70,7 @@ class ViewController: UIViewController, HarpClientDelegate {
 
     func didDisconnectFrom(host: Host) {
         print("Disconnected from hostname: \(host.name)")
-        dismiss(animated: true, completion: nil)
+        dismissViewControllerAnimated(true, completion: nil)
         harpClient.startSearchForHarpHosts()
     }
 
@@ -78,15 +79,15 @@ class ViewController: UIViewController, HarpClientDelegate {
         print("Received request for controller: \(name)")
         let nextVC = (NSClassFromString("HarpApp." + name) as! RemoteViewController.Type).init(clientUDPAddress: receiveAddr!)
         if presentedViewController != nil {
-            dismiss(animated: true, completion: {
-                self.present(nextVC, animated: true, completion: nil)
+            dismissViewControllerAnimated(true, completion: {
+                self.presentViewController(nextVC, animated: true, completion: nil)
             })
         } else {
-            present(nextVC, animated: true, completion: nil)
+            presentViewController(nextVC, animated: true, completion: nil)
         }
     }
 
-    private func nc() -> NotificationCenter {
-        return NotificationCenter.default
+    private func nc() -> NSNotificationCenter {
+        return NSNotificationCenter.defaultCenter()
     }
 }

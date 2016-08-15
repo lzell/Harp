@@ -3,7 +3,7 @@ import HarpCommoniOS
 
 
 protocol StickViewDelegate : class {
-    func stickStateDidChange(_ stickState: StickState)
+    func stickStateDidChange(stickState: StickState)
 }
 
 
@@ -21,21 +21,21 @@ class StickView : UIView {
     override init(frame: CGRect) {
         // First phase
         boundary = UIView(frame: CGRect.zero)
-        boundary.backgroundColor = UIColor.lightGray
+        boundary.backgroundColor = UIColor.lightGrayColor()
 
         stick = UIView(frame: CGRect.zero)
-        stick.backgroundColor = UIColor.darkGray
+        stick.backgroundColor = UIColor.darkGrayColor()
 
         verticalBar = UIView(frame: CGRect.zero)
-        verticalBar.backgroundColor = UIColor.darkGray
+        verticalBar.backgroundColor = UIColor.darkGrayColor()
 
         horizontalBar = UIView(frame: CGRect.zero)
-        horizontalBar.backgroundColor = UIColor.darkGray
+        horizontalBar.backgroundColor = UIColor.darkGrayColor()
 
         super.init(frame: frame)
 
         // Second phase
-        isMultipleTouchEnabled = false
+        multipleTouchEnabled = false
         backgroundColor = UIColor(white: 0.8, alpha: 0.5)
         layer.cornerRadius = 5
 
@@ -59,15 +59,15 @@ class StickView : UIView {
         stick.frame = CGRect(x: bounds.midX - r, y: bounds.midY - r, width: 2 * r, height: 2 * r)
         stick.layer.cornerRadius = r
         stick.layer.shadowPath = UIBezierPath(roundedRect: stick.bounds,
-                                              byRoundingCorners: UIRectCorner.allCorners,
-                                              cornerRadii: CGSize(width: r, height: r)).cgPath
+                                              byRoundingCorners: UIRectCorner.AllCorners,
+                                              cornerRadii: CGSize(width: r, height: r)).CGPath
         stick.layer.shadowRadius = 4
         stick.layer.shadowOffset = CGSize(width: 0, height: 3)
         stick.layer.shadowOpacity = 1
-        stick.layer.shadowColor = UIColor.black.cgColor
+        stick.layer.shadowColor = UIColor.blackColor().CGColor
         stick.layer.masksToBounds = false
         stick.layer.shouldRasterize = true
-        stick.layer.rasterizationScale = UIScreen.main.scale
+        stick.layer.rasterizationScale = UIScreen.mainScreen().scale
         stickRadius = r
     }
 
@@ -75,29 +75,29 @@ class StickView : UIView {
     // MARK: - Tracking
 
     var trackingTouch : UITouch?
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         trackingTouch = touches.first
         updateState(trackingTouch!)
     }
 
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
         assert(trackingTouch == touches.first)
         updateState(trackingTouch!)
     }
 
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         assert(trackingTouch == touches.first)
         stick.center = self.center
         updateState(nil)
     }
 
-    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+    override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
         updateState(nil)
     }
 
 
-    private func updateState(_ touch: UITouch?) {
-        let p = trackingTouch!.location(in: self)
+    private func updateState(touch: UITouch?) {
+        let p = trackingTouch!.locationInView(self)
         let dx = p.x - bounds.midX
         let dy = p.y - bounds.midY
         let r = bounds.midX
@@ -129,7 +129,7 @@ class StickView : UIView {
 
     // MARK: - Outgoing
 
-    func notifyStickStateDidChange(_ state: StickState) {
+    func notifyStickStateDidChange(state: StickState) {
         delegate?.stickStateDidChange(state)
     }
 

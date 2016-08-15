@@ -26,7 +26,7 @@ class RemoteViewController : UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.white
+        view.backgroundColor = UIColor.whiteColor()
     }
 
     func sendBitPattern() {
@@ -37,12 +37,12 @@ class RemoteViewController : UIViewController {
                 byteArray.append(UInt8(x & 0xFF))
                 x >>= 8
             }
-            byteArray = byteArray.reversed()
+            byteArray = byteArray.reverse()
 
             var sock6Addr = clientUDPAddress
             let addressData = CFDataCreateWithBytesNoCopy(kCFAllocatorDefault, valuePtrCast(&sock6Addr), sizeofValue(sock6Addr), kCFAllocatorNull)
             let sendData = CFDataCreateWithBytesNoCopy(kCFAllocatorDefault, &byteArray, sizeofValue(sock6Addr), kCFAllocatorNull)
-            if CFSocketSendData(udpWriteSocket, addressData, sendData, -1) != .success {
+            if CFSocketSendData(udpWriteSocket, addressData, sendData, -1) != .Success {
                 assert(false, "UDP socket failed to send")
             }
         }

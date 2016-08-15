@@ -29,9 +29,9 @@
 
 import Foundation
 
-private func DnsDispatchQueue() -> DispatchQueue! { return DispatchQueue.main }
+private func DnsDispatchQueue() -> dispatch_queue_t! { return dispatch_get_main_queue() }
 
-private func printDebug(_ str: String) {
+private func printDebug(str: String) {
     if true {
         print(str)
     }
@@ -114,7 +114,7 @@ public class BluetoothService {
         // MARK: - Public API
         //
 
-        public func start(_ consumer: (service: Host) -> Void) {
+        public func start(consumer: (service: Host) -> Void) {
             if !running {
                 running = true
                 self.consumer = consumer
@@ -155,7 +155,7 @@ public class BluetoothService {
 
         // We only need the resolvers to live for the amount of time that it takes them to resolve.
         // Set the resolved callback, and in the body remove the strong reference to hostAndPortResolver:
-        private func resolveHostAndPortOfService(_ serviceIdentifier: NetServiceIdentifier) {
+        private func resolveHostAndPortOfService(serviceIdentifier: NetServiceIdentifier) {
             let hostAndPortResolver = HostAndPortResolver(serviceIdentifier: serviceIdentifier)
             hostAndPortResolver.resolved = { [weak self] (resolver: HostAndPortResolver, hosttarget: String, port: UInt16) in
                 printDebug("Resolved host and port...")
@@ -173,7 +173,7 @@ public class BluetoothService {
         //
         // Note that when we get multiple addresses on the same resolve, they have different sin6_scope_ids.
         // Maybe we can glean something interesting from this?
-        private func resolveAddress(_ hosttarget: String, _ port: UInt16) {
+        private func resolveAddress(hosttarget: String, _ port: UInt16) {
             let addressResolver = IPV6Resolver(hosttarget: hosttarget, port: port)
             var addressList = [sockaddr_in6]()
             addressResolver.resolved = { [weak self] (ipv6Resolver: IPV6Resolver, address: sockaddr_in6, moreComing: Bool) in
@@ -203,7 +203,7 @@ public class BluetoothService {
 
     // MARK: - Nested Types
     public class Service {
-        var ref : DNSServiceRef? = nil
+        var ref : DNSServiceRef = nil
         let interfaceIndex : UInt32 = UInt32() &- 3 // Allow overflow; this is equivalent to kDNSServiceInterfaceIndexP2P
 
         private func dnsCall() -> DNSServiceErrorType {
@@ -264,12 +264,12 @@ public class BluetoothService {
         // There has got to be a more concise way to do this...
         private func registrarCallback() -> DNSServiceRegisterReply {
             return { (sdRef, flags, errorCode, name, regType, domain, context) in
-                let registrar = fromContext(UnsafeMutablePointer<Registrar>(context!))
-                registrar.handleRegisterResult(sdRef!, flags, errorCode, name!, regType!, domain!)
+                let registrar = fromContext(UnsafeMutablePointer<Registrar>(context))
+                registrar.handleRegisterResult(sdRef, flags, errorCode, name, regType, domain)
             }
         }
 
-        private func handleRegisterResult(_ sdRef: DNSServiceRef,
+        private func handleRegisterResult(sdRef: DNSServiceRef,
                                         _ flags: DNSServiceFlags,
                                         _ errorCode: DNSServiceErrorType,
                                         _ name: UnsafePointer<CChar>,
@@ -280,10 +280,10 @@ public class BluetoothService {
                 fatalError("Registration error code: \(errorCode)")
             }
 
-            let name = String(cString: name)
-            let regType = String(cString: regType)
-            let domain = String(cString: domain)
-            registered(serviceID: NetServiceIdentifier(name: name, regType: regType, domain: domain))
+            let name = String(UTF8String: name)
+            let regType = String(UTF8String: regType)
+            let domain = String(UTF8String: domain)
+            registered(serviceID: NetServiceIdentifier(name: name!, regType: regType!, domain: domain!))
         }
 
 
@@ -331,12 +331,12 @@ public class BluetoothService {
         // There has got to be a more concise way to do this...
         private func browseCallback() -> DNSServiceBrowseReply {
             return { (sdRef, flags, interfaceIndex, errorCode, serviceName, regType, replyDomain, context) in
-                let browser = fromContext(UnsafeMutablePointer<Browser>(context!))
-                browser.handleBrowseResult(sdRef!, flags, interfaceIndex, errorCode, serviceName!, regType!, replyDomain!)
+                let browser = fromContext(UnsafeMutablePointer<Browser>(context))
+                browser.handleBrowseResult(sdRef, flags, interfaceIndex, errorCode, serviceName, regType, replyDomain)
             }
         }
 
-        private func handleBrowseResult(_ sdRef: DNSServiceRef,
+        private func handleBrowseResult(sdRef: DNSServiceRef,
                                         _ flags: DNSServiceFlags,
                                         _ interfaceIndex: UInt32,
                                         _ errorCode: DNSServiceErrorType,
@@ -348,13 +348,13 @@ public class BluetoothService {
                 fatalError("Browse error code: \(errorCode)")
             }
 
-            let serviceName = String(cString: serviceName)
-            let regType = String(cString: regType)
-            let domain = String(cString: replyDomain)
+            let serviceName = String(UTF8String: serviceName)
+            let regType = String(UTF8String: regType)
+            let domain = String(UTF8String: replyDomain)
             if (flags & UInt32(kDNSServiceFlagsAdd) != 0) {
-                found(serviceID: NetServiceIdentifier(name: serviceName, regType: regType, domain: domain))
+                found(serviceID: NetServiceIdentifier(name: serviceName!, regType: regType!, domain: domain!))
             } else {
-                removed(serviceID: NetServiceIdentifier(name: serviceName, regType: regType, domain: domain))
+                removed(serviceID: NetServiceIdentifier(name: serviceName!, regType: regType!, domain: domain!))
             }
         }
     }
@@ -385,12 +385,12 @@ public class BluetoothService {
 
         private func resolveCallback() -> DNSServiceResolveReply {
             return { (sdRef, flags, interfaceIndex, errorCode, fullname, hosttarget, port, txtLen, txtRecord, context) in
-                let resolver = fromContext(UnsafeMutablePointer<HostAndPortResolver>(context!))
-                resolver.handleResolveResult(sdRef!, flags, interfaceIndex, errorCode, fullname!, hosttarget!, port, txtLen, txtRecord!)
+                let resolver = fromContext(UnsafeMutablePointer<HostAndPortResolver>(context))
+                resolver.handleResolveResult(sdRef, flags, interfaceIndex, errorCode, fullname, hosttarget, port, txtLen, txtRecord)
             }
         }
 
-        private func handleResolveResult(_ sdRef: DNSServiceRef,
+        private func handleResolveResult(sdRef: DNSServiceRef,
                                          _ flags: DNSServiceFlags,
                                          _ interfaceIndex: UInt32,
                                          _ errorCode: DNSServiceErrorType,
@@ -403,7 +403,7 @@ public class BluetoothService {
             guard errorCode == 0 else {
                 fatalError("Resolver error code \(errorCode)")
             }
-            resolved(resolver: self, hosttarget: String(cString: hosttarget), port: CFSwapInt16BigToHost(port))
+            resolved(resolver: self, hosttarget: String(UTF8String: hosttarget)!, port: CFSwapInt16BigToHost(port))
         }
     }
 
@@ -433,13 +433,13 @@ public class BluetoothService {
 
         func addressReplyCallback() -> DNSServiceGetAddrInfoReply {
             return { (sdRef, flags, interfaceIndex, errorCode, hostname, address, ttl, context) in
-                let resolver = fromContext(UnsafeMutablePointer<IPV6Resolver>(context!))
-                resolver.handleAddressReply(sdRef!, flags, interfaceIndex, errorCode, hostname!, address!, ttl)
+                let resolver = fromContext(UnsafeMutablePointer<IPV6Resolver>(context))
+                resolver.handleAddressReply(sdRef, flags, interfaceIndex, errorCode, hostname, address, ttl)
             }
         }
 
 
-        private func handleAddressReply(_ sdRef: DNSServiceRef,
+        private func handleAddressReply(sdRef: DNSServiceRef,
                                         _ flags: DNSServiceFlags,
                                         _ interfaceIndex: UInt32,
                                         _ errorCode: DNSServiceErrorType,
@@ -455,7 +455,7 @@ public class BluetoothService {
             let addr6Ptr = UnsafePointer<sockaddr_in6>(address)
 
             // Get a copy of it
-            let tmp = addr6Ptr.pointee
+            let tmp = addr6Ptr.memory
             var addrCpy = tmp
 
             // Set the port

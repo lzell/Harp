@@ -1,9 +1,9 @@
 import Foundation
 
-public func createBindedTCPListeningSocketWithAcceptCallback(_ context: UnsafeMutablePointer<Void>, callback: CFSocketCallBack) -> (CFSocket, UInt16) {
+public func createBindedTCPListeningSocketWithAcceptCallback(context: UnsafeMutablePointer<Void>, callback: CFSocketCallBack) -> (CFSocket, UInt16) {
 
     // Create socket:
-    let callbackType: CFSocketCallBackType = [.acceptCallBack]
+    let callbackType: CFSocketCallBackType = [.AcceptCallBack]
     var sockCtxt = CFSocketContext(version: 0, info: context, retain: nil, release: nil, copyDescription: nil)
     let sock = CFSocketCreate(kCFAllocatorDefault,
                               AF_INET6,
@@ -27,7 +27,7 @@ public func createBindedTCPListeningSocketWithAcceptCallback(_ context: UnsafeMu
                                sin6_scope_id: 0)
     let addr6InPtr : UnsafeMutablePointer<UInt8> = valuePtrCast(&addr6In)
     let socketAddrData = CFDataCreateWithBytesNoCopy(kCFAllocatorDefault, addr6InPtr, sizeofValue(addr6In), kCFAllocatorNull)
-    if (CFSocketSetAddress(sock, socketAddrData) != .success) {
+    if (CFSocketSetAddress(sock, socketAddrData) != .Success) {
         assert(false, "Could not set socket address")
     }
 
@@ -51,8 +51,8 @@ public func createBindedTCPListeningSocketWithAcceptCallback(_ context: UnsafeMu
 
 
 /* Connecting */
-public func createConnectingTCPSocketWithConnectCallback(_ connectTo: sockaddr_in6, _ info: UnsafeMutablePointer<Void>, callback: CFSocketCallBack) -> CFSocket {
-    let callbackOpts : CFSocketCallBackType = [.connectCallBack, .dataCallBack]
+public func createConnectingTCPSocketWithConnectCallback(connectTo: sockaddr_in6, _ info: UnsafeMutablePointer<Void>, callback: CFSocketCallBack) -> CFSocket {
+    let callbackOpts : CFSocketCallBackType = [.ConnectCallBack, .DataCallBack]
     // This is repeated all over the place:
     var sockCtxt = CFSocketContext(version: CFIndex(0), info: info, retain: nil, release: nil, copyDescription: nil)
 
@@ -64,7 +64,7 @@ public func createConnectingTCPSocketWithConnectCallback(_ connectTo: sockaddr_i
     sockOpts |= kCFSocketCloseOnInvalidate
     CFSocketSetSocketFlags(sock, sockOpts)
 
-    if CFSocketConnectToAddress(sock, cfdata, -1) != .success {
+    if CFSocketConnectToAddress(sock, cfdata, -1) != .Success {
         assert(false, "Could not issue connectToAddress call")
     }
 
@@ -74,9 +74,9 @@ public func createConnectingTCPSocketWithConnectCallback(_ connectTo: sockaddr_i
 
 
 /* Connected */
-public func createConnectedTCPSocketFromNativeHandleWithDataCallback(_ nativeHandle: Int32!, _ info: UnsafeMutablePointer<Void>, callback: CFSocketCallBack) -> CFSocket {
+public func createConnectedTCPSocketFromNativeHandleWithDataCallback(nativeHandle: Int32!, _ info: UnsafeMutablePointer<Void>, callback: CFSocketCallBack) -> CFSocket {
 
-    let callbackOpts: CFSocketCallBackType = [.dataCallBack]
+    let callbackOpts: CFSocketCallBackType = [.DataCallBack]
     var sockCtxt = CFSocketContext(version: CFIndex(0), info: info, retain: nil, release: nil, copyDescription: nil)
     let sock = CFSocketCreateWithNative(kCFAllocatorDefault, nativeHandle, callbackOpts.rawValue, callback, &sockCtxt)
     var sockOpts = CFSocketGetSocketFlags(sock)
@@ -90,10 +90,10 @@ public func createConnectedTCPSocketFromNativeHandleWithDataCallback(_ nativeHan
 
 
 
-public func createBindedUDPReadSocketWithReadCallback(_ info: UnsafeMutablePointer<Void>, callback: CFSocketCallBack) -> (CFSocket, UInt16) {
+public func createBindedUDPReadSocketWithReadCallback(info: UnsafeMutablePointer<Void>, callback: CFSocketCallBack) -> (CFSocket, UInt16) {
 
     // Note we can switch this to Data and let CFNetwork chunk the data in for us:
-    let callbackOpts : CFSocketCallBackType = [.readCallBack]
+    let callbackOpts : CFSocketCallBackType = [.ReadCallBack]
     var sockCtxt = CFSocketContext(version: CFIndex(0), info: info, retain: nil, release: nil, copyDescription: nil)
     let sock = CFSocketCreate(kCFAllocatorDefault, AF_INET6, SOCK_DGRAM, IPPROTO_UDP, callbackOpts.rawValue, callback, &sockCtxt)
 
@@ -143,25 +143,25 @@ public func createUDPWriteSocket() -> CFSocket {
     return sock!
 }
 
-public func createSendData(_ msg: String) -> CFData {
-    return CFDataCreateWithBytesNoCopy(nil, msg, msg.lengthOfBytes(using: String.Encoding.utf8), kCFAllocatorNull)
+public func createSendData(msg: String) -> CFData {
+    return CFDataCreateWithBytesNoCopy(nil, msg, msg.lengthOfBytesUsingEncoding(NSUTF8StringEncoding), kCFAllocatorNull)
 }
 
 
 // MARK: - Private
-private func addSocketToRunLoop(_ sock: CFSocket) {
+private func addSocketToRunLoop(sock: CFSocket) {
     let runLoopSourceRef = CFSocketCreateRunLoopSource(kCFAllocatorDefault, sock, 0)
-    CFRunLoopAddSource(CFRunLoopGetCurrent(), runLoopSourceRef, CFRunLoopMode.defaultMode)
+    CFRunLoopAddSource(CFRunLoopGetCurrent(), runLoopSourceRef, kCFRunLoopDefaultMode)
 }
 
-private func setReuseAddress(_ sock: CFSocket) {
+private func setReuseAddress(sock: CFSocket) {
     var on: UInt32 = 1
     if setsockopt(CFSocketGetNative(sock), SOL_SOCKET, SO_REUSEADDR, &on, UInt32(sizeofValue(1))) != 0 {
         assert(false)
     }
 }
 
-private func setNonblocking(_ sock: CFSocket) {
+private func setNonblocking(sock: CFSocket) {
     let flags = fcntl(CFSocketGetNative(sock), F_GETFL)
     if (fcntl(CFSocketGetNative(sock), F_SETFL, flags | O_NONBLOCK) < 0) {
         perror(strerror(errno))

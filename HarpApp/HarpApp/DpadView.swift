@@ -3,7 +3,7 @@ import HarpCommoniOS
 
 
 protocol DpadViewDelegate : class {
-    func dpadStateDidChange(_ dpadState: DpadState)
+    func dpadStateDidChange(dpadState: DpadState)
 }
 
 
@@ -11,7 +11,7 @@ class DpadView : UIView {
 
     weak var delegate : DpadViewDelegate?
 
-    var state : DpadState = .default {
+    var state : DpadState = .Default {
         didSet {
             if oldValue != state {
                 delegate?.dpadStateDidChange(state)
@@ -31,17 +31,17 @@ class DpadView : UIView {
         lazy var up         = UIImage(named: "DpadUp")!
         lazy var upRight    = UIImage(named: "DpadUpRight")!
 
-        func forState(_ state: DpadState) -> UIImage {
+        func forState(state: DpadState) -> UIImage {
             switch state {
-            case .default:   return inactive
-            case .right:     return right
-            case .downRight: return downRight
-            case .down:      return down
-            case .downLeft:  return downLeft
-            case .left:      return left
-            case .upLeft:    return upLeft
-            case .up:        return up
-            case .upRight:   return upRight
+            case .Default:   return inactive
+            case .Right:     return right
+            case .DownRight: return downRight
+            case .Down:      return down
+            case .DownLeft:  return downLeft
+            case .Left:      return left
+            case .UpLeft:    return upLeft
+            case .Up:        return up
+            case .UpRight:   return upRight
             }
         }
     }
@@ -55,7 +55,7 @@ class DpadView : UIView {
         super.init(frame: frame)
 
         // Second phase
-        isMultipleTouchEnabled = false
+        multipleTouchEnabled = false
         imgView = UIImageView.auto()
         addSubview(imgView)
         addConstraints(NSLayoutConstraint.superviewFillingConstraintsForView(imgView))
@@ -67,22 +67,23 @@ class DpadView : UIView {
 
     // MARK: - Tracking
     var trackingTouch : UITouch?
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         trackingTouch = touches.first
         updateState(trackingTouch!)
     }
 
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+
+    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
         assert(trackingTouch == touches.first)
         updateState(trackingTouch!)
     }
 
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         assert(trackingTouch == touches.first)
         updateState(nil)
     }
 
-    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+    override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
         updateState(nil)
     }
 
@@ -102,30 +103,30 @@ class DpadView : UIView {
         ]
 
 
-    private func stateForAngle(_ angle: Double, _ squaredDistanceRatio: Double) -> DpadState {
+    private func stateForAngle(angle: Double, _ squaredDistanceRatio: Double) -> DpadState {
 
         if squaredDistanceRatio < 0.009 {   // Experiment with this value
-            return .default
+            return .Default
         }
 
         switch angle {
-        case _ where angle > arcs[0][0] && angle <= arcs[0][1]: return .right
-        case _ where angle > arcs[1][0] && angle <= arcs[1][1]: return .downRight
-        case _ where angle > arcs[2][0] && angle <= arcs[2][1]: return .down
-        case _ where angle > arcs[3][0] && angle <= arcs[3][1]: return .downLeft
-        case _ where angle > arcs[4][0] || angle <= arcs[4][1]: return .left
-        case _ where angle > arcs[5][0] && angle <= arcs[5][1]: return .upLeft
-        case _ where angle > arcs[6][0] && angle <= arcs[6][1]: return .up
-        case _ where angle > arcs[7][0] && angle <= arcs[7][1]: return .upRight
+        case _ where angle > arcs[0][0] && angle <= arcs[0][1]: return .Right
+        case _ where angle > arcs[1][0] && angle <= arcs[1][1]: return .DownRight
+        case _ where angle > arcs[2][0] && angle <= arcs[2][1]: return .Down
+        case _ where angle > arcs[3][0] && angle <= arcs[3][1]: return .DownLeft
+        case _ where angle > arcs[4][0] || angle <= arcs[4][1]: return .Left
+        case _ where angle > arcs[5][0] && angle <= arcs[5][1]: return .UpLeft
+        case _ where angle > arcs[6][0] && angle <= arcs[6][1]: return .Up
+        case _ where angle > arcs[7][0] && angle <= arcs[7][1]: return .UpRight
         default:
             assert(false)
-            return .default
+            return .Default
         }
     }
 
-    private func updateState(_ touch: UITouch?) {
+    private func updateState(touch: UITouch?) {
         if let t = touch {
-            let loc = t.location(in: self)
+            let loc = t.locationInView(self)
             let origin = CGPoint(x: bounds.midX, y: bounds.midY)
             let dy = loc.y - origin.y
             let dx = loc.x - origin.x
@@ -135,7 +136,7 @@ class DpadView : UIView {
             state = stateForAngle(Double(theta), Double(squaredDistanceRatio))
         } else {
             trackingTouch = nil
-            state = .default
+            state = .Default
         }
     }
 }

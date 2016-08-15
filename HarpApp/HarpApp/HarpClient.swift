@@ -36,12 +36,12 @@ class HarpClient {
         stopResolver()
     }
 
-    func connectToHost(_ host: Host) {
+    func connectToHost(host: Host) {
         assert(cxn == nil, "Assuming we only connect to one host")
         assert(host.addresses.count > 0, "Need at least one address")
         let addr = host.addresses.first!
         let sock = createConnectingTCPSocketWithConnectCallback(addr, toContext(self)) { (sock, type, _, data, info) in
-            let me = fromContext(UnsafeMutablePointer<HarpClient>(info!))
+            let me = fromContext(UnsafeMutablePointer<HarpClient>(info))
             me.decipherSocketCallback(sock!, type, data)
         }
         cxn = (sock, host)
@@ -86,43 +86,43 @@ class HarpClient {
     var workingBuf = CFDataCreateMutable(nil, workingBufLen)
     var idx : Int = 0
 
-    private func decipherSocketCallback(_ sock: CFSocket, _ type: CFSocketCallBackType, _ data: UnsafePointer<Void>?) {
-        if type == .connectCallBack {
+    private func decipherSocketCallback(sock: CFSocket, _ type: CFSocketCallBackType, _ data: UnsafePointer<Void>) {
+        if type == .ConnectCallBack {
             // In this case the data argument is either NULL, or a pointer to
             // an SInt32 error code if the connect failed
             if data == nil {
                 socketDidConnect(sock)
             } else {
-                let errCode = UnsafePointer<Int32>(data!).pointee
+                let errCode = UnsafePointer<Int32>(data).memory
                 socketDidFailToConnect(sock, err: strerror(errCode))
             }
 
-        } else if type == .dataCallBack {
+        } else if type == .DataCallBack {
             // With a connection-oriented socket, if the connection is broken from the
             // other end, then one final kCFSocketReadCallBack or kCFSocketDataCallBack
             // will occur.  In the case of kCFSocketReadCallBack, the underlying socket
             // will have 0 bytes available to read.  In the case of kCFSocketDataCallBack,
             // the data argument will be a CFDataRef of length 0.
-            let cfdata = fromContext(UnsafePointer<CFData>(data!))
+            let cfdata = fromContext(UnsafePointer<CFData>(data))
             let datalen = CFDataGetLength(cfdata)
             if  datalen == 0 {
                 socketDidDisconnect(sock)
             } else {
                 // CFNetworking chunked some data in on our behalf.  Maybe we got a full packet maybe not.
                 // Appending all data to a circular buf and reading from head:
-                circleBuf.append(data: cfdata, len: datalen)
+                circleBuf.append(cfdata, len: datalen)
                 let headerSize = sizeof(UInt16.self)
-                while let packLenBytes = circleBuf.peakTail(len: headerSize) {
+                while let packLenBytes = circleBuf.peakTail(headerSize) {
                     // Get length of packet msg
                     var header : UInt16 = 0
                     CFDataGetBytes(packLenBytes, CFRangeMake(0, headerSize), withUnsafeMutablePointer(&header) { UnsafeMutablePointer<UInt8>($0) })
                     let packetLen = Int(header)
                     if circleBuf.lengthStored >= packetLen + headerSize {
-                        _ = circleBuf.read(len: headerSize)
-                        let packetMsg = circleBuf.read(len: packetLen)
-                        let packetMsgBytePtr = CFDataGetBytePtr(packetMsg)!
-                        let msg = String(cString: UnsafePointer<CChar>(packetMsgBytePtr))
-                        socketDidRead(sock, msg)
+                        _ = circleBuf.read(headerSize)
+                        let packetMsg = circleBuf.read(packetLen)
+                        let packetMsgBytePtr = CFDataGetBytePtr(packetMsg)
+                        let msg = String(UTF8String: UnsafePointer<CChar>(packetMsgBytePtr))
+                        socketDidRead(sock, msg!)
                     } else {
                         break
                     }
@@ -135,12 +135,12 @@ class HarpClient {
     }
 
 
-    private func socketDidConnect(_ sock: CFSocket) {
+    private func socketDidConnect(sock: CFSocket) {
         assert(cxn != nil)
         assert(cxn!.sock === sock)
     }
 
-    private func socketDidFailToConnect(_ sock: CFSocket, err: UnsafePointer<Int8>) {
+    private func socketDidFailToConnect(sock: CFSocket, err: UnsafePointer<Int8>) {
         assert(cxn != nil)
         assert(cxn!.sock === sock)
         perror(err)
@@ -151,7 +151,7 @@ class HarpClient {
         cxn = nil
     }
 
-    private func socketDidDisconnect(_ sock: CFSocket) {
+    private func socketDidDisconnect(sock: CFSocket) {
         assert(cxn != nil)
         assert(cxn!.sock === sock)
         notifyDidDisconnectFromHost(cxn!.host)
@@ -160,7 +160,7 @@ class HarpClient {
     }
 
     // Building in an assumption that the only read we get from the host is initial data.
-    private func socketDidRead(_ sock: CFSocket, _ msg: String) {
+    private func socketDidRead(sock: CFSocket, _ msg: String) {
         assert(cxn != nil)
         assert(cxn!.sock === sock)
 
@@ -169,7 +169,7 @@ class HarpClient {
         case kRequestHeaderControllerChange:
             let controllerName = body[kRequestControllerNameKey]
             assert(controllerName != nil)
-            notifyDidReceiveRequestForController(name: controllerName!, from: cxn!.host)
+            notifyDidReceiveRequestForController(controllerName!, from: cxn!.host)
         case kRequestHeaderHandshake:
             let handshakeInfo = createHandshakeInfo(body, referenceSock: cxn!.sock)
             notifyDidEstablishConnectionToHost(cxn!.host, withHandshakeInfo: handshakeInfo)
@@ -181,12 +181,12 @@ class HarpClient {
 
     // MARK: - Utils
 
-    private func parseRequest(_ request: String) -> (String, [String:String]) {
+    private func parseRequest(request: String) -> (String, [String:String]) {
         var body : [String:String] = [:]
-        var lines : [String] = request.components(separatedBy: "\n")
+        var lines : [String] = request.componentsSeparatedByString("\n")
         let header = lines.removeFirst()
         lines.forEach { (line) in
-            let pair = line.components(separatedBy: ":").map() { (comp) in stripWhitespace(comp) }
+            let pair = line.componentsSeparatedByString(":").map() { (comp) in stripWhitespace(comp) }
             body[pair[0]] = pair[1]
         }
         return (header, body)
@@ -195,7 +195,7 @@ class HarpClient {
 
     // We construct the remote UDP socket address based on the TCP address of a reference socket, with 
     // the only overrided property being port.
-    private func createHandshakeInfo(_ dict: [String:String], referenceSock: CFSocket) -> HandshakeInfo {
+    private func createHandshakeInfo(dict: [String:String], referenceSock: CFSocket) -> HandshakeInfo {
         let udpPortStr = dict[kRequestUdpPortKey]
         let protoVersion = dict[kRequestProtocolVersionKey]
 
@@ -204,7 +204,7 @@ class HarpClient {
 
         let receivePort = UInt16(udpPortStr!)!
         let data = CFSocketCopyPeerAddress(referenceSock)
-        var sadd : sockaddr_in6 = valuePtrCast(CFDataGetBytePtr(data)).pointee
+        var sadd : sockaddr_in6 = valuePtrCast(CFDataGetBytePtr(data)).memory
         sadd.sin6_port = CFSwapInt16HostToBig(receivePort)
 
         return HandshakeInfo(protocolVersion: protoVersion!, udpReceiveAddress: sadd)
@@ -213,23 +213,23 @@ class HarpClient {
 
     // MARK: - Outgoing
 
-    func notifyDidFindHost(_ host: Host) {
-        delegate?.didFind(host: host)
+    func notifyDidFindHost(host: Host) {
+        delegate?.didFind(host)
     }
 
-    func notifyDidDisconnectFromHost(_ host: Host) {
-        delegate?.didDisconnectFrom(host: host)
+    func notifyDidDisconnectFromHost(host: Host) {
+        delegate?.didDisconnectFrom(host)
     }
 
-    func notifyDidFailToConnectToHost(_ host: Host) {
-        delegate?.didFailToConnectTo(host: host)
+    func notifyDidFailToConnectToHost(host: Host) {
+        delegate?.didFailToConnectTo(host)
     }
 
-    func notifyDidEstablishConnectionToHost(_ host: Host, withHandshakeInfo handshakeInfo: HandshakeInfo) {
-        delegate?.didEstablishConnectionTo(host: host, withHandshakeInfo: handshakeInfo)
+    func notifyDidEstablishConnectionToHost(host: Host, withHandshakeInfo handshakeInfo: HandshakeInfo) {
+        delegate?.didEstablishConnectionTo(host, withHandshakeInfo: handshakeInfo)
     }
 
     func notifyDidReceiveRequestForController(name: String, from host: Host) {
-        delegate?.didReceiveRequestForController(name: name, from: host)
+        delegate?.didReceiveRequestForController(name, from: host)
     }
 }

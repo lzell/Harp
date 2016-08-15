@@ -25,13 +25,13 @@ class CircularBuffer {
         let (n, r) = getIndexAdvanceValues(len, wi)
 
         assert(ri <= wi || ri > wi+n, "Would overrun read index")
-        var partialBuf = [UInt8](repeating:0, count: n)
+        var partialBuf = [UInt8](count: n, repeatedValue:0)
         CFDataGetBytes(data, CFRangeMake(0, n), &partialBuf)
         CFDataReplaceBytes(buf, CFRangeMake(wi, n), &partialBuf, n)
 
         if r > 0 {
             assert(r < ri, "Would overrun read index")
-            var remainingBuf = [UInt8](repeating: 0, count: r)
+            var remainingBuf = [UInt8](count: r, repeatedValue: 0)
             CFDataGetBytes(data, CFRangeMake(n, r), &remainingBuf)
             CFDataReplaceBytes(buf, CFRangeMake(0, r), &remainingBuf, r)
         }
@@ -45,12 +45,12 @@ class CircularBuffer {
         assert(n + r == len)
         assert(wi < ri || wi >= ri+n, "Read would overrun write index") // Read can catch up to write
         let retBuf = CFDataCreateMutable(nil, len)!
-        var partialBuf = [UInt8](repeating: 0, count: n)
+        var partialBuf = [UInt8](count: n, repeatedValue: 0)
         CFDataGetBytes(buf, CFRangeMake(ri, n), &partialBuf)
         CFDataReplaceBytes(retBuf, CFRangeMake(0, n), &partialBuf, n)
         if r > 0 {
             assert(r <= wi, "Read would overrun write index")
-            var remainingBuf = [UInt8](repeating: 0, count: r)
+            var remainingBuf = [UInt8](count: r, repeatedValue: 0)
             CFDataGetBytes(buf, CFRangeMake(0, r), &remainingBuf)
             CFDataReplaceBytes(retBuf, CFRangeMake(n, r), &remainingBuf, r)
         }
@@ -76,13 +76,13 @@ class CircularBuffer {
         let (n, r) = getIndexAdvanceValues(len, ri)
         if wi < ri || wi >= ri + n {
             if r == 0 || r <= wi {
-                return read(len: len, shiftIndex: false)
+                return read(len, shiftIndex: false)
             }
         }
         return nil
     }
 
-    private func getIndexAdvanceValues(_ len: Int, _ index: Int) -> (Int, Int) {
+    private func getIndexAdvanceValues(len: Int, _ index: Int) -> (Int, Int) {
         let slotsAvailable = bufLen - index
         let n = min(len, slotsAvailable)
         let r = max(len - slotsAvailable, 0)
