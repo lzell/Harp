@@ -5,8 +5,8 @@ class ViewController: UIViewController, HarpClientDelegate {
 
     let harpClient = HarpClient()
 
-    var receiveAddr : sockaddr_in6?
-
+    var receiveAddr: sockaddr_in6?
+    @IBOutlet weak var statusLabel: UILabel!
 
     // MARK: - Init/Deinit
 
@@ -64,11 +64,13 @@ class ViewController: UIViewController, HarpClientDelegate {
     }
 
     func didEstablishConnectionTo(host: Host, withHandshakeInfo handshakeInfo: HandshakeInfo) {
+        statusLabel.hidden = true
         print("Connected to hostname: \(host.name)")
         receiveAddr = handshakeInfo.udpReceiveAddress
     }
 
     func didDisconnectFrom(host: Host) {
+        statusLabel.hidden = false
         print("Disconnected from hostname: \(host.name)")
         dismissViewControllerAnimated(true, completion: nil)
         harpClient.startSearchForHarpHosts()
