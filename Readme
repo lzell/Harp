@@ -1,6 +1,6 @@
 Quick Start
 ==========
-Building requires Xcode8-beta to be installed at /Applications/Xcode-beta
+Building requires Xcode7 installed at /Applications/Xcode
 
 Open Harp.xcworkspace.  Build and run HarpHost.  Build and run HarpApp.  A
 gamepad will appear on HarpApp.  Tap some buttons.
