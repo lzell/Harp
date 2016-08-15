@@ -87,7 +87,6 @@ class StickView : UIView {
 
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         assert(trackingTouch == touches.first)
-        stick.center = self.center
         updateState(nil)
     }
 
@@ -97,7 +96,7 @@ class StickView : UIView {
 
 
     private func updateState(touch: UITouch?) {
-        let p = trackingTouch!.locationInView(self)
+        let p = touch?.locationInView(self) ?? CGPoint(x: bounds.midX, y: bounds.midY)
         let dx = p.x - bounds.midX
         let dy = p.y - bounds.midY
         let r = bounds.midX

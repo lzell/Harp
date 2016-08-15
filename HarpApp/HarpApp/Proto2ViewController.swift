@@ -39,7 +39,6 @@ class Proto2ViewController : RemoteViewController, Proto2WriteContract, StickVie
 
     // MARK: - StickViewDelegate
     func stickStateDidChange(stickState: StickState) {
-        print(stickState.xDiscrete)
         updateBitPatternWithStickState(stickState)
         sendBitPattern()
     }
