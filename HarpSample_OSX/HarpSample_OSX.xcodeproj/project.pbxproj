@@ -1,0 +1,301 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9A9198EE1D63AA2B00DA107D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9198EB1D63AA2B00DA107D /* AppDelegate.swift */; };
+		9A9198EF1D63AA2B00DA107D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A9198EC1D63AA2B00DA107D /* Assets.xcassets */; };
+		9A9198F31D63AA3500DA107D /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A9198F11D63AA3500DA107D /* MainMenu.xib */; };
+		9A9198F51D63AAC200DA107D /* HarpOSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A9198F41D63AAC200DA107D /* HarpOSX.framework */; };
+		9A9198F61D63AACB00DA107D /* HarpOSX.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9A9198F41D63AAC200DA107D /* HarpOSX.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		9A3D5E521D638CC200DB7E72 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				9A9198F61D63AACB00DA107D /* HarpOSX.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		9A9198EB1D63AA2B00DA107D /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = HarpSample_OSX/AppDelegate.swift; sourceTree = SOURCE_ROOT; };
+		9A9198EC1D63AA2B00DA107D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = HarpSample_OSX/Assets.xcassets; sourceTree = SOURCE_ROOT; };
+		9A9198ED1D63AA2B00DA107D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = HarpSample_OSX/Info.plist; sourceTree = SOURCE_ROOT; };
+		9A9198F21D63AA3500DA107D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = HarpSample_OSX/Base.lproj/MainMenu.xib; sourceTree = SOURCE_ROOT; };
+		9A9198F41D63AAC200DA107D /* HarpOSX.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HarpOSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9AD637A81D1CB46F00BBF330 /* HarpSample_OSX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HarpSample_OSX.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9AD637A51D1CB46F00BBF330 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9A9198F51D63AAC200DA107D /* HarpOSX.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9AD6379F1D1CB46F00BBF330 = {
+			isa = PBXGroup;
+			children = (
+				9A9198F41D63AAC200DA107D /* HarpOSX.framework */,
+				9AD637AA1D1CB46F00BBF330 /* HarpHost */,
+				9AD637A91D1CB46F00BBF330 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9AD637A91D1CB46F00BBF330 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9AD637A81D1CB46F00BBF330 /* HarpSample_OSX.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9AD637AA1D1CB46F00BBF330 /* HarpHost */ = {
+			isa = PBXGroup;
+			children = (
+				9A9198EB1D63AA2B00DA107D /* AppDelegate.swift */,
+				9A9198EC1D63AA2B00DA107D /* Assets.xcassets */,
+				9A9198ED1D63AA2B00DA107D /* Info.plist */,
+				9A9198F11D63AA3500DA107D /* MainMenu.xib */,
+			);
+			path = HarpHost;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9AD637A71D1CB46F00BBF330 /* HarpSample_OSX */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9AD637B51D1CB46F00BBF330 /* Build configuration list for PBXNativeTarget "HarpSample_OSX" */;
+			buildPhases = (
+				9AD637A41D1CB46F00BBF330 /* Sources */,
+				9AD637A51D1CB46F00BBF330 /* Frameworks */,
+				9AD637A61D1CB46F00BBF330 /* Resources */,
+				9A3D5E521D638CC200DB7E72 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HarpSample_OSX;
+			productName = HarpClient;
+			productReference = 9AD637A81D1CB46F00BBF330 /* HarpSample_OSX.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9AD637A01D1CB46F00BBF330 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0730;
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = "Lou Zell";
+				TargetAttributes = {
+					9AD637A71D1CB46F00BBF330 = {
+						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0800;
+					};
+				};
+			};
+			buildConfigurationList = 9AD637A31D1CB46F00BBF330 /* Build configuration list for PBXProject "HarpSample_OSX" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 9AD6379F1D1CB46F00BBF330;
+			productRefGroup = 9AD637A91D1CB46F00BBF330 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9AD637A71D1CB46F00BBF330 /* HarpSample_OSX */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9AD637A61D1CB46F00BBF330 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9A9198EF1D63AA2B00DA107D /* Assets.xcassets in Resources */,
+				9A9198F31D63AA3500DA107D /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9AD637A41D1CB46F00BBF330 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9A9198EE1D63AA2B00DA107D /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		9A9198F11D63AA3500DA107D /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9A9198F21D63AA3500DA107D /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		9AD637B31D1CB46F00BBF330 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		9AD637B41D1CB46F00BBF330 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		9AD637B61D1CB46F00BBF330 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = HarpSample_OSX/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.lzell.HarpSampleOSX;
+				PRODUCT_NAME = HarpSample_OSX;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		9AD637B71D1CB46F00BBF330 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = HarpSample_OSX/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.lzell.HarpSampleOSX;
+				PRODUCT_NAME = HarpSample_OSX;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9AD637A31D1CB46F00BBF330 /* Build configuration list for PBXProject "HarpSample_OSX" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9AD637B31D1CB46F00BBF330 /* Debug */,
+				9AD637B41D1CB46F00BBF330 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9AD637B51D1CB46F00BBF330 /* Build configuration list for PBXNativeTarget "HarpSample_OSX" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9AD637B61D1CB46F00BBF330 /* Debug */,
+				9AD637B71D1CB46F00BBF330 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9AD637A01D1CB46F00BBF330 /* Project object */;
+}

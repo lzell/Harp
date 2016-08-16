@@ -2,15 +2,15 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:AppleTVSampleHost/AppleTVSampleHost.xcodeproj">
+      location = "group:HarpFramework/HarpFramework.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:HarpCommon/HarpCommon.xcodeproj">
+      location = "group:HarpController/HarpController.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:/Users/lou/dev/Harp/HarpHost/HarpHost.xcodeproj">
+      location = "group:HarpSample_AppleTV/HarpSample_AppleTV.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:HarpApp/HarpApp.xcodeproj">
+      location = "group:HarpSample_OSX/HarpSample_OSX.xcodeproj">
    </FileRef>
 </Workspace>
