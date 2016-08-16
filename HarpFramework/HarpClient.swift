@@ -145,7 +145,7 @@ public class HarpClient {
         assert(cxn!.sock === sock)
         perror(err)
         // Perplexed by this.  I've only ever hit this assert on simulator.
-        // Remedy on simulator: Start Host, then start App
+        // Remedy on simulator: Run the sample app first, then run HarpController
         assert(false)
         notifyDidFailToConnectToHost(cxn!.host)
         cxn = nil

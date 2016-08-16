@@ -1,3 +1,2 @@
-* Backgrounding should disconnect sockets
 * Why does bluetooth connection take so long?
 * Maybe queue accepted connections beyond maxConcurrent by sending them HOLD, then LIVE when a player drops
