@@ -16,12 +16,18 @@
 
 
 #if os(OSX)
-    import DNSSD_Map_OSX
+    import DNSSD_OSX
 #elseif os(iOS)
     #if (arch(i386) || arch(x86_64))
-        import DNSSD_Map_Sim
+        import DNSSD_iOS_Sim
     #else
-        import DNSSD_Map_iOS
+        import DNSSD_iOS
+    #endif
+#elseif os(tvOS)
+    #if (arch(i386) || arch(x86_64))
+        import DNSSD_tvOS_Sim
+    #else
+        import DNSSD_tvOS
     #endif
 #endif
 
@@ -208,6 +214,7 @@ public class BluetoothService {
 
         private func dnsCall() -> DNSServiceErrorType {
             assert(false)
+            return Int32(kDNSServiceErr_Invalid)
         }
 
         func start() {

@@ -3,7 +3,9 @@ import HarpCommonOSX
 
 
 @NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate, ServiceDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, HarpServiceDelegate {
+
+    let service = HarpService(maxConcurrentConnections: 2)
 
     @IBOutlet weak var window: NSWindow!
     @IBOutlet var textView: NSTextView!
@@ -17,7 +19,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ServiceDelegate {
     }
 
 
-    let service = Service(maxConcurrentConnections: 2)
+    // MARK: -
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         service.delegate = self
@@ -26,7 +28,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, ServiceDelegate {
     }
 
 
-    // MARK: - ServiceDelegate
+    // MARK: - HarpServiceDelegate
+
     func didReceiveControllerInput(state: ControllerState, forPlayer playerNum: Int) {
         if let s = state as? Proto1ControllerState {
             log("Player \(playerNum):  Dpad: \(s.dpadState)  B: \(s.bButtonState)  A: \(s.aButtonState)")
@@ -44,7 +47,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, ServiceDelegate {
         log("Player: \(playerNum) disconnected")
     }
 
+
     // MARK: -
+
     private func log(msg: String) {
         print(msg)
         textView.insertText(msg, replacementRange: textView.selectedRange())

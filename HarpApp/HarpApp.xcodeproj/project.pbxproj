@@ -7,15 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9A77C5E21D627DDA0049766C /* HarpCommoniOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A77C5E11D627DDA0049766C /* HarpCommoniOS.framework */; };
-		9A77C5E31D627DDA0049766C /* HarpCommoniOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9A77C5E11D627DDA0049766C /* HarpCommoniOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		9ACDB4D71D59606F0000F1F2 /* CircularBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACDB4D61D59606F0000F1F2 /* CircularBuffer.swift */; };
 		9AD0145F1D55542F001BEE77 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD014541D55542F001BEE77 /* AppDelegate.swift */; };
 		9AD014601D55542F001BEE77 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AD014551D55542F001BEE77 /* Assets.xcassets */; };
 		9AD014611D55542F001BEE77 /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD014561D55542F001BEE77 /* ButtonView.swift */; };
 		9AD014621D55542F001BEE77 /* DpadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD014571D55542F001BEE77 /* DpadView.swift */; };
 		9AD014631D55542F001BEE77 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD014581D55542F001BEE77 /* Extensions.swift */; };
-		9AD014641D55542F001BEE77 /* HarpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD014591D55542F001BEE77 /* HarpClient.swift */; };
 		9AD014661D55542F001BEE77 /* Proto1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD0145B1D55542F001BEE77 /* Proto1ViewController.swift */; };
 		9AD014671D55542F001BEE77 /* RemoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD0145C1D55542F001BEE77 /* RemoteViewController.swift */; };
 		9AD014681D55542F001BEE77 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD0145D1D55542F001BEE77 /* ViewController.swift */; };
@@ -24,6 +20,7 @@
 		9AD014721D55552F001BEE77 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9AD0146F1D55552F001BEE77 /* Main.storyboard */; };
 		9AD566361D5A73AC00EBED84 /* Proto2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD566351D5A73AC00EBED84 /* Proto2ViewController.swift */; };
 		9AD566381D5AAAB400EBED84 /* StickView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD566371D5AAAB400EBED84 /* StickView.swift */; };
+		9AF68E241D636A2F00918EFF /* HarpCommoniOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF68E221D636A2800918EFF /* HarpCommoniOS.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -33,7 +30,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				9A77C5E31D627DDA0049766C /* HarpCommoniOS.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -41,8 +37,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		9A77C5E11D627DDA0049766C /* HarpCommoniOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = HarpCommoniOS.framework; path = "/Users/lou/Library/Developer/Xcode/DerivedData/Harp-gfeeamgbpaspjfbuwcmlifbmwqzj/Build/Products/Debug-iphonesimulator/HarpCommoniOS.framework"; sourceTree = "<absolute>"; };
-		9ACDB4D61D59606F0000F1F2 /* CircularBuffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularBuffer.swift; sourceTree = "<group>"; };
 		9AD0143E1D5553C4001BEE77 /* HarpApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HarpApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AD014531D55542F001BEE77 /* HarpApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HarpApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		9AD014541D55542F001BEE77 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -50,7 +44,6 @@
 		9AD014561D55542F001BEE77 /* ButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
 		9AD014571D55542F001BEE77 /* DpadView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DpadView.swift; sourceTree = "<group>"; };
 		9AD014581D55542F001BEE77 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		9AD014591D55542F001BEE77 /* HarpClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HarpClient.swift; sourceTree = "<group>"; };
 		9AD0145A1D55542F001BEE77 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9AD0145B1D55542F001BEE77 /* Proto1ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Proto1ViewController.swift; sourceTree = "<group>"; };
 		9AD0145C1D55542F001BEE77 /* RemoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteViewController.swift; sourceTree = "<group>"; };
@@ -60,6 +53,7 @@
 		9AD014701D55552F001BEE77 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9AD566351D5A73AC00EBED84 /* Proto2ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Proto2ViewController.swift; sourceTree = "<group>"; };
 		9AD566371D5AAAB400EBED84 /* StickView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickView.swift; sourceTree = "<group>"; };
+		9AF68E221D636A2800918EFF /* HarpCommoniOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HarpCommoniOS.framework; path = "/Users/lou/Library/Developer/Xcode/DerivedData/Harp-gfeeamgbpaspjfbuwcmlifbmwqzj/Build/Products/Debug-iphoneos/HarpCommoniOS.framework"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,7 +61,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9A77C5E21D627DDA0049766C /* HarpCommoniOS.framework in Frameworks */,
+				9AF68E241D636A2F00918EFF /* HarpCommoniOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,7 +71,6 @@
 		9AD014351D5553C4001BEE77 = {
 			isa = PBXGroup;
 			children = (
-				9A77C5E11D627DDA0049766C /* HarpCommoniOS.framework */,
 				9AD014401D5553C4001BEE77 /* HarpApp */,
 				9AD0143F1D5553C4001BEE77 /* Products */,
 				9AD014751D562DA3001BEE77 /* Supporting Files */,
@@ -99,9 +92,7 @@
 				9AD014741D562D75001BEE77 /* Views */,
 				9AD014541D55542F001BEE77 /* AppDelegate.swift */,
 				9AD014581D55542F001BEE77 /* Extensions.swift */,
-				9AD014591D55542F001BEE77 /* HarpClient.swift */,
 				9AD0145D1D55542F001BEE77 /* ViewController.swift */,
-				9ACDB4D61D59606F0000F1F2 /* CircularBuffer.swift */,
 			);
 			path = HarpApp;
 			sourceTree = "<group>";
@@ -215,14 +206,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9ACDB4D71D59606F0000F1F2 /* CircularBuffer.swift in Sources */,
 				9AD014621D55542F001BEE77 /* DpadView.swift in Sources */,
 				9AD014661D55542F001BEE77 /* Proto1ViewController.swift in Sources */,
 				9AD014611D55542F001BEE77 /* ButtonView.swift in Sources */,
 				9AD566381D5AAAB400EBED84 /* StickView.swift in Sources */,
 				9AD566361D5A73AC00EBED84 /* Proto2ViewController.swift in Sources */,
 				9AD0145F1D55542F001BEE77 /* AppDelegate.swift in Sources */,
-				9AD014641D55542F001BEE77 /* HarpClient.swift in Sources */,
 				9AD014631D55542F001BEE77 /* Extensions.swift in Sources */,
 				9AD014681D55542F001BEE77 /* ViewController.swift in Sources */,
 				9AD014671D55542F001BEE77 /* RemoteViewController.swift in Sources */,
