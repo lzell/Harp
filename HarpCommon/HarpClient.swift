@@ -1,12 +1,11 @@
 import Foundation
-import HarpCommoniOS
 
-struct HandshakeInfo {
-    let protocolVersion : String
-    let udpReceiveAddress : sockaddr_in6
+public struct HandshakeInfo {
+    public let protocolVersion : String
+    public let udpReceiveAddress : sockaddr_in6
 }
 
-protocol HarpClientDelegate : class {
+public protocol HarpClientDelegate : class {
     func didFind(host: Host)
     func didEstablishConnectionTo(host: Host, withHandshakeInfo handshakeInfo: HandshakeInfo)
     func didFailToConnectTo(host: Host)
@@ -14,9 +13,9 @@ protocol HarpClientDelegate : class {
     func didReceiveRequestForController(name: String, from host:Host)
 }
 
-class HarpClient {
+public class HarpClient {
 
-    weak var delegate : HarpClientDelegate?
+    public weak var delegate : HarpClientDelegate?
 
     private var bluetoothServiceResolver : BluetoothService.Resolver!
     private var cxn : (sock: CFSocket, host: Host)?
@@ -27,16 +26,17 @@ class HarpClient {
     private let kRequestHeaderHandshake = "handshake"
     private let kRequestHeaderControllerChange = "controllerChange"
 
+    public init() {}
 
-    func startSearchForHarpHosts() {
+    public func startSearchForHarpHosts() {
         startResolver()
     }
 
-    func stopSearchingForHarpHosts() {
+    public func stopSearchingForHarpHosts() {
         stopResolver()
     }
 
-    func connectToHost(host: Host) {
+    public func connectToHost(host: Host) {
         assert(cxn == nil, "Assuming we only connect to one host")
         assert(host.addresses.count > 0, "Need at least one address")
         let addr = host.addresses.first!
@@ -50,7 +50,7 @@ class HarpClient {
     // Note that invalidating a connected CF socket does not trigger the zero-data-length
     // callback that we otherwise use to detect and surface a disconnected socket.  We'll
     // notify the delegate ourselves.
-    func closeAnyConnections() {
+    public func closeAnyConnections() {
         if let (sock, host) = cxn {
             let shouldNotify = CFSocketIsValid(sock)
             CFSocketInvalidate(sock)

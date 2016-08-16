@@ -1,21 +1,20 @@
 // This class should have no understanding of dpads, buttons, etc.
 
 import Foundation
-import HarpCommonOSX
 
-protocol ServiceDelegate : class {
+public protocol HarpServiceDelegate : class {
     func didReceiveControllerInput(state: ControllerState, forPlayer playerNum: Int)
     func didConnectToPlayer(playerNum: Int)
     func didDisconnectFromPlayer(playerNum: Int)
 }
 
-class Service {
+public class HarpService {
 
-    weak var delegate : ServiceDelegate?
+    public weak var delegate : HarpServiceDelegate?
 
-    let maxConcurrentConnections : Int
-    var controllerName : String?
-    var inputTranslator : InputTranslator?
+    public let maxConcurrentConnections : Int
+    public var controllerName : String?
+    public var inputTranslator : InputTranslator?
 
     // We can't satisfy the first phase of init if these are constants (we pass self to the
     // constructors of these sockets) so we're using implicitly unwrapped vars instead:
@@ -29,7 +28,7 @@ class Service {
 
     var connectionSlotMap : NSMapTable
 
-    init(maxConcurrentConnections: Int) {
+    public init(maxConcurrentConnections: Int) {
         /* First phase */
         self.maxConcurrentConnections = maxConcurrentConnections
         connectionSlotMap = NSMapTable(keyOptions: NSPointerFunctionsOptions.OpaquePersonality, valueOptions: NSPointerFunctionsOptions.StrongMemory)
@@ -37,7 +36,7 @@ class Service {
         /* Second phase */
         let (sock, port) = createBindedUDPReadSocketWithReadCallback(toContext(self)) {
             (sock, _, _, _, info: UnsafeMutablePointer<Void>) in
-            let me = fromContext(UnsafeMutablePointer<Service>(info))
+            let me = fromContext(UnsafeMutablePointer<HarpService>(info))
             me.udpDataIsAvailable(sock!)
         }
         udpReadSocket = sock
@@ -46,7 +45,7 @@ class Service {
         let (tcpsock, tcpport) = createBindedTCPListeningSocketWithAcceptCallback(toContext(self)) {
             (_, _, _, data: UnsafePointer<Void>, info: UnsafeMutablePointer<Void>) in
                 // TODO: Close native handle if we've already accepted maxConcurrent
-                let me = fromContext(UnsafeMutablePointer<Service>(info))
+                let me = fromContext(UnsafeMutablePointer<HarpService>(info))
                 // For an accept callback, the data parameter is a pointer to a CFSocketNativeHandle:
                 let nativeHandle = UnsafePointer<Int32>(data).memory
                 me.didAcceptNewConnection(nativeHandle)
@@ -55,13 +54,13 @@ class Service {
         listeningPort = tcpport
     }
 
-    func register() {
+    public func register() {
         assert(listeningPort > 0, "accept socket has not been configured")
         reg = BluetoothService.Registration(format: regType, port: listeningPort)
         reg.start()
     }
 
-    func setController(name: String, inputTranslator: InputTranslator /*, forPlayer playerNum: Int */) {
+    public func setController(name: String, inputTranslator: InputTranslator /*, forPlayer playerNum: Int */) {
         self.controllerName = name
         self.inputTranslator = inputTranslator
 
@@ -77,7 +76,7 @@ class Service {
 
         let sock = createConnectedTCPSocketFromNativeHandleWithDataCallback(handle, toContext(self)) {
             (sock, _, _, data: UnsafePointer<Void>, info: UnsafeMutablePointer<Void>) in
-            let me = fromContext(UnsafeMutablePointer<Service>(info))
+            let me = fromContext(UnsafeMutablePointer<HarpService>(info))
             me.didReadFromConnectedSocket(sock, data)
         }
 
