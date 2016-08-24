@@ -17,6 +17,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, HarpServiceDelegate {
         service.delegate = self
         service.register()
         log("Started Service for \(service.maxConcurrentConnections) players, waiting for them to join...")
+
+        // Set textview to fixed width font
+        textView.textStorage?.font = NSFont.userFixedPitchFontOfSize(0.0)
     }
 
 
@@ -43,10 +46,16 @@ class AppDelegate: NSObject, NSApplicationDelegate, HarpServiceDelegate {
     }
 
     func didReceiveControllerInput(state: ControllerState, forPlayer playerNum: Int) {
-        if let s = state as? Proto1ControllerState {
-            log("Player \(playerNum):  Dpad: \(s.dpadState)  B: \(s.bButtonState)  A: \(s.aButtonState)")
-        } else if let s = state as? Proto2ControllerState {
-            log("Player \(playerNum):  AnalogStick x: \(s.stickState.xNormalized) y: \(s.stickState.yNormalized)  A: \(s.aButtonState)")
+        if let state = state as? Proto1ControllerState {
+
+            /* Do something with Proto1 controller input */
+
+            log(message(forPlayer: playerNum, controllerState: state))
+        } else if let state = state as? Proto2ControllerState {
+
+            /* Do something with Proto2 controller input */
+
+            log(message(forPlayer: playerNum, controllerState: state))
         }
     }
 
@@ -58,4 +67,25 @@ class AppDelegate: NSObject, NSApplicationDelegate, HarpServiceDelegate {
         textView.insertText(msg, replacementRange: textView.selectedRange())
         textView.insertNewline(nil)
     }
+
+    private func message(forPlayer playerNum: Int, controllerState: Proto1ControllerState) -> String {
+        // Pad the dpad string
+        let dpadStr = "\(controllerState.dpadState),".nulTerminatedUTF8.withUnsafeBufferPointer() {
+            return String(format: "%-10s", $0.baseAddress)
+        }
+
+        return "Player: \(playerNum), " +
+            "Dpad: \(dpadStr) " +
+            "B: \(controllerState.bButtonState), " +
+            "A: \(controllerState.aButtonState)"
+    }
+
+    private func message(forPlayer playerNum: Int, controllerState: Proto2ControllerState) -> String {
+        let x = String(format: "%.2f", controllerState.stickState.xNormalized)
+        let y = String(format: "%.2f", controllerState.stickState.yNormalized)
+        return "Player: \(playerNum): " +
+            "AnalogStick x: \(x) y: \(y) " +
+            "A: \(controllerState.aButtonState)"
+    }
+
 }
