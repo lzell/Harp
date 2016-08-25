@@ -6,6 +6,10 @@ Open Harp.xcworkspace.  Build and run HarpSample_AppleTV.  Build and run
 HarpController.  A gamepad will appear on the controller after 5 to 10 seconds.
 Tap some buttons.
 
+Demo
+====
+![Harp Demo](https://github.com/lzell/Harp/raw/master/uploads/demo.gif)
+
 About
 =====
 This is an open source re-write from the ground up of the Joypad game
