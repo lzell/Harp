@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9A8FBFC51D6FB70E0027F644 /* MBFingerTipWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FBFC41D6FB70E0027F644 /* MBFingerTipWindow.m */; };
 		9A9198BF1D63A3DB00DA107D /* HarpiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A9198BE1D63A3DB00DA107D /* HarpiOS.framework */; };
 		9A9198C01D63A3E800DA107D /* HarpiOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9A9198BE1D63A3DB00DA107D /* HarpiOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9A9198C31D63A6DF00DA107D /* Proto1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9198C21D63A6DF00DA107D /* Proto1ViewController.swift */; };
@@ -38,6 +39,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9A8FBFC31D6FB70E0027F644 /* MBFingerTipWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBFingerTipWindow.h; sourceTree = "<group>"; };
+		9A8FBFC41D6FB70E0027F644 /* MBFingerTipWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBFingerTipWindow.m; sourceTree = "<group>"; };
 		9A9198BE1D63A3DB00DA107D /* HarpiOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HarpiOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A9198C11D63A6D300DA107D /* HarpController-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "HarpController-Bridging-Header.h"; path = "HarpController/HarpController-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		9A9198C21D63A6DF00DA107D /* Proto1ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Proto1ViewController.swift; path = HarpController/Proto1ViewController.swift; sourceTree = SOURCE_ROOT; };
@@ -82,6 +85,8 @@
 		9AD014351D5553C4001BEE77 = {
 			isa = PBXGroup;
 			children = (
+				9A8FBFC31D6FB70E0027F644 /* MBFingerTipWindow.h */,
+				9A8FBFC41D6FB70E0027F644 /* MBFingerTipWindow.m */,
 				9A9198BE1D63A3DB00DA107D /* HarpiOS.framework */,
 				9AD014401D5553C4001BEE77 /* HarpController */,
 				9AD0143F1D5553C4001BEE77 /* Products */,
@@ -214,6 +219,7 @@
 				9A9198CF1D63A71000DA107D /* DpadView.swift in Sources */,
 				9A9198D21D63A71D00DA107D /* AppDelegate.swift in Sources */,
 				9A9198D41D63A72500DA107D /* Extensions.swift in Sources */,
+				9A8FBFC51D6FB70E0027F644 /* MBFingerTipWindow.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
